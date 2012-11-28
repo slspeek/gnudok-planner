@@ -1,0 +1,9 @@
+setuptools
+factory_boy
+docutils
+django-bootstrap-toolkit
+django
+django-nose
+django_jenkins
+selenium
+MySQL-python

@@ -1,0 +1,42 @@
+{% load bootstrap_toolkit %}
+<html>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+{% bootstrap_javascript_tag "dropdown" %}
+{% block extra_head %}{% endblock %}
+</head>
+<body class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+         
+          <a class="brand" href="/main/region">Choose region</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="/main/search">Search customer</a>
+              </li>
+              <li class="">
+                <a href="/admin">Admin</a>
+              </li>
+              <li class="">
+                <a href="/main/list/choose">Display collect list</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="container jumbotron masthead" style="margin-top: 60px;">
+{% block content %}
+{% endblock %}
+</div>
+<footer class="footer">
+     <div style="margin:auto">Copyleft 2012 written by Steven Speek and Jan ter Heggen for GNUDok</div>
+    </footer>
+</body>
+</html>

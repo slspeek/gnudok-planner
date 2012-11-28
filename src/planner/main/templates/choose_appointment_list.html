@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+
+{% block extra_head %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<form method='post' action="/main/list/date_chosen/" >
+	 {% csrf_token %} 
+	{{ form|as_bootstrap }}
+	<button class="btn btn-primary" type="submit">Go</button>
+</form>
+{% endblock %}

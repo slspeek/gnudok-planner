@@ -1,0 +1,607 @@
+[
+    {
+        "pk": 1, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 9.0, 
+            "end": 12.5, 
+            "day_of_week": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 13.0, 
+            "end": 16.5, 
+            "day_of_week": 1
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 9.0, 
+            "end": 12.5, 
+            "day_of_week": 2
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 13.0, 
+            "end": 16.5, 
+            "day_of_week": 2
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 9.0, 
+            "end": 12.5, 
+            "day_of_week": 3
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 13.0, 
+            "end": 16.5, 
+            "day_of_week": 3
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 9.0, 
+            "end": 12.5, 
+            "day_of_week": 4
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 13.0, 
+            "end": 16.5, 
+            "day_of_week": 4
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 9.0, 
+            "end": 12.5, 
+            "day_of_week": 5
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "main.timeslot", 
+        "fields": {
+            "begin": 13.0, 
+            "end": 16.5, 
+            "day_of_week": 5
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                1, 
+                3, 
+                5, 
+                7
+            ], 
+            "name": "Centrum", 
+            "description": "Centrum, de Pijp, Rivierenbuurt"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                2, 
+                4, 
+                6, 
+                8, 
+                10
+            ], 
+            "name": "Groot-Oost", 
+            "description": "Diemen, Duivendrecht, Ijburg, Indische buurt, Oost, Watergraafsmeer, Zeeburg"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                1, 
+                3, 
+                5, 
+                7, 
+                9
+            ], 
+            "name": "Groot-Zuid  ", 
+            "description": "Amstelveen, Buitenveldert, Oud-Zuid, Zuid, Zuideramstel"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                3, 
+                7
+            ], 
+            "name": "Kennemerland  ", 
+            "description": "Bennebroek, Bloemendaal, Cruquis, Haarlem, Heemstede, Hoofddrop, IJmuiden, Nieuw-Vennep, Vijfhuizen"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                4, 
+                8
+            ], 
+            "name": "Nieuw-West", 
+            "description": "Badhoevedorp, Geuzenveld, Halfweg, Nieuw-Sloten, Osdorp, Slotervaart, Westpoort, Zwanenburg"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                1, 
+                2, 
+                9, 
+                10
+            ], 
+            "name": "Noord  ", 
+            "description": "Noord\r\n"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                2, 
+                4, 
+                6, 
+                8, 
+                10
+            ], 
+            "name": "Oud-West  ", 
+            "description": "Baarsjes, Bos em Lommer, Oud-West, Spaarndammerbuurt, West, Westerpark"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "main.region", 
+        "fields": {
+            "timeslots": [
+                9
+            ], 
+            "name": "Zuid-Oost", 
+            "description": "Zuid-Oost "
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_logentry", 
+            "name": "Can add log entry", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_logentry", 
+            "name": "Can change log entry", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_logentry", 
+            "name": "Can delete log entry", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_group", 
+            "name": "Can add group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_group", 
+            "name": "Can change group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_group", 
+            "name": "Can delete group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_message", 
+            "name": "Can add message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_message", 
+            "name": "Can change message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_message", 
+            "name": "Can delete message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_permission", 
+            "name": "Can add permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_permission", 
+            "name": "Can change permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_permission", 
+            "name": "Can delete permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_user", 
+            "name": "Can add user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_user", 
+            "name": "Can change user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_user", 
+            "name": "Can delete user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_contenttype", 
+            "name": "Can add content type", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_contenttype", 
+            "name": "Can change content type", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_contenttype", 
+            "name": "Can delete content type", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_appointment", 
+            "name": "Can add appointment", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_appointment", 
+            "name": "Can change appointment", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_appointment", 
+            "name": "Can delete appointment", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_calendar", 
+            "name": "Can add calendar", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_calendar", 
+            "name": "Can change calendar", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_calendar", 
+            "name": "Can delete calendar", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_customer", 
+            "name": "Can add customer", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_customer", 
+            "name": "Can change customer", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_customer", 
+            "name": "Can delete customer", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_region", 
+            "name": "Can add region", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_region", 
+            "name": "Can change region", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_region", 
+            "name": "Can delete region", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_timeslot", 
+            "name": "Can add time slot", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_timeslot", 
+            "name": "Can change time slot", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_timeslot", 
+            "name": "Can delete time slot", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_session", 
+            "name": "Can add session", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_session", 
+            "name": "Can change session", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_session", 
+            "name": "Can delete session", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_site", 
+            "name": "Can add site", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_site", 
+            "name": "Can change site", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_site", 
+            "name": "Can delete site", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Callcenter", 
+            "permissions": [
+                34, 
+                35, 
+                36, 
+                37, 
+                38, 
+                39, 
+                25, 
+                26, 
+                27
+            ]
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "root", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2012-11-20T06:22:20", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$10000$2OtMPS9IjoIt$Xx/YdY9KzM5aMbdvDM6hMuDZc380WKxQ76kzyvOvC/I=", 
+            "email": "root@root.root", 
+            "date_joined": "2012-11-12T09:01:38"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "steven", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": true, 
+            "last_login": "2012-11-21T06:01:50", 
+            "groups": [
+                1
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=", 
+            "email": "", 
+            "date_joined": "2012-11-12T09:05:07"
+        }
+    }
+]

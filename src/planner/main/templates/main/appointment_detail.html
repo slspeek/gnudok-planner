@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+You just made an appointment
+<div class="hero-unit">
+	{{ object.customer }}
+	
+	{{ object.calendar }}
+	
+	{{ object.calendar.region }}
+	
+	{{ object.calendar.timeslot }}
+	
+	{{ object.stuff }}
+	</div>
+	<div><a href="/admin/main/appointment/{{ object.id }}/delete">Undo</a></div>
+{% endblock %}

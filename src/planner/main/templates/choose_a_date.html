@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<form id="date" name="date" action="/main/date_chosen/{{ date_iso }}" method="post">
+{% csrf_token %} 
+
+<select name="free_space" size=10 style="width: 30%;">
+{% for i in free_space %}
+    <option value="{{ forloop.counter }}">{{ i }}</option>
+{% endfor %} 
+</select>
+<input type="hidden" name="region_id" value="{{ region_id }}" />
+<button class="btn btn-primary" type="submit">Save</button>
+</form>
+
+{% endblock %}
