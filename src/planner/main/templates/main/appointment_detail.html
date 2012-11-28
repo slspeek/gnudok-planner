@@ -5,15 +5,14 @@
 {% block content %}
 You just made an appointment
 <div class="hero-unit">
-	{{ object.customer }}
-	
-	{{ object.calendar }}
-	
-	{{ object.calendar.region }}
-	
-	{{ object.calendar.timeslot }}
-	
-	{{ object.stuff }}
+    <table class="table">
+    <tr><th>Appointment to check in at {{ object.calendar.date }}, {{ object.timeslot }}</th></tr>	
+    <tr><th>Name</th><th>Address</th><th>Number</th><th>Postal code</th><th>City</th><th>Phone</th><th>Stuff</th></tr>	
+	<tr><td>{{ object.customer.name }}</td><td>{{ object.customer.address }}</td>
+		<td>{{ object.customer.number }}</td>
+		<td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
+		<td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td></tr>
+    </table>
 	</div>
 	<div><a href="/admin/main/appointment/{{ object.id }}/delete">Undo</a></div>
 {% endblock %}
