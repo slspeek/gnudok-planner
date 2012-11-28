@@ -59,7 +59,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         time.sleep(1)
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
         driver.find_element_by_link_text("Display collect list").click()
-        time.sleep(1)
+        time.sleep(2)
         driver.find_element_by_id("id_date").clear()
         driver.find_element_by_id("id_date").send_keys("2013-01-11")
         time.sleep(1)
