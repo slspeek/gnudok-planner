@@ -6,12 +6,13 @@
     {{ appointmentForm.media }}
     <script>
     $(function() {
-    	$("#id_postcode").keydown(function(e){
+    	$("#id_postcode").keyup(function(e){
     		postcode = $('#id_postcode')[0].value
     		if( postcode.length === 6 ) {
     			$.getJSON('/pc/get/' + postcode, function(data) {
-					$('#id_town').val(data.town)
-					$('#id_address').val(data.address)
+					$('#id_town').val(data.town);
+					$('#id_address').val(data.address);
+					$('#id_postcode').val(postcode.toUpperCase());
 				});
     		} 
     	});
