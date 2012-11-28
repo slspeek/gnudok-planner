@@ -75,7 +75,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"020-123456")
         
         
-    def test_make_search_appointment(self):
+    def test_search_appointment(self):
         """ Makes one appointment and verifies that the details are the listing for the drivers """
         driver = self.driver
         driver.get(self.live_server_url + "/accounts/login/?next=/main/region/20130101")
@@ -114,7 +114,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         time.sleep(1)        
         driver.find_element_by_id("id_name").clear()
         driver.find_element_by_id("id_name").send_keys("frederik")
-        driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        driver.find_element_by_css_selector("button.btn").click()
         time.sleep(1)
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         
@@ -137,7 +137,8 @@ class SeleniumTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         time.sleep(1)
-        driver.find_element_by_id("id_name").clear()self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
+        driver.find_element_by_id("id_name").clear()
+        
         driver.find_element_by_id("id_name").send_keys("Frederik Jansen")
         driver.find_element_by_id("id_postcode").clear()
         driver.find_element_by_id("id_postcode").send_keys("1102AB")
