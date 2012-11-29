@@ -49,6 +49,8 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_town").send_keys("Amsterdam-Zuidoost")
         driver.find_element_by_id("id_number").clear()
         driver.find_element_by_id("id_number").send_keys("144")
+        driver.find_element_by_id("id_additions").clear()
+        driver.find_element_by_id("id_additions").send_keys("sous")
         driver.find_element_by_id("id_phone").clear()
         driver.find_element_by_id("id_phone").send_keys("020-123456")
         driver.find_element_by_id("id_stuff").clear()
@@ -72,6 +74,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"1102AB")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Lift aanwezig")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"144")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"sous")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"020-123456")
         
         

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name = "planner",
     version = "1.0",
-    url = 'http://code.google.com/p/examinator-proj/source/browse?repo=planner',
+    url = 'http://code.google.com/p/gnudok-planner/',
     license = 'GPL',
     description = "Planner for Juttersdok",
     author = 'Steven Speek',
@@ -16,6 +16,6 @@ setup(
                         'django',
                         'django-nose', 
                         'django_jenkins',
-                        'selenium',
-                        'MySQL-python'],
+                        'selenium'
+                        ],
 )
