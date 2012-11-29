@@ -14,21 +14,10 @@ import factory
     
 class SourceFactory(factory.Factory):
     FACTORY_FOR = Source
+    id = 0
     name = source = 'foo'
     created = updated = datetime.datetime.now()
 
-class SourceFactoryImpl(object):
-    
-    def __init__(self):
-        self.id = 0
-    
-    def create(self):
-        self.id += 1
-        name = str(self.id)
-        source = str(self.id)
-        return SourceFactory(id=self.id, name=name, source=source)
-                       
-source_factory = SourceFactoryImpl()
 
 class CountryFactory(factory.Factory):
     FACTORY_FOR = Country
@@ -36,71 +25,76 @@ class CountryFactory(factory.Factory):
     id = 0
     created = updated = datetime.datetime.now()
     name = "Nederland"
-    #source = source_factory.create()
-#    
-#
-#class ProvinceFactory(factory.Factory):
-#    FACTORY_FOR = Province
-#    
-#    id = 0
-#    name = "Noord-Holland"
-#    created = updated = datetime.datetime.now()
-#    source = source_factory.create()
-#    country = factory.SubFactory(CountryFactory)
-#    
-#
-#class CityFactory(factory.Factory):
-#    FACTORY_FOR = City
-#    
-#    id = 0
-#    created = updated = datetime.datetime.now()
-#    province = factory.SubFactory(ProvinceFactory)
-#    source = source_factory.create()
-#
-#
-#class CitynameFactory(factory.Factory):
-#    FACTORY_FOR = Cityname
-#    
-#    id = 0
-#    name = 'Amsterdam'
-#    created = updated = datetime.datetime.now()
-#    source = source_factory.create()
-#    city = factory.SubFactory(CityFactory)
-#
-#
-#class PostcodeFactory(factory.Factory):
-#    FACTORY_FOR = Postcode
-#    
-#    id = 0
-#    fourpp = 1056
-#    created = updated = datetime.datetime.now()
-#    source = source_factory.create()
-#    city = factory.SubFactory(CityFactory)
-#
-#class StreetFactory(factory.Factory):
-#    FACTORY_FOR = Street
-#
-#    id = 0
-#    created = updated = datetime.datetime.now()
-#    street = "Pieter van der Doesstraat"
-#    postcode = factory.SubFactory(PostcodeFactory)
-#    source = source_factory.create()
-#    chars = "VE"
+    
+
+class ProvinceFactory(factory.Factory):
+    FACTORY_FOR = Province
+    
+    id = 0
+    name = "Noord-Holland"
+    created = updated = datetime.datetime.now()
+    country = factory.SubFactory(CountryFactory)
+    
+
+class CityFactory(factory.Factory):
+    FACTORY_FOR = City
+    
+    id = 0
+    created = updated = datetime.datetime.now()
+    province = factory.SubFactory(ProvinceFactory)
+
+
+class CitynameFactory(factory.Factory):
+    FACTORY_FOR = Cityname
+    
+    id = 0
+    name = 'Amsterdam'
+    created = updated = datetime.datetime.now()
+    city = factory.SubFactory(CityFactory)
+
+
+class PostcodeFactory(factory.Factory):
+    FACTORY_FOR = Postcode
+    
+    id = 0
+    fourpp = 1056
+    created = updated = datetime.datetime.now()
+    city = factory.SubFactory(CityFactory)
+
+class StreetFactory(factory.Factory):
+    FACTORY_FOR = Street
+
+    id = 0
+    even = 0
+    created = updated = datetime.datetime.now()
+    street = "Pieter van der Doesstraat"
+    postcode = factory.SubFactory(PostcodeFactory)
+    chars = "VE"
 
 class SimpleTest(TestCase):
     
     def setUp(self):
         """ sets up a Django test client """
         self.client = Client()
-        
+        self.source = SourceFactory()
+        self.country = CountryFactory(id=0,source=self.source)
+        self.province = ProvinceFactory(id=0,source=self.source,country=self.country)
+        self.city = CityFactory(id=0, source=self.source, province=self.province)
+        self.cityname = CitynameFactory(id=0,source=self.source,city=self.city,name='Amsterdam')
+        self.postcode = PostcodeFactory(id=0, source=self.source, fourpp=1056, city=self.city)
+        self.street = StreetFactory(id=0, postcode=self.postcode, source=self.source, chars='ve', street="Pieter van der Doesstraat")
+        #self.street.save()
 #        self.foo = source_factory.create()
 #        self.bar = source_factory.create()
 #        self.goo = source_factory.create()
-        self.country = CountryFactory()
+        #self.country = CountryFactory()
         #self.street = ProvinceFactory.create()
         #self.street = CitynameFactory.create()
         #self.street = CityFactory.create()
         #self.street = PostcodeFactory.create()
+        assert len(Street.objects.all()) == 1
+        streets  = Street.objects.filter(postcode__fourpp=1056).filter(chars='ve')
+        assert len(streets.all()) == 1
         
         
     def test_postcode_lookup(self):
