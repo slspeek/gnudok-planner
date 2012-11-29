@@ -15,6 +15,9 @@ class Source(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'source'
+    
+    def __str__(self):
+        return "Source:%n" % id
 
 class Country(models.Model):
     """ Models a country for the postal-lookups """
