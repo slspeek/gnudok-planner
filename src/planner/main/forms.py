@@ -29,7 +29,7 @@ class CustomerForm(ModelForm):
 
 class HiddenForm(forms.Form):
     timeslot_id = forms.IntegerField(widget=forms.HiddenInput())
-    region_id = forms.IntegerField(widget=forms.HiddenInput())
+    car_id = forms.IntegerField(widget=forms.HiddenInput())
     date = forms.DateField(widget=forms.HiddenInput())
     
 class RegionChooseForm(Form):

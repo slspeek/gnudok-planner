@@ -5,9 +5,10 @@ import datetime
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import user_passes_test
-from .models import Appointment, Region, TimeSlot, Calendar
+from .models import Appointment, Region, Calendar
 from .forms import CalendarSearchForm, CustomerForm, AppointmentForm,\
     HiddenForm, RegionChooseForm, DatePickForm
+from .schedule import get_free_entries, get_or_create_calendar
 
 
 def group_required(*group_names):
@@ -19,66 +20,6 @@ def group_required(*group_names):
         return False
     return user_passes_test(in_groups)
 
-
-def get_free_count(date, timeslot, region):
-    """ Given a date, timeslot and region return the number of free slots """
-    query = Calendar.objects.filter(date=date)
-    query = query.filter(timeslot=timeslot)
-    query = query.filter(region=region)
-    calendar_entries = query.all()
-    if not calendar_entries:
-        return 4
-    else:
-        entry = calendar_entries[0]
-        left = 4 - len(entry.appointment_set.all())
-        return left
-
-
-def get_free_entries(fromDate, daysAhead, region):
-    """ Return a list of quadrupels containing date, timeslot,
-     regions and number of free slots.
-     A quadrupel with no free slots is left out. """
-    result = []
-    for offset in range(0, daysAhead):
-        date = fromDate + datetime.timedelta(days=offset)
-        timeslots = get_timeslots(date, region)
-        for ts in timeslots:
-            free_count = get_free_count(date, ts, region)
-            if free_count > 0:
-                result.append((date, ts, region, free_count))
-    return result
-
-
-def get_timeslots(date, region):
-    """ Returns a list of timeslots for the given region on the given date. """
-    timeslots = region.timeslots.all()
-    week_day = date.weekday() + 1
-    return get_timeslots_for_day_of_week(week_day, timeslots)
-
-
-def get_timeslots_for_day_of_week(dayOfWeek, timeslots):
-    """ Filters a list of timeslots down to a weekday """
-    return filter(lambda x: x.day_of_week == dayOfWeek, timeslots)
-
-
-def get_date_from_iso(iso_date):
-    """ Returns a date object corresponding to the given iso-date string. """
-    return datetime.datetime.strptime(iso_date, '%Y%m%d').date()
-
-
-def get_or_create_calendar(timeslot_id, region_id, date):
-    """ Return exiting calendar object for this triplet or creates one 
-    if non-existent"""
-    calendars = Calendar.objects.filter(date=date).filter(timeslot__pk=timeslot_id).filter(region__pk=region_id)
-    if calendars:
-        calendar = calendars[0]
-    else:
-        calendar = Calendar()
-        calendar.date = date
-        calendar.timeslot = TimeSlot.objects.get(pk=int(timeslot_id))
-        calendar.region = Region.objects.get(pk=int(region_id))
-        calendar.save()
-    return calendar
 
 
 @group_required('Callcenter')
@@ -96,13 +37,12 @@ def create_appointment(request):
         appointmentForm = AppointmentForm(request.POST, instance=appointment)
         if appointmentForm.is_valid():  # Both valid, so save
             hiddenForm = HiddenForm(request.POST)
-            calendar = None
             if hiddenForm.is_valid():
                 timeslot_id = hiddenForm.cleaned_data['timeslot_id']
-                region_id = hiddenForm.cleaned_data['region_id']
+                car_id = hiddenForm.cleaned_data['car_id']
                 date = hiddenForm.cleaned_data['date']
                                
-                appointment.calendar = get_or_create_calendar(timeslot_id, region_id, date)
+                appointment.calendar = get_or_create_calendar(timeslot_id, car_id, date)
                 app = appointmentForm.save()
                 return redirect('AppointmentView',  app.id)
         else:  # Appointment not valid, so rerender with errors
@@ -120,6 +60,12 @@ def create_appointment(request):
 
 def tomorrow():
     return (datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y%m%d')
+
+
+def get_date_from_iso(iso_date):
+    """ Returns a date object corresponding to the given iso-date string. """
+    return datetime.datetime.strptime(iso_date, '%Y%m%d').date()
+
 
 @group_required('Callcenter')
 def chose_a_region(request, date_iso):
@@ -153,12 +99,13 @@ def chosen_date(request, date_iso):
     region = Region.objects.get(pk=request.POST['region_id'])
     free_space = get_free_entries(get_date_from_iso(date_iso), 14, region)
     index = int(request.POST['free_space']) - 1
-    free = free_space[index]
-    timeslot_id = free[1].id
-    date = free[0]
+    chosen_rule = free_space[index]
+    timeslot_id = chosen_rule[1].timeslot.pk
+    car_id = chosen_rule[1].car.pk
+    date = chosen_rule[0]
     appointmentForm = AppointmentForm()
     customerForm = CustomerForm()
-    hiddenForm = HiddenForm({'timeslot_id':timeslot_id, 'date': date, 'region_id':region.id})
+    hiddenForm = HiddenForm({'timeslot_id':timeslot_id, 'date': date, 'car_id':car_id})
     return render_to_response('appointment.html',
                               {"appointmentForm": appointmentForm,
                                "title": "Appointment details",
@@ -195,7 +142,7 @@ def render_appointment_list(request):
     calendar = Calendar.objects.get(pk=calendar_id)
     return render_to_response('appointment_list.html',
                                {"title": "Appointment list",
-                                'region': calendar.region,
+                                'Car': calendar.car,
                                 'date': calendar.date.strftime('%A %d %B %Y'),
                                 'timeslot': calendar.timeslot,
                                 'app_list': calendar.appointment_set.all()

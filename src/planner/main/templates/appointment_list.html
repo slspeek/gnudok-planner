@@ -6,8 +6,10 @@
 <h2>{{ date }}</h2>
 <hr/>
 <table class="table">
-<tr><th>{{ region.name }}</th><th>{{ timeslot }}</th></tr>
-<tr><th>Name</th><th>Address</th><th>Number</th><th>Additions</th><th>Postal code</th><th>City</th><th>Phone</th><th>Stuff</th><th>Notes</th><th>Delete</th></tr>
+<tr><th>{{ car.name }}</th><th>{{ timeslot }}</th></tr>
+<tr><th>Name</th><th>Address</th><th>Number</th>
+	<th>Additions</th><th>Postal code</th><th>City</th>
+	<th>Phone</th><th>Stuff</th><th>Notes</th><th>Delete</th></tr>
 {% for app in app_list %}
 	<tr><td>{{ app.customer.name }}</td><td>{{ app.customer.address }}</td>
 		<td>{{ app.customer.number }}</td><td>{{ app.customer.additions }}</td>

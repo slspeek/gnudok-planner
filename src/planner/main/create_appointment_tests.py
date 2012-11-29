@@ -7,7 +7,7 @@ from django.test.client import Client
 from .models import Calendar, Appointment, Customer
 from django.test.testcases import TestCase
 import datetime
-
+from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
 
 class CreateAppointmentTest(TestCase):
     """ tests view.create_appointment """
@@ -17,6 +17,11 @@ class CreateAppointmentTest(TestCase):
     def setUp(self):
         """ sets up a Django test client """
         self.client = Client()
+        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
+        self.timeslot = TimeSlotFactory(day_of_week=5,begin=9.0,end=12.5)
+        self.car = CarFactory(name='Zeeburg')
+        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+
 
     def testFullSubmit(self):
         """ tests a successfull submit """
@@ -33,7 +38,7 @@ class CreateAppointmentTest(TestCase):
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
                                      'timeslot_id':1,
-                                     'region_id':1,
+                                     'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
                                      }, follow=True)
         assert response.status_code == 200
@@ -57,7 +62,7 @@ class CreateAppointmentTest(TestCase):
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
                                      'timeslot_id':1,
-                                     'region_id':1,
+                                     'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
                                      }, follow=True)
         assert response.status_code == 200
@@ -81,7 +86,7 @@ class CreateAppointmentTest(TestCase):
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
                                      'timeslot_id':1,
-                                     'region_id':1,
+                                     'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
                                      }, follow=True)
         assert response.status_code == 200
@@ -98,7 +103,7 @@ class CreateAppointmentTest(TestCase):
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
                                      'timeslot_id':1,
-                                     'region_id':1,
+                                     'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
                                      }, follow=True)
         assert response.status_code == 200
@@ -123,7 +128,7 @@ class CreateAppointmentTest(TestCase):
                                      'town': 'London',
                                      'phone': '06-123456789',
                                      'timeslot_id':1,
-                                     'region_id':1,
+                                     'car_id':1,
                                      'date_iso': '20120401' 
                                      }, follow=True)
         assert response.status_code == 200

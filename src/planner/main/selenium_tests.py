@@ -1,8 +1,9 @@
 from django.test import LiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
+
 import time
-import logging
+from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
 
 
 class DjangoSeleniumTest(LiveServerTestCase):
@@ -22,9 +23,15 @@ class DjangoSeleniumTest(LiveServerTestCase):
 class SeleniumTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     fixtures = ['test_data.json']
+    
+    def setUp(self):
+        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
+        self.timeslot = TimeSlotFactory(day_of_week=5,begin=9.0,end=12.5)
+        self.car = CarFactory(name='Zeeburg')
+        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
 
     def test_make_one_appointment(self):
-        """ Makes one appointment and verifies that the details are the listing for the drivers """
+        """ Makes one appointment and verifies that the details are shown in the listing for that car """
         driver = self.driver
         driver.get(self.live_server_url + "/accounts/login/?next=/main/region/20130101")
         driver.find_element_by_id("id_username").clear()
@@ -63,11 +70,11 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_link_text("Display collect list").click()
         time.sleep(2)
         driver.find_element_by_id("id_date").clear()
-        driver.find_element_by_id("id_date").send_keys("2013-01-11")
+        driver.find_element_by_id("id_date").send_keys("2013-01-04")
         time.sleep(1)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         time.sleep(1)
-        driver.find_element_by_link_text("Zuid-Oost").click()
+        driver.find_element_by_link_text("Zeeburg").click()
         time.sleep(1)
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
@@ -231,9 +238,10 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_link_text("Display collect list").click()
         time.sleep(1)
         driver.find_element_by_id("id_date").clear()
-        driver.find_element_by_id("id_date").send_keys("2013-01-11")
+        driver.find_element_by_id("id_date").send_keys("2013-01-04")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
-        driver.find_element_by_link_text("Zuid-Oost").click()
+        time.sleep(1)
+        driver.find_element_by_link_text("Zeeburg").click()
         time.sleep(1)
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")

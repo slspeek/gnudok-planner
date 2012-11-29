@@ -2,15 +2,21 @@
 Test module
 '''
 from __future__ import absolute_import
-from .models import Region, TimeSlot, Calendar, Appointment, Customer
-from .views import get_free_count, get_timeslots_for_day_of_week
-from .views import get_timeslots, get_free_entries, get_date_from_iso
+from .models import Region, TimeSlot, Calendar, Appointment, Customer, Rule, Car
+from .schedule import get_free_count, get_rules, get_or_create_calendar
+from .views import get_free_entries, get_date_from_iso
 import datetime
 from django.contrib.auth.models import User
 import factory
 from django.test.testcases import TestCase
 
 
+class CarFactory(factory.Factory):
+    FACTORY_FOR = Car
+    
+    name = "Open source tractor"
+    
+    
 class TimeSlotFactory(factory.Factory):
     FACTORY_FOR = TimeSlot
 
@@ -24,6 +30,14 @@ class RegionFactory(factory.Factory):
 
     name = "Groot Oost"
 
+class RuleFactory(factory.Factory):
+    FACTORY_FOR = Rule
+    
+    car = factory.SubFactory(CarFactory)
+    region = factory.SubFactory(RegionFactory)
+    timeslot = factory.SubFactory(TimeSlotFactory)
+    
+    
 
 class CustomerFactory(factory.Factory):
     FACTORY_FOR = Customer
@@ -48,7 +62,8 @@ class CalendarFactory(factory.Factory):
 
     date = datetime.date(2012, 10, 29)
     timeslot = factory.SubFactory(TimeSlotFactory)
-    region = factory.SubFactory(RegionFactory)
+    car = factory.SubFactory(CarFactory)
+    #region = factory.SubFactory(RegionFactory)
 
 
 class AppointmentFactory(factory.Factory):
@@ -61,49 +76,53 @@ class AppointmentFactory(factory.Factory):
     notes = "Bring boxes"
 
 
-class TestTimeslotsForRegion(TestCase):
+class GetOrCreateCalendar(TestCase):
 
     def setUp(self):
         TestCase.setUp(self)
-        self.timeslot1 = TimeSlotFactory.create()
-        self.region = RegionFactory.create()
-        self.region.timeslots.add(self.timeslot1)
+        self.timeslot = TimeSlotFactory()
+        self.region = RegionFactory()
+        self.car = CarFactory()
+        self.rule = RuleFactory(car=self.car,region=self.region,timeslot=self.timeslot)
+        self.date = datetime.date(2012, 10, 29)
+        self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
+
+    def test_one_filled(self):
+        result = get_or_create_calendar(self.timeslot.pk,self.car.pk,  self.date)
+        self.assertEqual(1, len(Calendar.objects.all()))
+        assert result == self.calendar
+        
+    
+        
+class TestRulesForRegion(TestCase):
+
+    def setUp(self):
+        TestCase.setUp(self)
+        self.timeslot = TimeSlotFactory()
+        self.region = RegionFactory()
+        self.car = CarFactory()
+        self.rule = RuleFactory(car=self.car,region=self.region,timeslot=self.timeslot)
 
     def test_one_filled(self):
         self.date = datetime.date(2012, 10, 29)
-        result = get_timeslots(self.date, self.region)
+        result = get_rules(self.date, self.region)
         self.assertEqual(1, len(result))
 
     def test_empty(self):
         self.date = datetime.date(2012, 10, 25)
-        result = get_timeslots(self.date, self.region)
+        result = get_rules(self.date, self.region)
         self.assertEqual(0, len(result))
-
-
-class TestTimeslotsForDay(TestCase):
-
-    def setUp(self):
-        TestCase.setUp(self)
-        self.timeslot1 = TimeSlotFactory.create(day_of_week=1)
-        self.timeslot2 = TimeSlotFactory.create(day_of_week=2)
-        self.timeslot3 = TimeSlotFactory.create(day_of_week=3)
-        self.timeslots = [self.timeslot1, self.timeslot2, self.timeslot3]
-
-    def test(self):
-        result = get_timeslots_for_day_of_week(1, self.timeslots)
-        self.assertEqual(1, len(result))
 
 
 class TestNoAppointmentsOnCalendar(TestCase):
 
     def setUp(self):
         TestCase.setUp(self)
-        self.region = RegionFactory.create()
-        self.timeslot = TimeSlotFactory.create()
+        self.rule = RuleFactory()
 
     def test_get_free_count(self):
         date = datetime.date(2012, 10, 29)
-        result = get_free_count(date, self.timeslot, self.region)
+        result = get_free_count(date, self.rule)
         self.assertEqual(4, result, "Expected 4 free places")
 
 
@@ -111,15 +130,16 @@ class TestAppointmentCalendarPresent(TestCase):
 
     def setUp(self):
         TestCase.setUp(self)
-        self.region = RegionFactory.create()
-        self.timeslot = TimeSlotFactory.create()
+        self.car = CarFactory()
+        self.timeslot = TimeSlotFactory()
+        self.rule = RuleFactory(car=self.car, timeslot=self.timeslot)
         self.appointment = AppointmentFactory.create(
-            calendar__region=self.region,
+            calendar__car=self.car,
             calendar__timeslot=self.timeslot)
         self.date = datetime.date(2012, 10, 29)
 
     def test_get_free_count(self):
-        result = get_free_count(self.date, self.timeslot, self.region)
+        result = get_free_count(self.date, self.rule)
         self.assertEqual(3, result, "Expected 3 free places left")
 
 
@@ -127,20 +147,17 @@ class TestGetFreeEntries(TestCase):
 
     def setUp(self):
         TestCase.setUp(self)
-        self.customer = CustomerFactory.create()
-        self.region = RegionFactory.create()
-        self.timeslot = TimeSlotFactory.create()
-        self.region.timeslots.add(self.timeslot)
+        self.rule = RuleFactory()
         self.date = datetime.date(2012, 10, 29)
-        self.appointment = AppointmentFactory.create(calendar__region=self.region,
-                                                     calendar__timeslot=self.timeslot)
+        self.appointment = AppointmentFactory.create(calendar__car=self.rule.car,
+                                                     calendar__timeslot=self.rule.timeslot)
 
     def test_get_free_entries(self):
-        result = get_free_entries(self.date, 21, self.region)
+        result = get_free_entries(self.date, 21, self.rule.region)
         self.assertEqual(3, len(result))
 
     def test_get_free_entries_two_weeks(self):
-        result = get_free_entries(self.date, 14, self.region)
+        result = get_free_entries(self.date, 14, self.rule.region)
         self.assertEqual(2, len(result))
 
 
@@ -153,8 +170,9 @@ class TestIsoDate(TestCase):
 class CalendarNoDoublesTest(TestCase):
     
     def test_no_doubles(self):
-        region = RegionFactory.create()
-        timeslot = TimeSlotFactory.create()
-        cal = CalendarFactory.create(region=region, timeslot=timeslot)
-        self.assertRaises(Exception, lambda: CalendarFactory.create(region=region, timeslot=timeslot))
+        rule = RuleFactory()
+        def create_calendar():
+            CalendarFactory.create( timeslot=rule.timeslot, car=rule.car)
+        create_calendar()
+        self.assertRaises(Exception,create_calendar)
         assert len(Calendar.objects.all()) == 1

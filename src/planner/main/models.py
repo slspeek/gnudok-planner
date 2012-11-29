@@ -33,7 +33,7 @@ class TimeSlot(models.Model):
 
 
 class Region(models.Model):
-    name = models.CharField(max_length=120)
+    name = models.CharField(max_length=120, unique=True)
     description = models.TextField()
     timeslots = models.ManyToManyField(TimeSlot)
 
@@ -41,16 +41,31 @@ class Region(models.Model):
         return self.name
 
 
-class Calendar(models.Model):
-    date = models.DateField()
+class Car(models.Model):
+    name = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return self.name
+
+
+class Rule(models.Model):
+    car = models.ForeignKey(Car)
     timeslot = models.ForeignKey(TimeSlot)
     region = models.ForeignKey(Region)
+    def __str__(self):
+        return "(%s, %s, %s)" % (str(self.car), str(self.timeslot), str(self.region))
+    
+
+class Calendar(models.Model):
+    date = models.DateField()
+    car = models.ForeignKey(Car)
+    timeslot = models.ForeignKey(TimeSlot)
 
     def __str__(self):
-        return str(self.date)
+        return "(%s %s %s)" % (str(self.date), self.car, self.timeslot)
     
     class Meta:
-        unique_together = (("date", "timeslot", "region"),)
+        unique_together = (("date", "car", "timeslot"),)
 
 
 class Appointment(models.Model):
@@ -62,3 +77,6 @@ class Appointment(models.Model):
 
     def __str__(self):
         return self.customer.name + ", " + self.stuff
+    
+    class Meta:
+        ordering = ['customer__postcode']

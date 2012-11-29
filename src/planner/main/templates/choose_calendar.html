@@ -6,12 +6,15 @@
 <h2>{{ title }}</h2>
 <hr/>
 <table>
-
+<tr>
+	<th>Date</th><th>Car</th><th>Timeslot</th>
+</tr>
 {% for calendar in calendar_list %}
 	<tr>
+		<td>{{ calendar.date }}</td>
 		<td>
 			<a href="/main/list/appointments?calendar_id={{ calendar.id }}">
-				{{ calendar.region }}
+				{{ calendar.car }}
 			</a>
 		</td>
 		<td>{{ calendar.timeslot }}</td>

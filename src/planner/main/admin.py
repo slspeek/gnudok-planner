@@ -2,7 +2,7 @@
 Admin configuration
 '''
 from __future__ import absolute_import
-from .models import Customer,  TimeSlot, Appointment, Calendar, Region
+from .models import Customer,  TimeSlot, Appointment, Calendar, Region, Car, Rule
 from django.contrib import admin
 
 class CustomerAdmin(admin.ModelAdmin):
@@ -13,3 +13,5 @@ admin.site.register(TimeSlot)
 admin.site.register(Appointment)
 admin.site.register(Calendar)
 admin.site.register(Region)
+admin.site.register(Rule)
+admin.site.register(Car)
