@@ -3,6 +3,7 @@ syntax: glob
 src/*.pyc
 src/html
 eggs
+src/planner.egg-info
 develop-eggs
 parts
 bin
