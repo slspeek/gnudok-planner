@@ -16,6 +16,6 @@ setup(
                         'django',
                         'django-nose', 
                         'django_jenkins',
-                        'selenium'
-                        ],
+                        'selenium',
+                        'MySQL-python'],
 )
