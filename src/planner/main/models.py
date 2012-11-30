@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import datetime
 
 class Customer(models.Model):
     """ Representa a customer """
@@ -24,7 +24,12 @@ def weekDayName(dayNumber):
 
 
 class TimeSlot(models.Model):
-    day_of_week = models.IntegerField()
+    CHOICES = ( (1,"Monday"),
+                (2,"Tuesday"),
+                (3, "Wednesday"),
+                (4, "Thursday"),
+                (5,"Friday") )
+    day_of_week = models.IntegerField(choices=CHOICES)
     begin = models.FloatField()
     end = models.FloatField()
 
@@ -35,7 +40,6 @@ class TimeSlot(models.Model):
 class Region(models.Model):
     name = models.CharField(max_length=120, unique=True)
     description = models.TextField()
-    timeslots = models.ManyToManyField(TimeSlot)
 
     def __str__(self):
         return self.name
@@ -52,6 +56,8 @@ class Rule(models.Model):
     car = models.ForeignKey(Car)
     timeslot = models.ForeignKey(TimeSlot)
     region = models.ForeignKey(Region)
+    active = models.BooleanField(default=True)
+    
     def __str__(self):
         return "(%s, %s, %s)" % (str(self.car), str(self.timeslot), str(self.region))
     
@@ -74,6 +80,7 @@ class Appointment(models.Model):
     employee = models.ForeignKey(User)
     stuff = models.TextField()
     notes = models.TextField(blank=True)
+    created = models.DateTimeField(default=lambda:datetime.datetime.now())
 
     def __str__(self):
         return self.customer.name + ", " + self.stuff

@@ -74,6 +74,7 @@ class AppointmentFactory(factory.Factory):
     employee = factory.SubFactory(UserFactory)
     stuff = "Gold, Platina and lots of Silver"
     notes = "Bring boxes"
+    created = datetime.datetime.now()
 
 
 class GetOrCreateCalendar(TestCase):

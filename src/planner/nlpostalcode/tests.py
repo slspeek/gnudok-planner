@@ -83,15 +83,6 @@ class SimpleTest(TestCase):
         self.cityname = CitynameFactory(id=0,source=self.source,city=self.city,name='Amsterdam')
         self.postcode = PostcodeFactory(id=0, source=self.source, fourpp=1056, city=self.city)
         self.street = StreetFactory(id=0, postcode=self.postcode, source=self.source, chars='ve', street="Pieter van der Doesstraat")
-        #self.street.save()
-#        self.foo = source_factory.create()
-#        self.bar = source_factory.create()
-#        self.goo = source_factory.create()
-        #self.country = CountryFactory()
-        #self.street = ProvinceFactory.create()
-        #self.street = CitynameFactory.create()
-        #self.street = CityFactory.create()
-        #self.street = PostcodeFactory.create()
         assert len(Street.objects.all()) == 1
         streets  = Street.objects.filter(postcode__fourpp=1056).filter(chars='ve')
         assert len(streets.all()) == 1
