@@ -5,7 +5,6 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-import logging
 from .models import Calendar
 from .models import TimeSlot, Car, Rule
 
@@ -45,13 +44,15 @@ def get_free_entries(fromDate, daysAhead, region, min_weight):
      rule and number of free slots.
      A triplet with no free slots is left out. """
     result = []
-    for offset in range(0, daysAhead):
+    for offset in range(0, 60):
         date = fromDate + datetime.timedelta(days=offset)
         rules = get_rules(date, region)
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:
                 result.append((date, rule, free_count))
+        if len(result) >= 2 and offset >= daysAhead - 1:
+            break;
     return result
 
 

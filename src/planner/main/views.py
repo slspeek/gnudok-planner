@@ -20,7 +20,10 @@ def group_required(*group_names):
         return False
     return user_passes_test(in_groups)
 
-
+@group_required('Callcenter')
+def edit_appointment(request, appointment_id, date_iso):
+    if not date_iso:
+        date_iso=tomorrow()
 
 @group_required('Callcenter')
 def create_appointment(request):

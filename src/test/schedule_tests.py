@@ -69,5 +69,5 @@ class TestGetFreeEntriesWithHeavyWeight(TestCase):
 
     def test_get_free_entries_two_weeks(self):
         result = get_free_entries(self.date, 14, self.rule.region, 1)
-        self.assertEqual(1, len(result))
+        self.assertEqual(2, len(result))
 
