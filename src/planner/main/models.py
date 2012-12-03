@@ -78,6 +78,12 @@ class Appointment(models.Model):
     calendar = models.ForeignKey(Calendar)
     customer = models.ForeignKey(Customer)
     employee = models.ForeignKey(User)
+    CHOICES = ( (1,"Normal"),
+                (2,"Double"),
+                (3, "Tripel"),
+                (4, "Entire half-day"),
+                 )
+    weight = models.IntegerField(choices=CHOICES, default=1)
     stuff = models.TextField()
     notes = models.TextField(blank=True)
     created = models.DateTimeField(default=lambda:datetime.datetime.now())

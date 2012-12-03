@@ -115,52 +115,6 @@ class TestRulesForRegion(TestCase):
         self.assertEqual(0, len(result))
 
 
-class TestNoAppointmentsOnCalendar(TestCase):
-
-    def setUp(self):
-        TestCase.setUp(self)
-        self.rule = RuleFactory()
-
-    def test_get_free_count(self):
-        date = datetime.date(2012, 10, 29)
-        result = get_free_count(date, self.rule)
-        self.assertEqual(4, result, "Expected 4 free places")
-
-
-class TestAppointmentCalendarPresent(TestCase):
-
-    def setUp(self):
-        TestCase.setUp(self)
-        self.car = CarFactory()
-        self.timeslot = TimeSlotFactory()
-        self.rule = RuleFactory(car=self.car, timeslot=self.timeslot)
-        self.appointment = AppointmentFactory.create(
-            calendar__car=self.car,
-            calendar__timeslot=self.timeslot)
-        self.date = datetime.date(2012, 10, 29)
-
-    def test_get_free_count(self):
-        result = get_free_count(self.date, self.rule)
-        self.assertEqual(3, result, "Expected 3 free places left")
-
-
-class TestGetFreeEntries(TestCase):
-
-    def setUp(self):
-        TestCase.setUp(self)
-        self.rule = RuleFactory()
-        self.date = datetime.date(2012, 10, 29)
-        self.appointment = AppointmentFactory.create(calendar__car=self.rule.car,
-                                                     calendar__timeslot=self.rule.timeslot)
-
-    def test_get_free_entries(self):
-        result = get_free_entries(self.date, 21, self.rule.region)
-        self.assertEqual(3, len(result))
-
-    def test_get_free_entries_two_weeks(self):
-        result = get_free_entries(self.date, 14, self.rule.region)
-        self.assertEqual(2, len(result))
-
 
 class TestIsoDate(TestCase):
 

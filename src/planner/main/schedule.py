@@ -8,6 +8,13 @@ import datetime
 from .models import Calendar
 from .models import TimeSlot, Car, Rule
 
+def get_total_weight(appointment_list):
+    weight = 0
+    for app in appointment_list:
+        weight += app.weight
+    return weight
+    
+
 def get_free_count(date, rule):
     """ Given a date, timeslot and region return the number of free slots """
     query = Calendar.objects.filter(date=date)
@@ -18,7 +25,9 @@ def get_free_count(date, rule):
         return 4
     else:
         entry = calendar_entries[0]
-        left = 4 - len(entry.appointment_set.all())
+        appointment_list = entry.appointment_set.all()
+        total_weight = get_total_weight(appointment_list)  
+        left = 4 - total_weight
         return left
 
 

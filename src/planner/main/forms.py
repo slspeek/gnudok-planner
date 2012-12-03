@@ -21,7 +21,7 @@ class DatePickForm(forms.Form):
 class AppointmentForm(ModelForm):
     class Meta:
         model = Appointment
-        fields = ("stuff", "notes")
+        fields = ("weight", "stuff", "notes")
         
 class CustomerForm(ModelForm):
     class Meta:

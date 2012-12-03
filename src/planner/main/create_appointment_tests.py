@@ -37,6 +37,7 @@ class CreateAppointmentTest(TestCase):
                                      'town': 'London',
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
+                                     'weight': 1,
                                      'timeslot_id':1,
                                      'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
@@ -61,6 +62,7 @@ class CreateAppointmentTest(TestCase):
                                      'town': 'London',
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
+                                     'weight': 1,
                                      'timeslot_id':1,
                                      'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
@@ -85,6 +87,7 @@ class CreateAppointmentTest(TestCase):
                                      'town': 'London',
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
+                                     'weight': 1,
                                      'timeslot_id':1,
                                      'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
@@ -102,6 +105,7 @@ class CreateAppointmentTest(TestCase):
                                      'town': 'London',
                                      'phone': '06-123456789',
                                      'stuff': 'Machines',
+                                     'weight': 1,
                                      'timeslot_id':1,
                                      'car_id':1,
                                      'date': datetime.date(year=2012,month=04,day=01) 
@@ -127,6 +131,7 @@ class CreateAppointmentTest(TestCase):
                                      'address': 'Townstreet 123',
                                      'town': 'London',
                                      'phone': '06-123456789',
+                                     'weight': 1,
                                      'timeslot_id':1,
                                      'car_id':1,
                                      'date_iso': '20120401' 
