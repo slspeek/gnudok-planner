@@ -217,6 +217,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.get(self.live_server_url + "/main/region/20130101")
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        time.sleep(1)
         Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         time.sleep(1)
