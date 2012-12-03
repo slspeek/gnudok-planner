@@ -21,7 +21,7 @@ class DatePickForm(forms.Form):
 class AppointmentForm(ModelForm):
     class Meta:
         model = Appointment
-        fields = ("weight", "stuff", "notes")
+        fields = ("stuff", "notes")
         
 class CustomerForm(ModelForm):
     class Meta:
@@ -31,6 +31,13 @@ class HiddenForm(forms.Form):
     timeslot_id = forms.IntegerField(widget=forms.HiddenInput())
     car_id = forms.IntegerField(widget=forms.HiddenInput())
     date = forms.DateField(widget=forms.HiddenInput())
+    weight = forms.IntegerField(widget=forms.HiddenInput())
     
 class RegionChooseForm(Form):
-    region = forms.ModelChoiceField(queryset=Region.objects.all())     
+    region = forms.ModelChoiceField(queryset=Region.objects.all()) 
+    CHOICES = ( (1,"Normal"),
+                (2,"Double"),
+                (3, "Tripel"),
+                (4, "Entire half-day"),
+                 )
+    weight = forms.ChoiceField(choices=CHOICES, initial=1)

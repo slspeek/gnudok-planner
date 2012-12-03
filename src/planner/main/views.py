@@ -28,6 +28,7 @@ def create_appointment(request):
     real world appointment. """
     if not request.POST:
         raise Exception()
+    
     appointment = Appointment()
     customerForm = CustomerForm(request.POST)
     if customerForm.is_valid():  # Customer form valid, save Cutomer
@@ -41,7 +42,8 @@ def create_appointment(request):
                 timeslot_id = hiddenForm.cleaned_data['timeslot_id']
                 car_id = hiddenForm.cleaned_data['car_id']
                 date = hiddenForm.cleaned_data['date']
-                               
+                weight = hiddenForm.cleaned_data['weight']
+                appointment.weight = weight
                 appointment.calendar = get_or_create_calendar(timeslot_id, car_id, date)
                 app = appointmentForm.save()
                 return redirect('AppointmentView',  app.id)
@@ -77,11 +79,13 @@ def chose_a_region(request, date_iso):
                                   {"form": form, "title": "Choose a region" },
                                    context_instance=RequestContext(request))
     else:
-        form = RegionChooseForm(request.POST)
-        if form.is_valid():
-            region = form.cleaned_data['region']
+        region_form = RegionChooseForm(request.POST)
+        if region_form.is_valid():
+            region = region_form.cleaned_data['region']
+            weight = int(region_form.cleaned_data['weight'])
             free_space = get_free_entries(get_date_from_iso(date_iso),
-                                           14, region)
+                                           14, region, weight)
+            
             free_space_readable = []
             for space in free_space:
                 free_space_readable.append(space[0].strftime('%d %B ')  + str(space[1]))
@@ -89,6 +93,7 @@ def chose_a_region(request, date_iso):
                                    { "title": "Choose a date",
                                      "free_space": free_space_readable,
                                      "region_id": region.id,
+                                     "weight": weight,
                                      "date_iso": date_iso },
                                   context_instance=RequestContext(request))
 
@@ -96,8 +101,9 @@ def chose_a_region(request, date_iso):
 def chosen_date(request, date_iso):
     if not date_iso:
         date_iso=tomorrow()
-    region = Region.objects.get(pk=request.POST['region_id'])
-    free_space = get_free_entries(get_date_from_iso(date_iso), 14, region)
+    region = Region.objects.get(pk=int(request.POST['region_id']))
+    weight = int(request.POST['weight'])
+    free_space = get_free_entries(get_date_from_iso(date_iso), 14, region, weight)
     index = int(request.POST['free_space']) - 1
     chosen_rule = free_space[index]
     timeslot_id = chosen_rule[1].timeslot.pk
@@ -105,7 +111,7 @@ def chosen_date(request, date_iso):
     date = chosen_rule[0]
     appointmentForm = AppointmentForm()
     customerForm = CustomerForm()
-    hiddenForm = HiddenForm({'timeslot_id':timeslot_id, 'date': date, 'car_id':car_id})
+    hiddenForm = HiddenForm({'weight': weight, 'timeslot_id':timeslot_id, 'date': date, 'car_id':car_id})
     return render_to_response('appointment.html',
                               {"appointmentForm": appointmentForm,
                                "title": "Appointment details",

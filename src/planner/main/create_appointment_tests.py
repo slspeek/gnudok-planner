@@ -49,7 +49,7 @@ class CreateAppointmentTest(TestCase):
         assert Appointment.objects.get(pk=1).stuff == 'Machines'
     
     def testInvalidCustomer(self):
-        """ tests a successfull submit """
+        """ tests a submit with invalid customer """
         assert len(Calendar.objects.all()) == 0
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
@@ -74,7 +74,8 @@ class CreateAppointmentTest(TestCase):
         assert len(Customer.objects.all()) == 0
     
     def testTwoAppointmentsOnSameTimeslot(self):
-        """ tests a successfull submit """
+        """ tests submitting two appointments, and assert we have one calendar at the
+        end """
         assert len(Calendar.objects.all()) == 0
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0

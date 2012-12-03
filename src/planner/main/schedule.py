@@ -5,6 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
+import logging
 from .models import Calendar
 from .models import TimeSlot, Car, Rule
 
@@ -39,7 +40,7 @@ def get_rules(date, region):
     return rules
 
 
-def get_free_entries(fromDate, daysAhead, region):
+def get_free_entries(fromDate, daysAhead, region, min_weight):
     """ Return a list of triplet containing date,
      rule and number of free slots.
      A triplet with no free slots is left out. """
@@ -49,7 +50,7 @@ def get_free_entries(fromDate, daysAhead, region):
         rules = get_rules(date, region)
         for rule in rules:
             free_count = get_free_count(date, rule)
-            if free_count > 0:
+            if free_count >= min_weight:
                 result.append((date, rule, free_count))
     return result
 

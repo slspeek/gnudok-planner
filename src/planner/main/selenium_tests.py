@@ -234,6 +234,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Dozen met kleren")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        time.sleep(1)
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Dozen met kleren")
         driver.find_element_by_link_text("Display collect list").click()
         time.sleep(1)
