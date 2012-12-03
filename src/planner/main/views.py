@@ -42,12 +42,10 @@ def create_appointment(request):
         if appointmentForm.is_valid():  # Both valid, so save
             hiddenForm = HiddenForm(request.POST)
             if hiddenForm.is_valid():
-                timeslot_id = hiddenForm.cleaned_data['timeslot_id']
-                car_id = hiddenForm.cleaned_data['car_id']
-                date = hiddenForm.cleaned_data['date']
+                calendar_id = hiddenForm.cleaned_data['calendar_id']
                 weight = hiddenForm.cleaned_data['weight']
                 appointment.weight = weight
-                appointment.calendar = get_or_create_calendar(timeslot_id, car_id, date)
+                appointment.calendar = Calendar.objects.get(pk=int(calendar_id))
                 app = appointmentForm.save()
                 return redirect('AppointmentView',  app.id)
         else:  # Appointment not valid, so rerender with errors
@@ -88,13 +86,9 @@ def chose_a_region(request, date_iso):
             weight = int(region_form.cleaned_data['weight'])
             free_space = get_free_entries(get_date_from_iso(date_iso),
                                            14, region, weight)
-            
-            free_space_readable = []
-            for space in free_space:
-                free_space_readable.append(space[0].strftime('%d %B ')  + str(space[1]))
         return render_to_response('choose_a_date.html',
                                    { "title": "Choose a date",
-                                     "free_space": free_space_readable,
+                                     "free_space": free_space,
                                      "region_id": region.id,
                                      "weight": weight,
                                      "date_iso": date_iso },
@@ -104,17 +98,13 @@ def chose_a_region(request, date_iso):
 def chosen_date(request, date_iso):
     if not date_iso:
         date_iso=tomorrow()
-    region = Region.objects.get(pk=int(request.POST['region_id']))
+    
     weight = int(request.POST['weight'])
-    free_space = get_free_entries(get_date_from_iso(date_iso), 14, region, weight)
-    index = int(request.POST['free_space']) - 1
-    chosen_rule = free_space[index]
-    timeslot_id = chosen_rule[1].timeslot.pk
-    car_id = chosen_rule[1].car.pk
-    date = chosen_rule[0]
+    free_space = request.POST['free_space']
+    
     appointmentForm = AppointmentForm()
     customerForm = CustomerForm()
-    hiddenForm = HiddenForm({'weight': weight, 'timeslot_id':timeslot_id, 'date': date, 'car_id':car_id})
+    hiddenForm = HiddenForm({'weight': weight, 'calendar_id':free_space})
     return render_to_response('appointment.html',
                               {"appointmentForm": appointmentForm,
                                "title": "Appointment details",

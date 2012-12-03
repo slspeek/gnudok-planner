@@ -50,12 +50,17 @@ def get_free_entries(fromDate, daysAhead, region, min_weight):
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:
-                result.append((date, rule, free_count))
+                result.append(entry(date, rule))
         if len(result) >= 2 and offset >= daysAhead - 1:
             break;
     return result
 
-
+def entry(date, rule):
+    timeslot_id = rule.timeslot.pk
+    car_id = rule.car.pk
+    calendar = get_or_create_calendar(timeslot_id, car_id, date)
+    return (calendar.pk, "%s: %s - %s" % (date.strftime('%d %B '), str(rule.timeslot), str(rule.car)))
+    
 def get_or_create_calendar(timeslot_id, car_id, date):
     """ Return exiting calendar object for this triplet or creates one 
     if non-existent"""
