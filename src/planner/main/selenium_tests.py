@@ -196,7 +196,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
-        time.sleep(1)
+        time.sleep(3)
         driver.find_element_by_id("id_name").clear()
         driver.find_element_by_id("id_name").send_keys("Lidia van de Heuvel")
         driver.find_element_by_id("id_postcode").clear()
