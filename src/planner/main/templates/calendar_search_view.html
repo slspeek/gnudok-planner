@@ -5,23 +5,34 @@
 {% block content %}
 <script>
 	$(function() {
-		$('.errorlist').addClass('alert alert-error');	
-	});
+		$('.errorlist').addClass('alert alert-error');
+	}); 
 </script>
 <h2>{{ title }}</h2>
 <hr/>
 <form id="calendar_search" name="calendar_search" action="" method="post">
-    {% csrf_token %} 
-	
-	{{ search_form.as_p }}
-	
-<button class="btn btn-success" type="submit">Search</button>
+	{% csrf_token %}
 
+	{{ search_form.as_p }}
+
+	<button class="btn btn-success" type="submit">
+		Search
+	</button>
 
 </form>
 <div class="hero-unit">
 	{% for result in search_results %}
-	<div><span>{{ result.calendar.timespan }}  </span><span>{{ result.calendar.date }}  </span><span>{{result.calendar.region}}  </span><span>{{ result.customer.name }}  </span><span>{{ result.customer.address }}  </span><span>{{ result.customer.number }}  </span><span>{{ result.customer.town }}  </span><span>{{ result.stuff }}  </span></div>
+	<div>
+		<span>{{ result.calendar.timespan }} </span>
+		<span>{{ result.calendar.date }} </span>
+		<span>{{result.calendar.region}} </span>
+		<span>{{ result.customer.name }} </span>
+		<span>{{ result.customer.address }} </span>
+		<span>{{ result.customer.number }} </span>
+		<span>{{ result.customer.town }} </span>
+		<span>{{ result.stuff }} </span>
+		<a href="{% url planner.main.views.edit_appointment appointment_id=result.pk date_iso='' %}">Edit</a>
+	</div>
 	{% endfor %}
 </div>
 

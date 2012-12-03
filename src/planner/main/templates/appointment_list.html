@@ -6,17 +6,24 @@
 <h2>{{ date }}</h2>
 <hr/>
 <table class="table">
-<tr><th>{{ car.name }}</th><th>{{ timeslot }}</th></tr>
-<tr><th>Name</th><th>Address</th><th>Number</th>
-	<th>Additions</th><th>Postal code</th><th>City</th>
-	<th>Phone</th><th>Stuff</th><th>Notes</th><th>Delete</th></tr>
-{% for app in app_list %}
-	<tr><td>{{ app.customer.name }}</td><td>{{ app.customer.address }}</td>
+	<tr>
+		<th>{{ car.name }}</th><th>{{ timeslot }}</th>
+	</tr>
+	<tr>
+		<th>Name</th><th>Address</th><th>Number</th>
+		<th>Additions</th><th>Postal code</th><th>City</th>
+		<th>Phone</th><th>Stuff</th><th>Notes</th><th>Delete</th><th>Edit</th>
+	</tr>
+	{% for app in app_list %}
+	<tr>
+		<td>{{ app.customer.name }}</td><td>{{ app.customer.address }}</td>
 		<td>{{ app.customer.number }}</td><td>{{ app.customer.additions }}</td>
 		<td>{{ app.customer.postcode }}</td><td>{{ app.customer.town }}</td>
 		<td>{{ app.customer.phone }}</td><td>{{ app.stuff }}</td><td>{{ app.notes }}</td>
-		<td><a href="/admin/main/appointment/{{ app.id }}/delete">Del</a></td> </tr>
-{% endfor %} 
+		<td><a href="/admin/main/appointment/{{ app.id }}/delete">Del</a></td>
+		<td><a href="{% url planner.main.views.edit_appointment appointment_id=app.pk date_iso='' %}">Edit</a></td>
+	</tr>
+	{% endfor %}
 
 </table>
 {% endblock %}

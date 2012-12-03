@@ -8,6 +8,12 @@ import datetime
 from .models import Calendar
 from .models import TimeSlot, Car, Rule
 
+def get_region(calendar):
+    car = calendar.car
+    timeslot = calendar.timeslot
+    rule = Rule.objects.filter(timeslot=timeslot, car=car).all()[0]
+    return rule.region
+
 def get_total_weight(appointment_list):
     weight = 0
     for app in appointment_list:

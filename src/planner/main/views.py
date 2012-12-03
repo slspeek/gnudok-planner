@@ -5,10 +5,10 @@ import datetime
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import user_passes_test
-from .models import Appointment, Region, Calendar
+from .models import Appointment, Calendar
 from .forms import CalendarSearchForm, CustomerForm, AppointmentForm,\
     HiddenForm, RegionChooseForm, DatePickForm
-from .schedule import get_free_entries, get_or_create_calendar
+from .schedule import get_free_entries, get_region
 
 
 def group_required(*group_names):
@@ -21,13 +21,50 @@ def group_required(*group_names):
     return user_passes_test(in_groups)
 
 @group_required('Callcenter')
-def edit_appointment(request, appointment_id, date_iso):
+def edit_appointment(request, appointment_id=0, date_iso=""):
     if not date_iso:
         date_iso=tomorrow()
 
+    appointment = Appointment.objects.get(pk=int(appointment_id))
+    if not request.POST:
+        appointmentForm = AppointmentForm(instance=appointment)
+        customerForm = CustomerForm(instance=appointment.customer)
+        region = get_region(appointment.calendar)
+        free_space = get_free_entries(get_date_from_iso(date_iso), 14, region, appointment.weight)
+        return render_to_response('edit_appointment.html',
+             {"appointmentForm": appointmentForm,
+             "title": "Edit or Move appointment",
+             "customerForm": customerForm,
+             "free_space": free_space,
+             "calendar_id": appointment.calendar.pk,
+              },
+             context_instance=RequestContext(request))
+    else:
+        appointmentForm = AppointmentForm(request.POST, instance=appointment)
+        calendar_id = int(request.POST['free_space'])
+        customerForm = CustomerForm(request.POST, instance=appointment.customer)
+        if appointmentForm.is_valid() and customerForm.is_valid():
+            appointment = appointmentForm.save(commit=False)
+            appointment.calendar = Calendar.objects.get(pk=calendar_id)
+            appointment.save()
+            customerForm.save()
+            return redirect('AppointmentView',  appointment.id)
+        else:
+            return render_to_response('edit_appointment.html',
+             {"appointmentForm": appointmentForm,
+             "title": "Edit or Move appointment",
+             "customerForm": customerForm,
+             "free_space": free_space,
+             "calendar_id": appointment.calendar.pk,
+              },
+             context_instance=RequestContext(request))
+            
+
+        
+
 @group_required('Callcenter')
 def create_appointment(request):
-    """ Saves an Appointment, Customer and Calendar object corresponding to a
+    """ Saves an Appointment and Customer object corresponding to a
     real world appointment. """
     if not request.POST:
         raise Exception()
