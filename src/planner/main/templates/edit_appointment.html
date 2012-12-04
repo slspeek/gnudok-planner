@@ -36,7 +36,7 @@
 
 	{{ appointmentForm|as_bootstrap }}
 
-	<select name="free_space" size=10 style="width: 30%;">
+	<select id="free_space" name="free_space" size=10 style="width: 30%;">
 		{% for key, label in free_space %}
 		{% if key == calendar_id %}
 		<option value="{{ key }}" selected="selected">{{ label }}</option>

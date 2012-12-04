@@ -16,3 +16,4 @@ cover/*
 .coverage
 .project
 .pydevproject
+.pydevproject.bak
