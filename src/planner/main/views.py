@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import user_passes_test
 from .models import Appointment, Calendar, Car
 from .forms import CalendarSearchForm, CustomerForm, AppointmentForm,\
     HiddenForm, RegionChooseForm, DatePickForm
-from .schedule import get_free_entries, get_region, get_total_weight
+from .schedule import get_free_entries, get_region, get_total_weight, get_free_entries_with_extra_calendar
 from django.views.generic.dates import WeekArchiveView
 
 
@@ -69,7 +69,7 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
         appointmentForm = AppointmentForm(instance=appointment)
         customerForm = CustomerForm(instance=appointment.customer)
         region = get_region(appointment.calendar)
-        free_space = get_free_entries(get_date_from_iso(date_iso), 14, region, appointment.weight)
+        free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 14,region, appointment.weight,appointment.calendar)
         return render_to_response('edit_appointment.html',
              {"appointmentForm": appointmentForm,
              "title": "Edit or Move appointment",

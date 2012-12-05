@@ -46,9 +46,9 @@ def get_rules(date, region):
 
 
 def get_free_entries(fromDate, daysAhead, region, min_weight):
-    """ Return a list of triplet containing date,
-     rule and number of free slots.
-     A triplet with no free slots is left out. """
+    """ Return a list of pairs containing calendar.pk and a human readable
+    representation of the calendar entry.
+     A pair with no free slots is left out. """
     result = []
     for offset in range(0, 60):
         date = fromDate + datetime.timedelta(days=offset)
@@ -56,6 +56,21 @@ def get_free_entries(fromDate, daysAhead, region, min_weight):
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:
+                result.append(entry(date, rule))
+        if len(result) >= 2 and offset >= daysAhead - 1:
+            break;
+    return result
+
+def get_free_entries_with_extra_calendar(fromDate, daysAhead, region, min_weight, calendar):
+    extra_date = calendar.date
+    extra_rule = Rule.objects.get(timeslot=calendar.timeslot,car=calendar.car)
+    result = []
+    for offset in range(0, 60):
+        date = fromDate + datetime.timedelta(days=offset)
+        rules = get_rules(date, region)
+        for rule in rules:
+            free_count = get_free_count(date, rule)
+            if free_count >= min_weight or (date == extra_date and rule == extra_rule):
                 result.append(entry(date, rule))
         if len(result) >= 2 and offset >= daysAhead - 1:
             break;
