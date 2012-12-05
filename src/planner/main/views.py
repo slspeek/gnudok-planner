@@ -57,11 +57,11 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
         date_iso=tomorrow()
 
     appointment = Appointment.objects.get(pk=int(appointment_id))
+    region = get_region(appointment.calendar)
+    free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 14,region, appointment.weight,appointment.calendar)
     if not request.POST:
         appointmentForm = AppointmentForm(instance=appointment)
         customerForm = CustomerForm(instance=appointment.customer)
-        region = get_region(appointment.calendar)
-        free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 14,region, appointment.weight,appointment.calendar)
         return render_to_response('edit_appointment.html',
              {"appointmentForm": appointmentForm,
              "title": "Edit or Move appointment",

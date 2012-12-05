@@ -23,29 +23,67 @@
 <style>
 	.appointment {
 
-		-moz-column-count: 2;
-		-webkit-column-count: 2;
+		/*-moz-column-count: 2;
+		 -webkit-column-count: 2;*/
 	}
 </style>
-<h2>{{ title }}</h2>
+<h3>{{ title }}</h3>
 <hr/>
 <form id="appointment" name="appointment" action="" method="post" class="appointment">
-	{% csrf_token %}
+	<div style="dispaly:inline;" >
+		<div style="float:left; width:49%">
+			<table class="table table-condensed control-group">
+				{% csrf_token %}
 
-	{{ customerForm|as_bootstrap }}
+				{% for field in customerForm %}
 
-	{{ appointmentForm|as_bootstrap }}
+				{% if field.errors %}
 
-	<select id="free_space" name="free_space" size=10 style="width: 30%;">
-		{% for key, label in free_space %}
-		{% if key == calendar_id %}
-		<option value="{{ key }}" selected="selected">{{ label }}</option>
-		{% else %}
-		<option value="{{ key }}" >{{ label }}</option>
-		{% endif %}
-		{% endfor %}
-	</select>
+				<td >{{ field.label_tag }}<span class="text-error"> {{ field.errors }}</span></td>
+				<td>{{ field }}</td>
 
+				</tr>
+				{% else %}
+				<tr>
+					<td class="control-label">{{ field.label_tag }}</td>
+					<td >{{ field }}</td>
+					<td colspan="1">{{ field.errors }}</td>
+				</tr>
+				{% endif %}
+
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div style="float:right; width:49%">
+			<table class="table table-condensed">
+				{% for field in appointmentForm %}
+				<tr >
+					<td class="control-label">{{ field.label_tag }}</td>
+					<td>{{ field }}</td>
+					<td colspan="1">{{ field.errors }}</td>
+				</tr>
+
+				{% endfor %}
+
+				<tr>
+					<th colspan="2">Alternative dates</th>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<select id="free_space" name="free_space" size=10 style="width: 100%;">
+						{% for key, label in free_space %}
+						{% if key == calendar_id %}
+						<option value="{{ key }}" selected="selected">{{ label }}</option>
+						{% else %}
+						<option value="{{ key }}" >{{ label }}</option>
+						{% endif %}
+						{% endfor %}
+					</select></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 	<button class="btn btn-primary" type="submit">
 		Save
 	</button>

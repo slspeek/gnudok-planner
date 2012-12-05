@@ -43,7 +43,7 @@ class CreateAppointmentTest(TestCase):
                                      'calendar_id': self.calendar.pk 
                                      }, follow=True)
         assert response.status_code == 200
-        assert 'Undo' in response.content
+        assert 'Alan Turing' in response.content
         assert Customer.objects.get(pk=1).name == 'Alan Turing'
         assert Calendar.objects.get(pk=1).date.strftime('%Y%m%d') == '20120401'
         assert Appointment.objects.get(pk=1).stuff == 'Machines'
@@ -91,7 +91,7 @@ class CreateAppointmentTest(TestCase):
                                      'calendar_id': self.calendar.pk  
                                      }, follow=True)
         assert response.status_code == 200
-        assert 'Undo' in response.content
+        assert 'Alan Turing' in response.content
         assert Customer.objects.get(pk=1).name == 'Alan Turing'
         assert Calendar.objects.get(pk=1).date.strftime('%Y%m%d') == '20120401'
         assert Appointment.objects.get(pk=1).stuff == 'Machines'
@@ -107,7 +107,7 @@ class CreateAppointmentTest(TestCase):
                                      'calendar_id': self.calendar.pk  
                                      }, follow=True)
         assert response.status_code == 200
-        assert 'Undo' in response.content
+        assert 'Godel' in response.content
         assert Customer.objects.get(pk=2).name == 'Godel'
         assert len(Calendar.objects.all()) == 1
         assert len(Customer.objects.all()) == 2
