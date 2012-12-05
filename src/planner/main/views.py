@@ -138,6 +138,7 @@ def chosen_date(request, date_iso):
     
     weight = int(request.POST['weight'])
     free_space = request.POST['free_space']
+    calendar = Calendar.objects.get(pk=free_space)
     
     appointmentForm = AppointmentForm()
     customerForm = CustomerForm()
@@ -147,6 +148,8 @@ def chosen_date(request, date_iso):
                                "title": "Appointment details",
                                "customerForm": customerForm,
                                "hiddenForm": hiddenForm,
+                               "date": calendar.date,
+                               "timeslot": calendar.timeslot,
                                 },
                                context_instance=RequestContext(request))
 

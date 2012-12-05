@@ -31,7 +31,7 @@
 <hr/>
 <form id="appointment" name="appointment" action="/main/app/create/" method="post" class="appointment">
     {% csrf_token %} 
-	
+	<b>Datum {{ date }} {{ timeslot }}</b>
 	{{ customerForm|as_bootstrap }}
 	
 	{{ appointmentForm|as_bootstrap }}
