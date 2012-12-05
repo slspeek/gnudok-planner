@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<div class="hero-unit">
+    <table class="table">
+    	
+    <tr>
+    {% for car in car_list %}
+    <th>{{ car }}</th>
+    {% endfor %}
+    </tr>	
+	{% for offset, label in range %}
+	<tr>
+		{% for car in car_list %}
+    <td>
+    	<a href="/main/week/{{ car.pk }}/{{offset}}/">{{ label }}</a>
+    	</td>
+    {% endfor %}
+	</tr>
+	
+	{% endfor %}
+    </table>
+    
+	</div>
+	
+{% endblock %}

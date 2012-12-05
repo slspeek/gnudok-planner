@@ -5,10 +5,11 @@ import datetime
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import user_passes_test
-from .models import Appointment, Calendar
+from .models import Appointment, Calendar, Car
 from .forms import CalendarSearchForm, CustomerForm, AppointmentForm,\
     HiddenForm, RegionChooseForm, DatePickForm
-from .schedule import get_free_entries, get_region
+from .schedule import get_free_entries, get_region, get_total_weight
+from django.views.generic.dates import WeekArchiveView
 
 
 def group_required(*group_names):
@@ -20,6 +21,44 @@ def group_required(*group_names):
         return False
     return user_passes_test(in_groups)
 
+
+
+class CalendarWeekArchiveView(WeekArchiveView):
+    queryset = Calendar.objects.all()
+    date_field = "date"
+    make_object_list = True
+    week_format = "%W"
+    allow_future = True
+    
+@group_required('Callcenter')
+def overview(request):
+    car_list = Car.objects.all()
+    return render_to_response("main/overview.html", 
+                              {"title": "Overview",
+                               "car_list": car_list,
+                               "range": [(-1, "Last week"),
+                                          (0, "This week"),
+                                          (1, "Next week")]})
+    
+    
+@group_required('Callcenter')
+def weekview(request, car_id=0 , offset=0, date_iso=""):
+    if not date_iso:
+        date_iso=tomorrow()
+    begin_date = get_date_from_iso(date_iso) + datetime.timedelta(weeks=int(offset))
+    end_date = begin_date + datetime.timedelta(weeks=1)
+    queryset = Calendar.objects.filter(car__pk=int(car_id))
+    calendars = queryset.filter(date__range=[begin_date, end_date]).all()
+    for cal in calendars:
+        app_list = cal.appointment_set.all()
+        free_count = 4 - get_total_weight(app_list)
+        cal.free = free_count
+        
+    car = Car.objects.get(pk=int(car_id))
+    return render_to_response("main/calendar_archive_week.html",
+                               {"object_list": calendars, "car":car})
+    
+    
 @group_required('Callcenter')
 def edit_appointment(request, appointment_id=0, date_iso=""):
     if not date_iso:
@@ -138,7 +177,6 @@ def chosen_date(request, date_iso):
     
     weight = int(request.POST['weight'])
     free_space = request.POST['free_space']
-    calendar = Calendar.objects.get(pk=free_space)
     
     appointmentForm = AppointmentForm()
     customerForm = CustomerForm()
@@ -148,8 +186,6 @@ def chosen_date(request, date_iso):
                                "title": "Appointment details",
                                "customerForm": customerForm,
                                "hiddenForm": hiddenForm,
-                               "date": calendar.date,
-                               "timeslot": calendar.timeslot,
                                 },
                                context_instance=RequestContext(request))
 
@@ -176,9 +212,8 @@ def list_date_chosen(request):
                               context_instance=RequestContext(request))
 
 @group_required('Callcenter')
-def render_appointment_list(request):
-    calendar_id = request.GET['calendar_id']
-    calendar = Calendar.objects.get(pk=calendar_id)
+def render_appointment_list(request, calendar_id):
+    calendar = Calendar.objects.get(pk=int(calendar_id))
     return render_to_response('appointment_list.html',
                                {"title": "Appointment list",
                                 'Car': calendar.car,

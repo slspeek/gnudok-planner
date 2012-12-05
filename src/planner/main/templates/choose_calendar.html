@@ -13,7 +13,7 @@
 	<tr>
 		<td>{{ calendar.date }}</td>
 		<td>
-			<a href="/main/list/appointments?calendar_id={{ calendar.id }}">
+			<a href="{% url planner.main.views.render_appointment_list calendar.pk %}">
 				{{ calendar.car }}
 			</a>
 		</td>
