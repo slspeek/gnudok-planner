@@ -1,6 +1,13 @@
 {% extends "base.html" %}
-
-
+{% load bootstrap_toolkit %}
+{% block extra_head %}
+    {{ form.media }}
+    <script>
+    $(function() {
+    	$("#id_username").focus();
+    });
+    </script>
+{% endblock %}
 {% block content %}
 
 {% if form.errors %}
@@ -11,16 +18,16 @@
 {% csrf_token %}
 <table>
 <tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
+    <td>{{ form.username.label_tag|as_bootstrap }}</td>
+    <td>{{ form.username|as_bootstrap  }}</td>
 </tr>
 <tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
+    <td>{{ form.password.label_tag|as_bootstrap }}</td>
+    <td>{{ form.password|as_bootstrap  }}</td>
 </tr>
 </table>
 
-<input type="submit" value="login" />
+<input type="submit" value="login" class="btn btn-primary"/>
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 

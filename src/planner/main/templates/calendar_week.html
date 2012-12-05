@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>Week for {{ car }}</h2>
+
+<table class="table table-condensed table-bordered">
+	<tr>
+		<th>Date</th>
+		<th>Time</th>
+		<th>Region</th>
+		<th>Free slots</th>
+		<th colspan="5"></th>
+	</tr>
+	{% for calendar in object_list %}
+	<tr class="info">
+		<td><a href="{% url planner.main.views.render_appointment_list calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
+		<td>{{ calendar.timeslot.begin }} - {{ calendar.timeslot.end }} </td>
+		<td>{{calendar.region}}</td>
+		<td>{{calendar.free}}</td>
+		<td colspan="6"></td>
+	</tr>
+	{% if calendar.appointment_set.all %}
+	<tr class="muted">
+		<th colspan="2">Name</th>
+		<th colspan="2">Address</th>
+		<th>Postalcode</th>
+		<th>Town</th>
+		<th>Weight</th>
+		<th>Stuff</th>
+		<th>Edit</th><th>Remove</th>
+	</tr>
+	{% endif %}
+	{% for appointment in calendar.appointment_set.all %}
+		<tr class="success">
+			<td colspan="2">{{ appointment.customer.name }}</td>
+			<td colspan="2">{{ appointment.customer.address }} {{ appointment.customer.number }} {{ appointment.customer.additions }}</td>
+			<td>{{ appointment.customer.postcode }}</td>
+			<td>{{ appointment.customer.town }}</td>
+			<td>{{ appointment.weight }}</td>
+			<td>{{ appointment.stuff|truncatechars:9 }}</td>
+			<td><a class="btn" href="{% url AppointmentEdit appointment_id=appointment.pk date_iso='' %}"><i class="icon-edit"></i></a></td>
+			<td><a class="btn" href="/admin/main/appointment/{{ appointment.id }}/delete"> <i class="icon-remove"></i></a></td>
+		</tr>
+	{% endfor %}
+	{% endfor %}
+</table>
+
+{% endblock %}

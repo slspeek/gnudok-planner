@@ -72,6 +72,7 @@ class Calendar(models.Model):
     
     class Meta:
         unique_together = (("date", "car", "timeslot"),)
+        ordering = ['date', 'timeslot__begin']
 
 
 class Appointment(models.Model):

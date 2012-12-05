@@ -263,6 +263,12 @@ class SeleniumTestCase(DjangoSeleniumTest):
             raise Exception()
         except  Exception:
             pass
+        driver.find_element_by_link_text("Overview").click()
+        self.sleep()
+        driver.get(self.live_server_url + "/main/week/1/0/20130101")
+        self.sleep()
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"1102AB")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         
     
 class EditTestCase(DjangoSeleniumTest):

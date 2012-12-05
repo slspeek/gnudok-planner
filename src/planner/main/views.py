@@ -9,7 +9,6 @@ from .models import Appointment, Calendar, Car
 from .forms import CalendarSearchForm, CustomerForm, AppointmentForm,\
     HiddenForm, RegionChooseForm, DatePickForm
 from .schedule import get_free_entries, get_region, get_total_weight, get_free_entries_with_extra_calendar
-from django.views.generic.dates import WeekArchiveView
 
 
 def group_required(*group_names):
@@ -22,23 +21,15 @@ def group_required(*group_names):
     return user_passes_test(in_groups)
 
 
-
-class CalendarWeekArchiveView(WeekArchiveView):
-    queryset = Calendar.objects.all()
-    date_field = "date"
-    make_object_list = True
-    week_format = "%W"
-    allow_future = True
-    
 @group_required('Callcenter')
 def overview(request):
     car_list = Car.objects.all()
     return render_to_response("main/overview.html", 
                               {"title": "Overview",
                                "car_list": car_list,
-                               "range": [(-1, "Last week"),
-                                          (0, "This week"),
-                                          (1, "Next week")]})
+                               "range": [("-1", "Last week"),
+                                          ("0", "This week"),
+                                          ("1", "Next week")]})
     
     
 @group_required('Callcenter')
@@ -53,9 +44,10 @@ def weekview(request, car_id=0 , offset=0, date_iso=""):
         app_list = cal.appointment_set.all()
         free_count = 4 - get_total_weight(app_list)
         cal.free = free_count
+        cal.region = get_region(cal)
         
     car = Car.objects.get(pk=int(car_id))
-    return render_to_response("main/calendar_archive_week.html",
+    return render_to_response("calendar_week.html",
                                {"object_list": calendars, "car":car})
     
     
@@ -97,8 +89,6 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
              "calendar_id": appointment.calendar.pk,
               },
              context_instance=RequestContext(request))
-            
-
         
 
 @group_required('Callcenter')
