@@ -82,6 +82,9 @@ class Appointment(models.Model):
     KIND_CHOICES = ( (1,"Delivery"),
                 (2,"Pick up"), )
     kind = models.IntegerField(choices=KIND_CHOICES, default=2)
+    STATUS_CHOICES = ( (1,"Normal"),
+                (2,"Deleted"), )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     CHOICES = ( (1,"Normal"),
                 (2,"Double"),
                 (3, "Tripel"),
