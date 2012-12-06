@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-06 07:10-0600\n"
+"POT-Creation-Date: 2012-12-06 08:01-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,3 +20,19 @@ msgstr ""
 #: views.py:29
 msgid "Overview"
 msgstr "Overzicht"
+
+#: views.py:31
+msgid "Last week"
+msgstr "Vorige week"
+
+#: views.py:32
+msgid "This week"
+msgstr "Deze week"
+
+#: views.py:33
+msgid "Next week"
+msgstr "Volgende week"
+
+#: views.py:68
+msgid "Edit or Move appointment"
+msgstr "Afspraak verplaatsen of aanpassen"

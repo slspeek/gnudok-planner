@@ -28,9 +28,9 @@ def overview(request):
     return render_to_response("main/overview.html", 
                               {"title": _("Overview"),
                                "car_list": car_list,
-                               "range": [("-1", "Last week"),
-                                          ("0", "This week"),
-                                          ("1", "Next week")]})
+                               "range": [("-1", _("Last week")),
+                                          ("0", _("This week")),
+                                          ("1", _("Next week"))]})
     
     
 @group_required('Callcenter')
@@ -65,7 +65,7 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
         customerForm = CustomerForm(instance=appointment.customer)
         return render_to_response('edit_appointment.html',
              {"appointmentForm": appointmentForm,
-             "title": "Edit or Move appointment",
+             "title": _("Edit or Move appointment"),
              "customerForm": customerForm,
              "free_space": free_space,
              "calendar_id": appointment.calendar.pk,
