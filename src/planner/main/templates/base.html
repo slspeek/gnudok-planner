@@ -1,4 +1,5 @@
 {% load bootstrap_toolkit %}
+{% load i18n %}
 <html>
 <head>
 <title>{% block title %}{% endblock %}</title>
@@ -13,21 +14,21 @@
       <div class="navbar-inner">
         <div class="container">
          
-          <a class="brand" href="/main/region">New appointment</a>
+          <a class="brand" href="/main/region">{% trans "New appointment" %}</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="">
-                <a href="/main/search">Search customer</a>
+                <a href="/main/search">{% trans "Find customer"  %}</a>
               </li>
               <li class="">
-                <a href="/main/overview">Overview</a>
+                <a href="/main/overview">{% trans "Overview" %}</a>
               </li>
               
               <li class="">
-                <a href="/main/list/choose">Display collect list</a>
+                <a href="/main/list/choose">{% trans "Display collect list" %}</a>
               </li>
               <li class="">
-                <a href="/admin">Admin</a>
+                <a href="/admin">{% trans "Admin" %}</a>
               </li>
             </ul>
           </div>
@@ -39,7 +40,7 @@
 {% endblock %}
 </div>
 <footer class="footer">
-     <div style="margin:auto">Copyleft 2012 written by Steven Speek and Jan Terheggen for GNUDok</div>
+     <div style="margin:auto">{% trans "Copyleft 2012 written by Steven Speek and Jan Terheggen for GNUDok" %}</div>
     </footer>
 </body>
 </html>

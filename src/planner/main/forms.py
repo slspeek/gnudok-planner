@@ -9,9 +9,10 @@ from bootstrap_toolkit.widgets import BootstrapDateInput
 from django.forms.models import ModelForm
 from .models import Appointment, Customer, Region
 from django.forms.forms import Form
+from django.utils.translation import ugettext_lazy as _
 
 class CalendarSearchForm(forms.Form):
-    name = forms.CharField(required=False)
+    name = forms.CharField(label=_('name'), required=False)
     #postcode = forms.CharField(required=False)
     #date = forms.DateField(required=False)
    
@@ -32,10 +33,10 @@ class HiddenForm(forms.Form):
     weight = forms.IntegerField(widget=forms.HiddenInput())
     
 class RegionChooseForm(Form):
-    region = forms.ModelChoiceField(queryset=Region.objects.all()) 
-    CHOICES = ( (1,"Normal"),
-                (2,"Double"),
-                (3, "Tripel"),
-                (4, "Entire half-day"),
+    region = forms.ModelChoiceField(label=_('region'), queryset=Region.objects.all()) 
+    CHOICES = ( (1,_("Normal")),
+                (2,_("Double")),
+                (3, _("Tripel")),
+                (4, _("Entire half-day")),
                  )
-    weight = forms.ChoiceField(choices=CHOICES, initial=1)
+    weight = forms.ChoiceField(label=_('weight'), choices=CHOICES, initial=1)

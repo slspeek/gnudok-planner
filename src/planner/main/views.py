@@ -84,7 +84,7 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
         else:
             return render_to_response('edit_appointment.html',
              {"appointmentForm": appointmentForm,
-             "title": "Edit or Move appointment",
+             "title": _("Edit or Move appointment"),
              "customerForm": customerForm,
              "free_space": free_space,
              "calendar_id": appointment.calendar.pk,
@@ -123,7 +123,7 @@ def create_appointment(request):
     hiddenForm = HiddenForm(request.POST)
     return render_to_response('appointment.html',
          {"appointmentForm": appointmentForm,
-         "title": "Appointment details",
+         "title": _("Appointment details"),
          "customerForm": customerForm,
          "hiddenForm": hiddenForm, },
          context_instance=RequestContext(request))
@@ -144,7 +144,7 @@ def chose_a_region(request, date_iso):
     if not request.POST:
         form = RegionChooseForm()
         return render_to_response('region.html',
-                                  {"form": form, "title": "Choose a region" },
+                                  {"form": form, "title": _("Choose a region") },
                                    context_instance=RequestContext(request))
     else:
         region_form = RegionChooseForm(request.POST)
@@ -154,7 +154,7 @@ def chose_a_region(request, date_iso):
             free_space = get_free_entries(get_date_from_iso(date_iso),
                                            14, region, weight)
         return render_to_response('choose_a_date.html',
-                                   { "title": "Choose a date",
+                                   { "title": _("Choose a date"),
                                      "free_space": free_space,
                                      "region_id": region.id,
                                      "weight": weight,
@@ -174,7 +174,7 @@ def chosen_date(request, date_iso):
     hiddenForm = HiddenForm({'weight': weight, 'calendar_id':free_space})
     return render_to_response('appointment.html',
                               {"appointmentForm": appointmentForm,
-                               "title": "Appointment details",
+                               "title": _("Appointment details"),
                                "customerForm": customerForm,
                                "hiddenForm": hiddenForm,
                                 },
@@ -184,7 +184,7 @@ def chosen_date(request, date_iso):
 def display_date_form(request):
     form = DatePickForm({"date": datetime.date.today() + datetime.timedelta(days=1) })
     return render_to_response('choose_appointment_list.html',
-                               {'title':'Pick a date',
+                               {'title': _('Pick a date'),
                                 'form': form },
                                 context_instance=RequestContext(request))
 
@@ -198,7 +198,7 @@ def list_date_chosen(request):
     else:
         cals =[]
     return render_to_response('choose_calendar.html',
-                              {"title": "Choose a region and timeslot",
+                              {"title": _("Choose a region and timeslot"),
                                'calendar_list':cals},
                               context_instance=RequestContext(request))
 
@@ -206,9 +206,9 @@ def list_date_chosen(request):
 def render_appointment_list(request, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
     return render_to_response('appointment_list.html',
-                               {"title": "Appointment list",
+                               {"title": _("Appointment list"),
                                 'Car': calendar.car,
-                                'date': calendar.date.strftime('%A %d %B %Y'),
+                                'date': calendar.date,
                                 'timeslot': calendar.timeslot,
                                 'app_list': calendar.appointment_set.all()
                                 })
@@ -226,7 +226,7 @@ def calendar_search_view(request):
     return render_to_response('calendar_search_view.html',
                               {"search_form": search_form,
                                "search_results": search_results,
-                               "title": "Customer search"},
+                               "title": _("Customer search")},
                               context_instance=RequestContext(request))
 
 

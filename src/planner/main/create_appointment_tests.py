@@ -67,7 +67,7 @@ class CreateAppointmentTest(TestCase):
                                     
                                      }, follow=True)
         assert response.status_code == 200
-        assert 'is required' in response.content
+        assert 'Dit veld is verplicht.' in response.content
         assert len(Calendar.objects.all()) == 1
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
@@ -131,7 +131,7 @@ class CreateAppointmentTest(TestCase):
                                      'calendar_id': self.calendar.pk  
                                      }, follow=True)
         assert response.status_code == 200
-        assert 'is required' in response.content
+        assert 'Dit veld is verplicht.' in response.content
         assert len(Calendar.objects.all()) == 1
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0

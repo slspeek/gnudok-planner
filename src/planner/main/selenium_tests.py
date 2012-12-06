@@ -4,8 +4,13 @@ from selenium.webdriver.support.ui import Select
 
 import time
 from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
+import os
 
+VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Zeeburg"
+OPHAALDAG = 'Ophaal lijst per dag'
+VRIJDAG_04JAN = "04 January : Vrijdag : 9 - 12 - Zeeburg"
 
+ 
 class DjangoSeleniumTest(LiveServerTestCase):
     """ Base class for the django selenium testing """
 
@@ -20,7 +25,8 @@ class DjangoSeleniumTest(LiveServerTestCase):
         cls.driver.quit()
         
     def sleep(self):
-        time.sleep(2)
+        amount = int(os.environ.get("TEST_PAUSE", failobj=2))
+        time.sleep(amount)
 
 
 class SeleniumTestCase(DjangoSeleniumTest):
@@ -46,7 +52,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_11JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -70,7 +76,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
-        driver.find_element_by_link_text("Display collect list").click()
+        driver.find_element_by_link_text("Ophaal lijst per dag").click()
         self.sleep()
         driver.find_element_by_id("id_date").clear()
         driver.find_element_by_id("id_date").send_keys("2013-01-04")
@@ -101,7 +107,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_11JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -123,7 +129,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
-        driver.find_element_by_link_text("Search customer").click()
+        driver.find_element_by_link_text("Afspraak zoeken").click()
         self.sleep()        
         driver.find_element_by_id("id_name").clear()
         driver.find_element_by_id("id_name").send_keys("frederik")
@@ -147,7 +153,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_11JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -174,7 +180,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_11JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -197,9 +203,9 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.get(self.live_server_url + "/main/region/20130101")
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_11JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
-        time.sleep(3)
+        self.sleep()
         driver.find_element_by_id("id_name").clear()
         driver.find_element_by_id("id_name").send_keys("Lidia van de Heuvel")
         driver.find_element_by_id("id_postcode").clear()
@@ -221,7 +227,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_11JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -241,7 +247,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Dozen met kleren")
-        driver.find_element_by_link_text("Display collect list").click()
+        driver.find_element_by_link_text(OPHAALDAG).click()
         self.sleep()
         driver.find_element_by_id("id_date").clear()
         driver.find_element_by_id("id_date").send_keys("2013-01-04")
@@ -263,21 +269,23 @@ class SeleniumTestCase(DjangoSeleniumTest):
             raise Exception()
         except  Exception:
             pass
-        driver.find_element_by_link_text("Overview").click()
+        driver.find_element_by_link_text("Overzicht").click()
         self.sleep()
         driver.get(self.live_server_url + "/main/week/1/0/20130101")
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"1102AB")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         
-    
+ 
+VR_11JAN="11 January : Vrijdag : 9 - 12 - Auto Zeeburg"
+   
 class EditTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     fixtures = ['test_data.json']
     
     def setUp(self):
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
-        self.timeslot = TimeSlotFactory(day_of_week=5,begin=9.0,end=12.5)
+        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
         self.car = CarFactory(name='Zeeburg')
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
     
@@ -294,7 +302,7 @@ class EditTestCase(DjangoSeleniumTest):
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_04JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -318,7 +326,7 @@ class EditTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         # Appointment has been saved
-        driver.find_element_by_link_text("Search customer").click()
+        driver.find_element_by_link_text("Afspraak zoeken").click()
         self.sleep()        
         driver.find_element_by_id("id_name").clear()
         driver.find_element_by_id("id_name").send_keys("frederik")
@@ -326,7 +334,7 @@ class EditTestCase(DjangoSeleniumTest):
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
-        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Jan. 4")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"4 januari")
         #driver.find_element_by_link_text("Edit").click()
         driver.get(self.live_server_url + "/main/app/edit/1/20130101")
         self.sleep()
@@ -341,13 +349,15 @@ class EditTestCase(DjangoSeleniumTest):
         driver.get(self.live_server_url + "/main/app/edit/1/20130101")
         self.sleep()
         #Select(driver.find_element_by_id("free_space")).select_by_visible_text("11 January : Friday :  9 - 12 - Zeeburg")
-        Select(driver.find_element_by_id("free_space")).select_by_visible_text("11 January : Friday : 9 - 12 - Zeeburg")
+        #Select(driver.find_element_by_id("free_space")).select_by_visible_text(VR_11JAN)
+        Select(driver.find_element_by_id("free_space")).select_by_visible_text("11 January : Vrijdag : 9 - 12 - Zeeburg")
+
         self.sleep()
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken, servies en magnetron")
-        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Jan. 11")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"11 januari")
     
     def test_edit_big_appointment(self):
         """ Makes one big appointment and edits that appointment."""
@@ -360,10 +370,10 @@ class EditTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("input[type=\"submit\"]").click()
         self.sleep()
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
-        Select(driver.find_element_by_id("id_weight")).select_by_visible_text("Entire half-day")
+        Select(driver.find_element_by_id("id_weight")).select_by_visible_text("Een dagdeel")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
-        Select(driver.find_element_by_name("free_space")).select_by_visible_text("11 January Friday : 9 - 12")
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_04JAN)
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_id("id_name").clear()
@@ -387,7 +397,7 @@ class EditTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         # Appointment has been saved
-        driver.find_element_by_link_text("Search customer").click()
+        driver.find_element_by_link_text("Afspraak zoeken").click()
         self.sleep()        
         driver.find_element_by_id("id_name").clear()
         driver.find_element_by_id("id_name").send_keys("frederik")
@@ -395,7 +405,7 @@ class EditTestCase(DjangoSeleniumTest):
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
-        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Jan. 4")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"4 januari")
         #driver.find_element_by_link_text("Edit").click()
         driver.get(self.live_server_url + "/main/app/edit/1/20130101")
         self.sleep()
@@ -410,11 +420,13 @@ class EditTestCase(DjangoSeleniumTest):
         driver.get(self.live_server_url + "/main/app/edit/1/20130101")
         self.sleep()
         #Select(driver.find_element_by_id("free_space")).select_by_visible_text("11 January : Friday :  9 - 12 - Zeeburg")
-        Select(driver.find_element_by_id("free_space")).select_by_visible_text("11 January : Friday : 9 - 12 - Zeeburg")
+#        Select(driver.find_element_by_id("free_space")).select_by_visible_text(VR_11JAN)
+        Select(driver.find_element_by_id("free_space")).select_by_visible_text("11 January : Vrijdag : 9 - 12 - Zeeburg")
+
         self.sleep()
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken, servies en magnetron")
-        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Jan. 11")  
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"11 januari")  
             

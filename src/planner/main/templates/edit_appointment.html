@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap_toolkit %}
+{% load i18n %}
 {% block title %}{{ title }}{% endblock %}
 {% block extra_head %}
 {{ customerForm.media }}
@@ -32,13 +33,13 @@
 <form id="appointment" name="appointment" action="" method="post" class="appointment">
 	<div style="dispaly:inline;" >
 		<div style="float:left; width:49%">
-			<table class="table table-condensed control-group">
 				{% csrf_token %}
-
+			<table class="table table-condensed control-group">
+				
 				{% for field in customerForm %}
 
 				{% if field.errors %}
-
+			<tr>	
 				<td >{{ field.label_tag }}<span class="text-error"> {{ field.errors }}</span></td>
 				<td>{{ field }}</td>
 
@@ -51,7 +52,7 @@
 				</tr>
 				{% endif %}
 
-				</tr>
+			
 				{% endfor %}
 			</table>
 		</div>
@@ -67,7 +68,7 @@
 				{% endfor %}
 
 				<tr>
-					<th colspan="2">Alternative dates</th>
+					<th colspan="2">{% trans "Alternative dates" %}</th>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -85,7 +86,7 @@
 		</div>
 	</div>
 	<button class="btn btn-primary" type="submit">
-		Save
+		{% trans "Save" %}
 	</button>
 </form>
 {% endblock %}

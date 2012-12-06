@@ -1,14 +1,9 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<script>
-	$(function() {
-		$('.errorlist').addClass('alert alert-error');
-	}); 
-</script>
-<h2>{{ title }}</h2>
+<h3>{{ title }}</h3>
 <hr/>
 <form id="calendar_search" name="calendar_search" action="" method="post">
 	{% csrf_token %}
@@ -16,7 +11,7 @@
 	{{ search_form.as_p }}
 
 	<button class="btn btn-success" type="submit">
-		Search
+		{% trans "Search" %}
 	</button>
 
 </form>
@@ -31,7 +26,7 @@
 		<span>{{ result.customer.number }} </span>
 		<span>{{ result.customer.town }} </span>
 		<span>{{ result.stuff }} </span>
-		<a href="{% url planner.main.views.edit_appointment appointment_id=result.pk date_iso='' %}">Edit</a>
+		<a href="{% url planner.main.views.edit_appointment appointment_id=result.pk date_iso='' %}">{% trans "Edit" %}</a>
 	</div>
 	{% endfor %}
 </div>

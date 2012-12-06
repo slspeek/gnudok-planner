@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap_toolkit %}
+{% load i18n %}
 {% block title %}{{ title }}{% endblock %}
 {% block extra_head %}
     {{ customerForm.media }}
@@ -27,7 +28,7 @@
 		-webkit-column-count: 2;
 	}
 </style>
-<h2>{{ title }}</h2>
+<h3>{{ title }}</h3>
 <hr/>
 <form id="appointment" name="appointment" action="/main/app/create/" method="post" class="appointment">
     {% csrf_token %} 
@@ -37,6 +38,6 @@
 	{{ appointmentForm|as_bootstrap }}
 	
 	{{ hiddenForm }}
-<button class="btn btn-primary" type="submit">Save</button>
+<button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
 </form>
 {% endblock %}

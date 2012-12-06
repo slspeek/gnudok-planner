@@ -1,74 +1,76 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 import datetime
 
 class Customer(models.Model):
     """ Representa a customer """
-    name = models.CharField(max_length=80)
-    postcode = models.CharField(max_length=14)
-    number = models.CharField(max_length=10)
-    additions = models.CharField(max_length=10, blank=True)
-    address = models.CharField(max_length=120)
-    town = models.CharField(max_length=120)
-    phone = models.CharField(max_length=30)
-    email = models.EmailField(max_length=120, blank=True)
+    name = models.CharField(_('name'), max_length=30, help_text=_("Customer name"), )
+    postcode = models.CharField(_('postalcode'), max_length=14)
+    number = models.CharField(_('number'), max_length=10)
+    additions = models.CharField(_('additions'), max_length=10, blank=True)
+    address = models.CharField(_('address'), max_length=120)
+    town = models.CharField(_('town'), max_length=120)
+    phone = models.CharField(_('phone'), max_length=30)
+    email = models.EmailField(_('email'), max_length=120, blank=True)
 
     def __str__(self):
         return self.name
 
 
 def weekDayName(dayNumber):
-    return ["Monday", "Tuesday",
-            "Wednesday", "Thursday",
-            "Friday"][dayNumber - 1]
+    return [_("Monday"), _("Tuesday"),
+            _("Wednesday"), _("Thursday"),
+            _("Friday")][dayNumber - 1]
 
 
 class TimeSlot(models.Model):
-    CHOICES = ( (1,"Monday"),
-                (2,"Tuesday"),
-                (3, "Wednesday"),
-                (4, "Thursday"),
-                (5,"Friday") )
+    CHOICES = ( (1,_("Monday")),
+                (2,_("Tuesday")),
+                (3, _("Wednesday")),
+                (4, _("Thursday")),
+                (5,_("Friday") ))
     day_of_week = models.IntegerField(choices=CHOICES)
     begin = models.FloatField()
     end = models.FloatField()
 
     def __str__(self):
-        return "%s :  %d - %d" % (weekDayName(self.day_of_week), self.begin, self.end)
+        return u"%s :  %d - %d" % (weekDayName(self.day_of_week), self.begin, self.end)
 
 
 class Region(models.Model):
-    name = models.CharField(max_length=120, unique=True)
-    description = models.TextField()
+    name = models.CharField(_('name'), max_length=120, unique=True)
+    description = models.TextField(_('description'))
 
     def __str__(self):
         return self.name
 
 
 class Car(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(_('name'), max_length=20)
     
     def __str__(self):
         return self.name
 
 
 class Rule(models.Model):
-    car = models.ForeignKey(Car)
-    timeslot = models.ForeignKey(TimeSlot)
-    region = models.ForeignKey(Region)
-    active = models.BooleanField(default=True)
+    car = models.ForeignKey(Car, verbose_name=_('car'))
+    timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
+    region = models.ForeignKey(Region, verbose_name=_('region'))
+    active = models.BooleanField(default=True, verbose_name=_('active'))
     
     def __str__(self):
-        return "(%s, %s, %s)" % (str(self.car), str(self.timeslot), str(self.region))
+        return u"(%s, %s, %s)" % (str(self.car), str(self.timeslot), str(self.region))
     
 
 class Calendar(models.Model):
-    date = models.DateField()
-    car = models.ForeignKey(Car)
-    timeslot = models.ForeignKey(TimeSlot)
+    date = models.DateField(_('date'))
+    car = models.ForeignKey(Car, verbose_name=_('car'))
+    timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
+ 
 
     def __str__(self):
-        return "(%s %s %s)" % (str(self.date), self.car, self.timeslot)
+        return u"(%s %s %s)" % (str(self.date), self.car, self.timeslot)
     
     class Meta:
         unique_together = (("date", "car", "timeslot"),)
@@ -76,24 +78,24 @@ class Calendar(models.Model):
 
 
 class Appointment(models.Model):
-    calendar = models.ForeignKey(Calendar)
-    customer = models.ForeignKey(Customer)
-    employee = models.ForeignKey(User)
-    KIND_CHOICES = ( (1,"Delivery"),
-                (2,"Pick up"), )
-    kind = models.IntegerField(choices=KIND_CHOICES, default=2)
-    STATUS_CHOICES = ( (1,"Normal"),
-                (2,"Deleted"), )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
-    CHOICES = ( (1,"Normal"),
-                (2,"Double"),
-                (3, "Tripel"),
-                (4, "Entire half-day"),
+    calendar = models.ForeignKey(Calendar, verbose_name=_('calendar'))
+    customer = models.ForeignKey(Customer, verbose_name=_('customer'))
+    employee = models.ForeignKey(User, verbose_name=_('employee'))
+    KIND_CHOICES = ( (1,_("Delivery")),
+                (2,_("Pick up")), )
+    kind = models.IntegerField(_('kind'), choices=KIND_CHOICES, default=2)
+    STATUS_CHOICES = ( (1,_("Normal")),
+                (2,_("Deleted")), )
+    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=1)
+    CHOICES = ( (1,_("Normal")),
+                (2,_("Double")),
+                (3, _("Tripel")),
+                (4, _("Entire half-day")),
                  )
-    weight = models.IntegerField(choices=CHOICES, default=1)
-    stuff = models.TextField()
-    notes = models.TextField(blank=True)
-    created = models.DateTimeField(default=lambda:datetime.datetime.now())
+    weight = models.IntegerField(_('weight'), choices=CHOICES, default=1)
+    stuff = models.TextField(_('stuff'))
+    notes = models.TextField(_('notes'), blank=True)
+    created = models.DateTimeField(_("created"), default=lambda:datetime.datetime.now())
 
     def __str__(self):
         return self.customer.name + ", " + self.stuff

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2>{{ title }}</h2>
+<h3>{{ title }}</h3>
 <hr/>
 <table class="table">
 <tr>
-	<th>Date</th><th>Car</th><th>Timeslot</th>
+	<th>{% trans "Date" %}</th><th>{% trans "Car" %}</th><th>{% trans "Timeslot" %}</th>
 </tr>
 {% for calendar in calendar_list %}
 	<tr>

@@ -80,7 +80,7 @@ def entry(date, rule):
     timeslot_id = rule.timeslot.pk
     car_id = rule.car.pk
     calendar = get_or_create_calendar(timeslot_id, car_id, date)
-    return (calendar.pk, "%s: %s - %s" % (date.strftime('%d %B '), str(rule.timeslot), str(rule.car)))
+    return (calendar.pk, u"%s: %s - %s" % (date.strftime('%d %B '), str(rule.timeslot), str(rule.car)))
     
 def get_or_create_calendar(timeslot_id, car_id, date):
     """ Return exiting calendar object for this triplet or creates one 

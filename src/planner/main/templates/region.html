@@ -1,21 +1,26 @@
 {% extends "base.html" %}
 {% load bootstrap_toolkit %}
+{% load i18n %}
 {% block extra_head %}
-    {{ form.media }}
-    <script>
-    $(function() {
-    	$("#id_region").focus();
-    });
-    </script>
+{{ form.media }}
+<script>
+	$(function() {
+		$("#id_region").focus();
+	}); 
+</script>
 {% endblock %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2>{{ title }}</h2>
+<h3>{{ title }}</h3>
 <hr/>
 <form id="region" name="region" action="" method="post">
-    {% csrf_token %} 
+	{% csrf_token %}
 	{{ form|as_bootstrap }}
-<button class="btn btn-primary" type="submit">Next</button>
+	<p>
+		<button class="btn btn-primary" type="submit">
+			{% trans "Next" %}
+		</button>
+	</p>
 </form>
 {% endblock %}

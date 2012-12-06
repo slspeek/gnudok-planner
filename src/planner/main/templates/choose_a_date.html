@@ -4,7 +4,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2>{{ title }}</h2>
+<h3>{{ title }}</h3>
 <hr/>
 <form id="date" name="date" action="/main/date_chosen/{{ date_iso }}" method="post">
 {% csrf_token %} 

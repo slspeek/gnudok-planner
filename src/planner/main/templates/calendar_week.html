@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2>Week for {{ car }}</h2>
+<h3>{% trans "Week for" %} {{ car }}</h3>
 
 <table class="table table-condensed table-bordered">
 	<tr>
-		<th>Date</th>
-		<th>Time</th>
-		<th>Region</th>
-		<th>Free slots</th>
+		<th>{% trans "Date" %}</th>
+		<th>{% trans "Time" %}</th>
+		<th>{% trans "Region" %}</th>
+		<th>{% trans "Free slots" %}</th>
 		<th colspan="5"></th>
 	</tr>
 	{% for calendar in object_list %}
@@ -23,13 +23,14 @@
 	</tr>
 	{% if calendar.appointment_set.all %}
 	<tr class="muted">
-		<th colspan="2">Name</th>
-		<th colspan="2">Address</th>
-		<th>Postalcode</th>
-		<th>Town</th>
-		<th>Weight</th>
-		<th>Stuff</th>
-		<th>Edit</th><th>Remove</th>
+		<th colspan="2">{% trans "Name" %}</th>
+		<th colspan="2">{% trans "Address" %}</th>
+		<th>{% trans "Postalcode" %}</th>
+		<th>{% trans "Town" %}</th>
+		<th>{% trans "Weight" %}</th>
+		<th>{% trans "Stuff" %}</th>
+		<th>{% trans "Edit" %}</th>
+		<th>{% trans "Remove" %}</th>
 	</tr>
 	{% endif %}
 	{% for appointment in calendar.appointment_set.all %}
