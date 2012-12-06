@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import logging
 import datetime
 from django.shortcuts import render_to_response, redirect
+from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import user_passes_test
 from .models import Appointment, Calendar, Car
@@ -25,7 +26,7 @@ def group_required(*group_names):
 def overview(request):
     car_list = Car.objects.all()
     return render_to_response("main/overview.html", 
-                              {"title": "Overview",
+                              {"title": _("Overview"),
                                "car_list": car_list,
                                "range": [("-1", "Last week"),
                                           ("0", "This week"),

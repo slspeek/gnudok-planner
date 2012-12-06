@@ -14,8 +14,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djangoplanner',             
-        'USER': 'root',                      
-        'PASSWORD': 'root',                  
+        'USER': 'djangoplanner',                      
+        'PASSWORD': 'djangoplanner',                  
         'HOST': '',
         'PORT': '',
     }
@@ -32,7 +32,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nl-NL'
 
 SITE_ID = 1
 
