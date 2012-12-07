@@ -6,6 +6,7 @@ from django.conf.urls import patterns, url
 from .views import create_appointment, chosen_date, display_date_form,\
     render_appointment_list, list_date_chosen, chose_a_region,\
     calendar_search_view, edit_appointment, weekview, overview
+    
 urlpatterns = patterns('',
     url(r'^app/detail/(?P<pk>\d+)$', DetailView.as_view(model=Appointment), name='AppointmentView'),
     (r'^app/create/', create_appointment),

@@ -406,6 +406,26 @@
             "password": "pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=", 
             "email": "", 
             "date_joined": "2012-11-12T09:05:07"
-        }
-    }
+     		}
+     }, 
+     {
+        "pk": 3, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "alien", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": true, 
+            "last_login": "2012-11-21T06:01:50", 
+            "groups": [
+                2
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=", 
+            "email": "", 
+            "date_joined": "2012-11-12T09:05:07"
+      	}
+   	 }
 ]

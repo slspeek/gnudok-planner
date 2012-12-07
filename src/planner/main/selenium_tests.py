@@ -26,7 +26,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
         cls.driver.quit()
         
     def sleep(self):
-        amount = int(os.environ.get("TEST_PAUSE", failobj=2))
+        amount = float(os.environ.get("TEST_PAUSE", failobj=2))
         time.sleep(amount)
 
 @attr('selenium') 
@@ -431,4 +431,67 @@ class EditTestCase(DjangoSeleniumTest):
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken, servies en magnetron")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"11 januari")  
+            
+
+@attr('selenium', 'viewers')
+class ViewersTestCase(DjangoSeleniumTest):
+    """ Planner selenium test """
+    fixtures = ['test_data.json']
+    
+    def setUp(self):
+        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
+        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
+        self.car = CarFactory(name='Zeeburg')
+        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+    
+    def test_view_one_appointment(self):
+        """ Makes one appointment and edits that appointment."""
+        driver = self.driver
+        driver.get(self.live_server_url + "/accounts/login/?next=/main/region/20130101")
+        driver.find_element_by_id("id_username").clear()
+        driver.find_element_by_id("id_username").send_keys("steven")
+        driver.find_element_by_id("id_password").clear()
+        driver.find_element_by_id("id_password").send_keys("jansteven")
+        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        self.sleep()
+        Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
+        driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        self.sleep()
+        Select(driver.find_element_by_name("free_space")).select_by_visible_text(VRIJDAG_04JAN)
+        driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        self.sleep()
+        driver.find_element_by_id("id_name").clear()
+        driver.find_element_by_id("id_name").send_keys("Frederik Jansen")
+        driver.find_element_by_id("id_postcode").clear()
+        driver.find_element_by_id("id_postcode").send_keys("1102AB")
+        driver.find_element_by_id("id_address").clear()
+        driver.find_element_by_id("id_address").send_keys("Bijlmerdreef")
+        driver.find_element_by_id("id_town").clear()
+        driver.find_element_by_id("id_town").send_keys("Amsterdam-Zuidoost")
+        driver.find_element_by_id("id_number").clear()
+        driver.find_element_by_id("id_number").send_keys("144")
+        driver.find_element_by_id("id_additions").clear()
+        driver.find_element_by_id("id_additions").send_keys("sous")
+        driver.find_element_by_id("id_phone").clear()
+        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_stuff").clear()
+        driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
+        driver.find_element_by_id("id_notes").clear()
+        driver.find_element_by_id("id_notes").send_keys("Lift aanwezig")
+        driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        self.sleep()
+        # Appointment has been saved
+        driver.get(self.live_server_url + "/accounts/logout/")
+        driver.find_element_by_id("id_username").clear()
+        driver.find_element_by_id("id_username").send_keys("alien")
+        driver.find_element_by_id("id_password").clear()
+        driver.find_element_by_id("id_password").send_keys("jansteven")
+        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        self.sleep()
+        driver.get(self.live_server_url + "/main/week/1/0/20130101")
+        driver.find_element_by_link_text("Vrijdag 4 jan").click()
+        self.sleep()
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Bed, boeken en servies")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"4 januari")
             
