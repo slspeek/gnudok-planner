@@ -22,7 +22,7 @@ def group_required(*group_names):
     return user_passes_test(in_groups)
 
 
-@group_required('Callcenter')
+@group_required('Viewers')
 def overview(request):
     car_list = Car.objects.all()
     return render_to_response("main/overview.html", 
@@ -33,7 +33,7 @@ def overview(request):
                                           ("1", _("Next week"))]})
     
     
-@group_required('Callcenter')
+@group_required('Viewers')
 def weekview(request, car_id=0 , offset=0, date_iso=""):
     if not date_iso:
         date_iso=tomorrow()
@@ -180,7 +180,7 @@ def chosen_date(request, date_iso):
                                 },
                                context_instance=RequestContext(request))
 
-@group_required('Callcenter')
+@group_required('Viewers')
 def display_date_form(request):
     form = DatePickForm({"date": datetime.date.today() + datetime.timedelta(days=1) })
     return render_to_response('choose_appointment_list.html',
@@ -189,7 +189,7 @@ def display_date_form(request):
                                 context_instance=RequestContext(request))
 
 
-@group_required('Callcenter')
+@group_required('Viewers')
 def list_date_chosen(request):
     form = DatePickForm(request.POST)
     if form.is_valid():
@@ -202,7 +202,7 @@ def list_date_chosen(request):
                                'calendar_list':cals},
                               context_instance=RequestContext(request))
 
-@group_required('Callcenter')
+@group_required('Viewers')
 def render_appointment_list(request, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
     return render_to_response('appointment_list.html',
@@ -213,7 +213,7 @@ def render_appointment_list(request, calendar_id):
                                 'app_list': calendar.appointment_set.all()
                                 })
 
-@group_required('Callcenter')
+@group_required('Viewers')
 def calendar_search_view(request):
     search_results = []
     if not request.POST:
