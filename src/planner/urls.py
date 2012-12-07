@@ -15,6 +15,6 @@ urlpatterns = patterns('',
     (r'^accounts/login/$', login),
     (r'^main/', include(urls)),
     (r'^pc/', include(postalcode_urls)),
-    url(r'^$', RedirectView.as_view(url='main/region')),
+    url(r'^$', RedirectView.as_view(url='main/overview')),
 )
 urlpatterns += staticfiles_urlpatterns()
