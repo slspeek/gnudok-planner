@@ -356,18 +356,20 @@
         "fields": {
             "name": "Callcenter", 
             "permissions": [
-                34, 
-                35, 
-                36, 
-                37, 
-                38, 
-                39, 
-                25, 
-                26, 
-                27
+               
             ]
         }
-    }, 
+    },
+    {
+        "pk": 2, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Viewers", 
+            "permissions": [
+                
+            ]
+        }
+    },  
     {
         "pk": 1, 
         "model": "auth.user", 
@@ -398,7 +400,7 @@
             "is_staff": true, 
             "last_login": "2012-11-21T06:01:50", 
             "groups": [
-                1
+                1,2
             ], 
             "user_permissions": [], 
             "password": "pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=", 

@@ -5,7 +5,7 @@ import datetime
 
 class Customer(models.Model):
     """ Representa a customer """
-    name = models.CharField(_('name'), max_length=30, help_text=_("Customer name"), )
+    name = models.CharField(_('name'), max_length=30)
     postcode = models.CharField(_('postalcode'), max_length=14)
     number = models.CharField(_('number'), max_length=10)
     additions = models.CharField(_('additions'), max_length=10, blank=True)
@@ -16,6 +16,9 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        unique_together = (("postcode", "number", "additions"),)
 
 
 def weekDayName(dayNumber):
