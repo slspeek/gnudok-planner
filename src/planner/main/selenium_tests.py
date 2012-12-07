@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import Select
 import time
 from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
 import os
+from nose.plugins.attrib import attr
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
@@ -28,7 +29,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
         amount = int(os.environ.get("TEST_PAUSE", failobj=2))
         time.sleep(amount)
 
-
+@attr('selenium') 
 class SeleniumTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     fixtures = ['test_data.json']
@@ -279,6 +280,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
  
 VR_11JAN="11 January : Vrijdag : 9 - 12 - Auto Zeeburg"
    
+@attr('selenium')
 class EditTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     fixtures = ['test_data.json']

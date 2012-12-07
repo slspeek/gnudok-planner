@@ -9,6 +9,7 @@ import datetime
 from django.contrib.auth.models import User
 import factory
 from django.test.testcases import TestCase
+from nose.plugins.attrib import attr
 
 
 class CarFactory(factory.Factory):
@@ -76,7 +77,7 @@ class AppointmentFactory(factory.Factory):
     notes = "Bring boxes"
     created = datetime.datetime.now()
 
-
+@attr('functional')
 class GetOrCreateCalendar(TestCase):
 
     def setUp(self):
@@ -93,8 +94,8 @@ class GetOrCreateCalendar(TestCase):
         self.assertEqual(1, len(Calendar.objects.all()))
         assert result == self.calendar
         
-    
         
+@attr('functional')       
 class TestRulesForRegion(TestCase):
 
     def setUp(self):
@@ -115,13 +116,14 @@ class TestRulesForRegion(TestCase):
         self.assertEqual(0, len(result))
 
 
-
+@attr('unit')
 class TestIsoDate(TestCase):
 
     def test_from_iso_date(self):
         self.assertEqual(datetime.date(2012, 10, 2), get_date_from_iso('20121002'))
 
 
+@attr('functional')
 class CalendarNoDoublesTest(TestCase):
     
     def test_no_doubles(self):

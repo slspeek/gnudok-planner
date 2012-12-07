@@ -8,7 +8,9 @@ from .models import Calendar, Appointment, Customer
 from django.test.testcases import TestCase
 import datetime
 from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
+from nose.plugins.attrib import attr
 
+@attr('functional')
 class CreateAppointmentTest(TestCase):
     """ tests view.create_appointment """
     
