@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 10:17-0600\n"
+"POT-Creation-Date: 2012-12-07 15:59-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,191 +17,197 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:15 models.py:8 models.py:45 models.py:53
+#: forms.py:15 models.py:56 models.py:94 models.py:102
 msgid "name"
 msgstr "naam"
 
-#: forms.py:36 models.py:62
+#: forms.py:36 models.py:111
 msgid "region"
 msgstr "regio"
 
-#: forms.py:37 models.py:90 models.py:93
+#: forms.py:37 models.py:139 models.py:142
 msgid "Normal"
 msgstr "Normaal"
 
-#: forms.py:38 models.py:94
+#: forms.py:38 models.py:143
 msgid "Double"
 msgstr "Dubbel"
 
-#: forms.py:39 models.py:95
+#: forms.py:39 models.py:144
 msgid "Tripel"
 msgstr "Driedubbel"
 
-#: forms.py:40 models.py:96
+#: forms.py:40 models.py:145
 msgid "Entire half-day"
 msgstr "Een dagdeel"
 
-#: forms.py:42 models.py:98
+#: forms.py:42 models.py:147
 msgid "weight"
 msgstr "grootte"
 
-#: models.py:9
+#: models.py:21
+#, fuzzy
+msgid "Enter a valid phone number"
+msgstr "Nederlands telefoonnummer"
+
+#: models.py:42
+#, fuzzy
+msgid "Phone number"
+msgstr "Nederlands telefoonnummer"
+
+#: models.py:57
 msgid "postalcode"
 msgstr "Postcode"
 
-#: models.py:10
+#: models.py:58
 msgid "number"
 msgstr "huisnummer"
 
-#: models.py:11
+#: models.py:59
 msgid "additions"
 msgstr "toevoegingen"
 
-#: models.py:12
+#: models.py:60
 msgid "address"
 msgstr "adres"
 
-#: models.py:13
+#: models.py:61
 msgid "town"
 msgstr "plaats"
 
-#: models.py:14
-msgid "phone"
-msgstr "telefoon"
-
-#: models.py:15
+#: models.py:64
 msgid "email"
 msgstr "email"
 
-#: models.py:25 models.py:31
+#: models.py:74 models.py:80
 msgid "Monday"
 msgstr "Maandag"
 
-#: models.py:25 models.py:32
+#: models.py:74 models.py:81
 msgid "Tuesday"
 msgstr "Dinsdag"
 
-#: models.py:26 models.py:33
+#: models.py:75 models.py:82
 msgid "Wednesday"
 msgstr "Woensdag"
 
-#: models.py:26 models.py:34
+#: models.py:75 models.py:83
 msgid "Thursday"
 msgstr "Donderdag"
 
-#: models.py:27 models.py:35
+#: models.py:76 models.py:84
 msgid "Friday"
 msgstr "Vrijdag"
 
-#: models.py:46
+#: models.py:95
 msgid "description"
 msgstr "beschrijving"
 
-#: models.py:60 models.py:71
+#: models.py:109 models.py:120
 msgid "car"
 msgstr "auto"
 
-#: models.py:61 models.py:72
+#: models.py:110 models.py:121
 msgid "timeslot"
 msgstr "tijdslot"
 
-#: models.py:63
+#: models.py:112
 msgid "active"
 msgstr "actief"
 
-#: models.py:70
+#: models.py:119
 msgid "date"
 msgstr "datum"
 
-#: models.py:84
+#: models.py:133
 msgid "calendar"
 msgstr "kalender"
 
-#: models.py:85
+#: models.py:134
 msgid "customer"
 msgstr "klant"
 
-#: models.py:86
+#: models.py:135
 msgid "employee"
 msgstr "werknemer"
 
-#: models.py:87
+#: models.py:136
 msgid "Delivery"
 msgstr "Bezorg"
 
-#: models.py:88
+#: models.py:137
 msgid "Pick up"
 msgstr "Ophaal"
 
-#: models.py:89
+#: models.py:138
 msgid "kind"
 msgstr "soort"
 
-#: models.py:91
+#: models.py:140
 msgid "Deleted"
 msgstr "Verwijderd"
 
-#: models.py:92
+#: models.py:141
 msgid "status"
 msgstr "status"
 
-#: models.py:99
+#: models.py:148
 msgid "stuff"
 msgstr "spullen"
 
-#: models.py:100
+#: models.py:149
 msgid "notes"
 msgstr "Extra"
 
-#: models.py:101
+#: models.py:150
 msgid "created"
 msgstr "gemaakt"
 
-#: views.py:29 templates/base.html:24
+#: views.py:33 templates/base.html:24
 msgid "Overview"
 msgstr "Overzicht"
 
-#: views.py:31
+#: views.py:35
 msgid "Last week"
 msgstr "Vorige week"
 
-#: views.py:32
+#: views.py:36
 msgid "This week"
 msgstr "Deze week"
 
-#: views.py:33
+#: views.py:37
 msgid "Next week"
 msgstr "Volgende week"
 
-#: views.py:68 views.py:87
+#: views.py:75 views.py:94
 msgid "Edit or Move appointment"
 msgstr "Afspraak verplaatsen of aanpassen"
 
-#: views.py:126 views.py:177
+#: views.py:133 views.py:184
 msgid "Appointment details"
 msgstr "Afspraak details"
 
-#: views.py:147
+#: views.py:154
 msgid "Choose a region"
 msgstr "Kies een regio"
 
-#: views.py:157
+#: views.py:164
 msgid "Choose a date"
 msgstr "Kies een datum"
 
-#: views.py:187
+#: views.py:194
 msgid "Pick a date"
 msgstr "Kies een datum"
 
-#: views.py:201
+#: views.py:208
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: views.py:209
+#: views.py:216
 msgid "Appointment list"
 msgstr "Afspraken lijst"
 
-#: views.py:229
+#: views.py:236
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 
@@ -268,7 +274,11 @@ msgstr "Ophaal lijst per dag"
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/base.html:43
+#: templates/base.html:34
+msgid "Log out"
+msgstr "Afmelden"
+
+#: templates/base.html:46
 msgid "Copyleft 2012 written by Steven Speek and Jan Terheggen for GNUDok"
 msgstr ""
 "Copyleft 2012 geschreven door Steven Speek en Jan Terheggen voor GNUDok"
@@ -279,7 +289,11 @@ msgstr "Zoeken"
 
 #: templates/calendar_week.html:6
 msgid "Week for"
-msgstr "Week van nu voor"
+msgstr "Weekoverzicht:"
+
+#: templates/calendar_week.html:6
+msgid "to"
+msgstr "tot"
 
 #: templates/calendar_week.html:10 templates/choose_calendar.html:10
 msgid "Date"
@@ -313,6 +327,10 @@ msgstr "Grootte"
 msgid "Next"
 msgstr "Verder"
 
+#: templates/choose_appointment_list.html:16
+msgid "Go"
+msgstr "OK"
+
 #: templates/choose_calendar.html:10
 msgid "Car"
 msgstr "Auto"
@@ -341,6 +359,9 @@ msgstr ""
 #: templates/registration/login.html:31
 msgid "Login"
 msgstr "Aanmelden"
+
+#~ msgid "phone"
+#~ msgstr "telefoon"
 
 #~ msgid "Customer name"
 #~ msgstr "Klant naam"

@@ -53,7 +53,10 @@ def weekview(request, car_id=0 , offset=0, date_iso=""):
         
     car = Car.objects.get(pk=int(car_id))
     return render_to_response("calendar_week.html",
-                               {"object_list": calendars, "car":car})
+                               {"object_list": calendars,
+                                "from": begin_date,
+                                "to": end_date,
+                                "car":car})
     
     
 @group_required('Callcenter')
@@ -63,7 +66,7 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
 
     appointment = Appointment.objects.get(pk=int(appointment_id))
     region = get_region(appointment.calendar)
-    free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 14,region, appointment.weight,appointment.calendar)
+    free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 28,region, appointment.weight,appointment.calendar)
     if not request.POST:
         appointmentForm = AppointmentForm(instance=appointment)
         customerForm = CustomerForm(instance=appointment.customer)
@@ -156,7 +159,7 @@ def chose_a_region(request, date_iso):
             region = region_form.cleaned_data['region']
             weight = int(region_form.cleaned_data['weight'])
             free_space = get_free_entries(get_date_from_iso(date_iso),
-                                           14, region, weight)
+                                           28, region, weight)
         return render_to_response('choose_a_date.html',
                                    { "title": _("Choose a date"),
                                      "free_space": free_space,

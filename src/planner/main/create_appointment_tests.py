@@ -39,7 +39,7 @@ class CreateAppointmentTest(TestCase):
                                      'number': 42,
                                      'address': 'Townstreet 123',
                                      'town': 'London',
-                                     'phone': '06-123456789',
+                                     'phone': '06-12345678',
                                      'stuff': 'Machines',
                                      'weight': 1,
                                      'calendar_id': self.calendar.pk 
@@ -62,7 +62,7 @@ class CreateAppointmentTest(TestCase):
                                      'number': 42,
                                      'address': 'Townstreet 123',
                                      'town': 'London',
-                                     'phone': '06-123456789',
+                                     'phone': '06-12345678',
                                      'stuff': 'Machines',
                                      'weight': 1,
                                      'calendar_id': self.calendar.pk 
@@ -87,7 +87,7 @@ class CreateAppointmentTest(TestCase):
                                      'number': 42,
                                      'address': 'Townstreet 123',
                                      'town': 'London',
-                                     'phone': '06-123456789',
+                                     'phone': '06-12345678',
                                      'stuff': 'Machines',
                                      'weight': 1,
                                      'calendar_id': self.calendar.pk  
@@ -103,7 +103,7 @@ class CreateAppointmentTest(TestCase):
                                      'number': 41,
                                      'address': 'Townstreet 121',
                                      'town': 'London',
-                                     'phone': '06-123456789',
+                                     'phone': '06-12345678',
                                      'stuff': 'Machines',
                                      'weight': 1,
                                      'calendar_id': self.calendar.pk  
@@ -128,7 +128,7 @@ class CreateAppointmentTest(TestCase):
                                      'number': 42,
                                      'address': 'Townstreet 123',
                                      'town': 'London',
-                                     'phone': '06-123456789',
+                                     'phone': '06-12345678',
                                      'weight': 1,
                                      'calendar_id': self.calendar.pk  
                                      }, follow=True)

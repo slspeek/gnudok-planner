@@ -1,7 +1,55 @@
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
 import datetime
+from django.db import models
+from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
+from django.db.models.fields import CharField
+from django.core.validators import EMPTY_VALUES
+from django.forms import ValidationError
+from django.utils.encoding import smart_unicode
+import re
+from django import forms
+
+pc_re = re.compile('^\d{4}[A-Z]{2}$')
+sofi_re = re.compile('^\d{9}$')
+numeric_re = re.compile('^\d+$')
+
+class NLPhoneNumberField(forms.CharField):
+    """
+    A Dutch telephone number field.
+    """
+    default_error_messages = {
+        'invalid': _('Enter a valid phone number'),
+    }
+
+    def clean(self, value):
+        super(NLPhoneNumberField, self).clean(value)
+        if value in EMPTY_VALUES:
+            return u''
+
+        phone_nr = re.sub('[\-\s\(\)]', '', smart_unicode(value))
+
+        if len(phone_nr) == 10 and numeric_re.search(phone_nr):
+            return value
+
+        if phone_nr[:3] == '+31' and len(phone_nr) == 12 and \
+           numeric_re.search(phone_nr[3:]):
+            return value
+
+        raise ValidationError(self.error_messages['invalid'])
+
+class PhoneNumberField(CharField):
+
+    description = _("Phone number")
+
+    def __init__(self, *args, **kwargs):
+        kwargs['max_length'] = 20
+        super(PhoneNumberField, self).__init__(*args, **kwargs)
+
+    def formfield(self, **kwargs):
+        defaults = {'form_class': NLPhoneNumberField}
+        defaults.update(kwargs)
+        return super(PhoneNumberField, self).formfield(**defaults)
+
 
 class Customer(models.Model):
     """ Representa a customer """
@@ -11,7 +59,8 @@ class Customer(models.Model):
     additions = models.CharField(_('additions'), max_length=10, blank=True)
     address = models.CharField(_('address'), max_length=120)
     town = models.CharField(_('town'), max_length=120)
-    phone = models.CharField(_('phone'), max_length=30)
+    #phone = models.CharField(_('phone'), max_length=20, form_class=nl_forms.NLPhoneNumberField)
+    phone = PhoneNumberField()
     email = models.EmailField(_('email'), max_length=120, blank=True)
 
     def __str__(self):

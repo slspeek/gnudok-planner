@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h3>{% trans "Week for" %} {{ car }}</h3>
+<h3>{% trans "Week for" %} {{ car }} {{ from|date:"l j M" }} {% trans "to" %} {{ to|date:"l j M o" }} </h3>
 
 <table class="table table-condensed table-bordered">
 	<tr>

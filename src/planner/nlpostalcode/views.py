@@ -1,11 +1,11 @@
-# Create your views here.
+""" Views fro dutch postalcodes """
 from __future__ import absolute_import
 from .models import Street
 from django.http import HttpResponse
 from django.utils import simplejson
-import logging
 
 def get_info_on_postalcode(request, postalcode):
+    """ Returns street and town for a complete postalcode """
     pc_code = int(postalcode[0:4])
     pc_chars = postalcode[4:6]    
     streets  = Street.objects.filter(postcode__fourpp=pc_code).filter(chars=pc_chars)

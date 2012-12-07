@@ -29,7 +29,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
         amount = float(os.environ.get("TEST_PAUSE", failobj=2))
         time.sleep(amount)
 
-@attr('selenium') 
+@attr('selenium', 'big') 
 class SeleniumTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     fixtures = ['test_data.json']
@@ -40,6 +40,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.car = CarFactory(name='Zeeburg')
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
 
+    @attr('make_one')
     def test_make_one_appointment(self):
         """ Makes one appointment and verifies that the details are shown in the listing for that car """
         driver = self.driver
@@ -69,7 +70,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_additions").clear()
         driver.find_element_by_id("id_additions").send_keys("sous")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_phone").send_keys("020-7123456")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
         driver.find_element_by_id("id_notes").clear()
@@ -80,8 +81,8 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_link_text("Ophaal lijst per dag").click()
         self.sleep()
         driver.find_element_by_id("id_date").clear()
-        driver.find_element_by_id("id_date").send_keys("2013-01-04")
-        self.sleep()
+        driver.find_element_by_id("id_date").send_keys("04-01-2013 ")
+        driver.find_element_by_id("title").click()
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_link_text("Zeeburg").click()
@@ -92,7 +93,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Lift aanwezig")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"144")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"sous")
-        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"020-123456")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"020-7123456")
         
         
     def test_search_appointment(self):
@@ -122,7 +123,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_number").clear()
         driver.find_element_by_id("id_number").send_keys("144")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_phone").send_keys("020-7123456")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
         driver.find_element_by_id("id_notes").clear()
@@ -169,7 +170,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_number").clear()
         driver.find_element_by_id("id_number").send_keys("144")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_phone").send_keys("020-7123456")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
         driver.find_element_by_id("id_notes").clear()
@@ -195,7 +196,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_number").clear()
         driver.find_element_by_id("id_number").send_keys("21")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-654321")
+        driver.find_element_by_id("id_phone").send_keys("020-7654321")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Speelgoed en ikea meubel")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
@@ -218,7 +219,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_number").clear()
         driver.find_element_by_id("id_number").send_keys("17")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-654321")
+        driver.find_element_by_id("id_phone").send_keys("020-7654321")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Speelgoed, kastjes en bank")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
@@ -242,7 +243,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_number").clear()
         driver.find_element_by_id("id_number").send_keys("17")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-654321")
+        driver.find_element_by_id("id_phone").send_keys("020-7654321")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Dozen met kleren")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
@@ -251,7 +252,8 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_link_text(OPHAALDAG).click()
         self.sleep()
         driver.find_element_by_id("id_date").clear()
-        driver.find_element_by_id("id_date").send_keys("2013-01-04")
+        driver.find_element_by_id("id_date").send_keys("04-01-2013 ")
+        driver.find_element_by_id("title").click()
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         driver.find_element_by_link_text("Zeeburg").click()
@@ -261,7 +263,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"1102AB")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Lift aanwezig")
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"144")
-        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"020-123456")
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"020-7123456")
         driver.get(self.live_server_url + "/main/region/20130101")
         Select(driver.find_element_by_id("id_region")).select_by_visible_text("Zuid-Oost")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
@@ -280,7 +282,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
  
 VR_11JAN="11 January : Vrijdag : 9 - 12 - Auto Zeeburg"
    
-@attr('selenium')
+@attr('selenium', 'edit')
 class EditTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     fixtures = ['test_data.json']
@@ -320,7 +322,7 @@ class EditTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_additions").clear()
         driver.find_element_by_id("id_additions").send_keys("sous")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_phone").send_keys("020-7123456")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
         driver.find_element_by_id("id_notes").clear()
@@ -391,7 +393,7 @@ class EditTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_additions").clear()
         driver.find_element_by_id("id_additions").send_keys("sous")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_phone").send_keys("020-7123456")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
         driver.find_element_by_id("id_notes").clear()
@@ -412,8 +414,10 @@ class EditTestCase(DjangoSeleniumTest):
         driver.get(self.live_server_url + "/main/app/edit/1/20130101")
         self.sleep()
         driver.find_element_by_id("id_stuff").clear()
-        driver.find_element_by_id("id_stuff").send_keys("Bed, boeken, servies en magnetron")
         self.sleep()
+        driver.find_element_by_css_selector("button.btn.btn-primary").click()
+        self.sleep()
+        driver.find_element_by_id("id_stuff").send_keys("Bed, boeken, servies en magnetron")
         driver.find_element_by_css_selector("button.btn.btn-primary").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")
@@ -473,7 +477,7 @@ class ViewersTestCase(DjangoSeleniumTest):
         driver.find_element_by_id("id_additions").clear()
         driver.find_element_by_id("id_additions").send_keys("sous")
         driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-123456")
+        driver.find_element_by_id("id_phone").send_keys("020-7123456")
         driver.find_element_by_id("id_stuff").clear()
         driver.find_element_by_id("id_stuff").send_keys("Bed, boeken en servies")
         driver.find_element_by_id("id_notes").clear()
