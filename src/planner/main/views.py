@@ -10,6 +10,7 @@ from .models import Appointment, Calendar, Car
 from .forms import CalendarSearchForm, CustomerForm, AppointmentForm,\
     HiddenForm, RegionChooseForm, DatePickForm
 from .schedule import get_free_entries, get_region, get_total_weight, get_free_entries_with_extra_calendar
+from django.contrib.auth.views import logout
 
 
 def group_required(*group_names):
@@ -21,6 +22,9 @@ def group_required(*group_names):
         return False
     return user_passes_test(in_groups)
 
+def logout_view(request):
+    logout(request)
+    return redirect('Overview')
 
 @group_required('Viewers')
 def overview(request):
