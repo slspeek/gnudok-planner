@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 15:59-0600\n"
+"POT-Creation-Date: 2012-12-09 13:24-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,14 +46,12 @@ msgid "weight"
 msgstr "grootte"
 
 #: models.py:21
-#, fuzzy
 msgid "Enter a valid phone number"
-msgstr "Nederlands telefoonnummer"
+msgstr "Voer een 9-cijferig telefoonnummer in"
 
 #: models.py:42
-#, fuzzy
 msgid "Phone number"
-msgstr "Nederlands telefoonnummer"
+msgstr "Telefoonnummer"
 
 #: models.py:57
 msgid "postalcode"
@@ -135,7 +133,7 @@ msgstr "werknemer"
 msgid "Delivery"
 msgstr "Bezorg"
 
-#: models.py:137
+#: models.py:137 templates/appointment_list.html:6
 msgid "Pick up"
 msgstr "Ophaal"
 
@@ -163,98 +161,98 @@ msgstr "Extra"
 msgid "created"
 msgstr "gemaakt"
 
-#: views.py:33 templates/base.html:24
+#: viewers_views.py:17 templates/base.html:24
 msgid "Overview"
 msgstr "Overzicht"
 
-#: views.py:35
+#: viewers_views.py:19
 msgid "Last week"
 msgstr "Vorige week"
 
-#: views.py:36
+#: viewers_views.py:20
 msgid "This week"
 msgstr "Deze week"
 
-#: views.py:37
+#: viewers_views.py:21
 msgid "Next week"
 msgstr "Volgende week"
 
-#: views.py:75 views.py:94
-msgid "Edit or Move appointment"
-msgstr "Afspraak verplaatsen of aanpassen"
-
-#: views.py:133 views.py:184
-msgid "Appointment details"
-msgstr "Afspraak details"
-
-#: views.py:154
-msgid "Choose a region"
-msgstr "Kies een regio"
-
-#: views.py:164
-msgid "Choose a date"
-msgstr "Kies een datum"
-
-#: views.py:194
+#: viewers_views.py:50
 msgid "Pick a date"
 msgstr "Kies een datum"
 
-#: views.py:208
+#: viewers_views.py:64
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: views.py:216
+#: viewers_views.py:72
 msgid "Appointment list"
 msgstr "Afspraken lijst"
 
-#: views.py:236
+#: viewers_views.py:92
 msgid "Customer search"
 msgstr "Afspraak zoeken"
+
+#: views.py:30 views.py:49
+msgid "Edit or Move appointment"
+msgstr "Afspraak verplaatsen of aanpassen"
+
+#: views.py:88 views.py:131
+msgid "Appointment details"
+msgstr "Afspraak details"
+
+#: views.py:101
+msgid "Choose a region"
+msgstr "Kies een regio"
+
+#: views.py:111
+msgid "Choose a date"
+msgstr "Kies een datum"
 
 #: templates/appointment.html:41 templates/edit_appointment.html:89
 msgid "Save"
 msgstr "Opslaan"
 
-#: templates/appointment_list.html:13 templates/calendar_week.html:26
-#: templates/main/appointment_detail.html:13
+#: templates/appointment_list.html:10 templates/calendar_week.html:26
+#: templates/main/appointment_detail.html:14
 msgid "Name"
 msgstr "Naam"
 
-#: templates/appointment_list.html:13 templates/calendar_week.html:27
-#: templates/main/appointment_detail.html:14
+#: templates/appointment_list.html:10 templates/calendar_week.html:27
+#: templates/main/appointment_detail.html:15
 msgid "Address"
 msgstr "Adres"
 
-#: templates/appointment_list.html:13
-#: templates/main/appointment_detail.html:15
+#: templates/appointment_list.html:10
+#: templates/main/appointment_detail.html:16
 msgid "Postal code"
 msgstr "Postcode"
 
-#: templates/appointment_list.html:13
-#: templates/main/appointment_detail.html:16
+#: templates/appointment_list.html:10
+#: templates/main/appointment_detail.html:17
 msgid "City"
 msgstr "Plaats"
 
-#: templates/appointment_list.html:14
-#: templates/main/appointment_detail.html:17
+#: templates/appointment_list.html:11
+#: templates/main/appointment_detail.html:18
 msgid "Phone"
 msgstr "Telefoon"
 
-#: templates/appointment_list.html:14 templates/calendar_week.html:31
-#: templates/main/appointment_detail.html:18
+#: templates/appointment_list.html:11 templates/calendar_week.html:31
+#: templates/main/appointment_detail.html:19
 msgid "Stuff"
 msgstr "Spullen"
 
-#: templates/appointment_list.html:14
+#: templates/appointment_list.html:11
 msgid "Notes"
 msgstr "Extra"
 
-#: templates/appointment_list.html:14 templates/calendar_search_view.html:29
+#: templates/appointment_list.html:11 templates/calendar_search_view.html:29
 #: templates/calendar_week.html:32
 msgid "Edit"
 msgstr "Bewerken"
 
-#: templates/appointment_list.html:14 templates/calendar_week.html:33
+#: templates/appointment_list.html:11 templates/calendar_week.html:33
 msgid "Remove"
 msgstr "Verwijderen"
 
@@ -278,7 +276,7 @@ msgstr "Admin"
 msgid "Log out"
 msgstr "Afmelden"
 
-#: templates/base.html:46
+#: templates/base.html:47
 msgid "Copyleft 2012 written by Steven Speek and Jan Terheggen for GNUDok"
 msgstr ""
 "Copyleft 2012 geschreven door Steven Speek en Jan Terheggen voor GNUDok"
@@ -347,16 +345,20 @@ msgstr "Andere data"
 msgid "Viewing saved appointment"
 msgstr "Gemaakte afspraak"
 
-#: templates/main/appointment_detail.html:10
+#: templates/main/appointment_detail.html:11
 msgid "Appointment to check in at"
 msgstr "Afspraak om langs te komen op"
 
-#: templates/registration/login.html:15
+#: templates/registration/login.html:13
+msgid "Planner login"
+msgstr "Planner login"
+
+#: templates/registration/login.html:16
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Uw gebruikersnaam en wachtwoord kwamen niet overeen. Probeert u het opnieuw."
 
-#: templates/registration/login.html:31
+#: templates/registration/login.html:32
 msgid "Login"
 msgstr "Aanmelden"
 

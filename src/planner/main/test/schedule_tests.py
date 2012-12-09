@@ -6,7 +6,7 @@ Created on 29 nov. 2012
 from __future__ import absolute_import
 from planner.main.schedule import *
 from django.test.testcases import TestCase
-from planner.main.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
+from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
 
 @attr('functional')

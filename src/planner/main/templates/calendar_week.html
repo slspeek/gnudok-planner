@@ -3,8 +3,8 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h3>{% trans "Week for" %} {{ car }} {{ from|date:"l j M" }} {% trans "to" %} {{ to|date:"l j M o" }} </h3>
-
+<h2>{% trans "Week for" %} {{ car }} {{ from|date:"l j M" }} {% trans "to" %} {{ to|date:"l j M o" }} </h2>
+<hr/>
 <table class="table table-condensed table-bordered">
 	<tr>
 		<th>{% trans "Date" %}</th>
@@ -15,7 +15,7 @@
 	</tr>
 	{% for calendar in object_list %}
 	<tr class="info">
-		<td><a href="{% url planner.main.views.render_appointment_list calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
+		<td><a href="{% url planner.main.viewers_views.render_appointment_list calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
 		<td>{{ calendar.timeslot.begin }} - {{ calendar.timeslot.end }} </td>
 		<td>{{calendar.region}}</td>
 		<td>{{calendar.free}}</td>

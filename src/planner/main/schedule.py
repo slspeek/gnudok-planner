@@ -15,6 +15,7 @@ def get_region(calendar):
     return rule.region
 
 def get_total_weight(appointment_list):
+    """ Returns the total weigth of the appointments is the given list """
     weight = 0
     for app in appointment_list:
         weight += app.weight

@@ -4,10 +4,10 @@ Test for the function that saves the Customer, Appointment and Calendar objects.
 from __future__ import absolute_import
 from django.test.client import Client
 
-from .models import Calendar, Appointment, Customer
+from planner.main.models import Calendar, Appointment, Customer
 from django.test.testcases import TestCase
 import datetime
-from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
+from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 from nose.plugins.attrib import attr
 
 @attr('functional')
@@ -26,14 +26,14 @@ class CreateAppointmentTest(TestCase):
         self.date = datetime.date(year=2012,month=04,day=01) 
         self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
 
-
+    @attr('fullsubmit')
     def testFullSubmit(self):
         """ tests a successfull submit """
         assert len(Calendar.objects.all()) == 1
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
         self.client.login(username='steven', password='jansteven')
-        response = self.client.post("/main/app/create/",
+        response = self.client.post("/main/app/create/%s/%d" % (self.calendar.pk, 1),
                                     {'name': 'Alan Turing',
                                      'postcode': '1051XB',
                                      'number': 42,
@@ -56,7 +56,7 @@ class CreateAppointmentTest(TestCase):
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
         self.client.login(username='steven', password='jansteven')
-        response = self.client.post("/main/app/create/",
+        response = self.client.post("/main/app/create/%s/%d" % (self.calendar.pk, 1),
                                     {
                                      'postcode': '1051XB',
                                      'number': 42,
@@ -81,7 +81,7 @@ class CreateAppointmentTest(TestCase):
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
         self.client.login(username='steven', password='jansteven')
-        response = self.client.post("/main/app/create/",
+        response = self.client.post("/main/app/create/%s/%d" % (self.calendar.pk, 1),
                                     {'name': 'Alan Turing',
                                      'postcode': '1051XB',
                                      'number': 42,
@@ -97,7 +97,7 @@ class CreateAppointmentTest(TestCase):
         assert Customer.objects.get(pk=1).name == 'Alan Turing'
         assert Calendar.objects.get(pk=1).date.strftime('%Y%m%d') == '20120401'
         assert Appointment.objects.get(pk=1).stuff == 'Machines'
-        response = self.client.post("/main/app/create/",
+        response = self.client.post("/main/app/create/%s/%d" % (self.calendar.pk, 1),
                                     {'name': 'Godel',
                                      'postcode': '1011XB',
                                      'number': 41,
@@ -122,7 +122,7 @@ class CreateAppointmentTest(TestCase):
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
         self.client.login(username='steven', password='jansteven')
-        response = self.client.post("/main/app/create/",
+        response = self.client.post("/main/app/create/%s/%d" % (self.calendar.pk, 1),
                                     {'name': 'Alan Turing',
                                      'postcode': '1051XB',
                                      'number': 42,
@@ -137,9 +137,3 @@ class CreateAppointmentTest(TestCase):
         assert len(Calendar.objects.all()) == 1
         assert len(Appointment.objects.all()) == 0
         assert len(Customer.objects.all()) == 0
-    
-    def testGet(self):
-        """ tests get raises Exception """ 
-        self.client.login(username='steven', password='jansteven')
-        self.assertRaises(Exception, lambda:self.client.get("/main/app/create/")) 
-        

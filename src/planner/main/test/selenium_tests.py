@@ -1,9 +1,10 @@
+from __future__ import absolute_import
 from django.test import LiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
 
 import time
-from .tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
+from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
 import os
 from nose.plugins.attrib import attr
 
@@ -493,6 +494,7 @@ class ViewersTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("input[type=\"submit\"]").click()
         self.sleep()
         driver.get(self.live_server_url + "/main/week/1/0/20130101")
+        self.sleep()
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
         self.sleep()
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"Frederik Jansen")

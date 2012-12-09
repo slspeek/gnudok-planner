@@ -8,9 +8,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h3 id="title">{{ title }}</h3>
+<h2 id="title">{{ title }}</h2>
 <hr/>
-<form method='post' action="/main/list/date_chosen/" >
+<form method='post' action="" >
 	 {% csrf_token %} 
 	{{ form|as_bootstrap }}
 	<button class="btn btn-primary" type="submit">{% trans "Go" %}</button>

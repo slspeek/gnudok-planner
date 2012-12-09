@@ -3,12 +3,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h3>{{ date|date:"l j E o" }}</h3>
+<h2>{% trans "Pick up" %} {{ car.name }} {{ date|date:"l j E o" }} {{ timeslot.begin }} - {{ timeslot.end }}</h2>
 <hr/>
-<table class="table">
-	<tr>
-		<th>{{ car.name }}</th><th>{{ timeslot }}</th>
-	</tr>
+<table class="table table-bordered">
 	<tr>
 		<th>{% trans "Name" %}</th><th>{% trans "Address" %}</th><th>{% trans "Postal code" %}</th><th>{% trans "City" %}</th>
 		<th>{% trans "Phone" %}</th><th>{% trans "Stuff" %}</th><th>{% trans "Notes" %}</th><th>{% trans "Edit" %}</th><th>{% trans "Remove" %}</th>
