@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'bootstrap_toolkit',
     'planner.main',
     'planner.nlpostalcode',
+    'south'
     
 )
 
