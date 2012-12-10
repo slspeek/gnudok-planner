@@ -10,7 +10,56 @@ import datetime
 from django.contrib.auth.models import User
 from django.test.testcases import TestCase
 from nose.plugins.attrib import attr
+from django.test.client import Client
+import logging
 
+
+@attr('functional', 'cancel')
+class CancelAppointmentTest(TestCase):
+    """ tests view.create_appointment """
+    
+    fixtures = ['test_data.json']
+        
+    def setUp(self):
+        """ sets up a Django test client """
+        self.client = Client()
+        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
+        self.timeslot = TimeSlotFactory(day_of_week=5,begin=9.0,end=12.5)
+        self.car = CarFactory(name='Zeeburg')
+        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+        self.date = datetime.date(year=2012,month=04,day=01) 
+        self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
+        self.customer = CustomerFactory(name='Alan Turing',
+                                        postcode='1051XB',
+                                        number=42,
+                                        address='Town street',
+                                        town='London',
+                                        phone='06-12345678')
+        self.appointment = AppointmentFactory(calendar=self.calendar,
+                                              customer=self.customer,
+                                              stuff='Machines')
+
+    @attr('fullsubmit')
+    def testCancelAppointment(self):
+        """ Cancel an appointment """
+        assert len(Calendar.objects.all()) == 1
+        assert len(Appointment.objects.all()) == 1
+        assert len(Customer.objects.all()) == 1
+        self.client.login(username='steven', password='jansteven')
+        response = self.client.get("/main/app/cancel/%d" % (self.appointment.pk),
+                                    {}, follow=True)
+        assert response.status_code == 200
+        assert 'Alan Turing' in response.content
+        response = self.client.post("/main/app/cancel/%d" % (self.appointment.pk),
+                                    follow=True)
+        assert response.status_code == 200
+        appointment = Appointment.objects.get(pk=self.appointment.pk)
+        logging.error(appointment.status)
+        assert 2 == appointment.status
+        
+        
+        
+    
 @attr('functional')
 class GetOrCreateCalendar(TestCase):
 

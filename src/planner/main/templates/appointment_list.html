@@ -16,7 +16,7 @@
 		<td>{{ app.customer.postcode }}</td><td>{{ app.customer.town }}</td>
 		<td>{{ app.customer.phone }}</td><td>{{ app.stuff }}</td><td>{{ app.notes }}</td>
 		<td><a href="{% url AppointmentEdit appointment_id=app.pk date_iso='' %}"><i class="icon-edit"></i></a></td>
-		<td><a href="/admin/main/appointment/{{ app.id }}/delete"> <i class="icon-remove"></i></a></td>
+		<td><a href="{% url CancelAppointment app.id %}"> <i class="icon-remove"></i></a></td>
 	</tr>
 	{% endfor %}
 

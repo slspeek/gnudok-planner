@@ -15,6 +15,20 @@ def logout_view(request):
     return redirect('Overview')
 
 @group_required('Callcenter')
+def cancel_appointment(request, appointment_id):
+    appointment = Appointment.objects.get(pk=int(appointment_id))
+    if not request.method == 'POST':
+        return render_to_response('appointment_cancel.html',
+                                  {'object': appointment},
+                                  context_instance=RequestContext(request)
+                                  )
+    else:
+        appointment.status = 2
+        appointment.save()
+        return redirect('Overview')
+        
+
+@group_required('Callcenter')
 def edit_appointment(request, appointment_id=0, date_iso=""):
     if not date_iso:
         date_iso=tomorrow()

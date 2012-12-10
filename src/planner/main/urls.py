@@ -5,7 +5,7 @@ from .models import Appointment
 from django.conf.urls import patterns, url
 from .views import create_appointment, choose_a_date,\
     chose_a_region,\
-    edit_appointment
+    edit_appointment, cancel_appointment
 from .viewers_views import display_date_form,\
     render_appointment_list, choose_calendar, \
     calendar_search_view, weekview, overview
@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     (r'^list/choose', display_date_form),
     (r'^list/date_chosen/(?P<date_string>\d{8})', choose_calendar),
     (r'^list/appointments/(?P<calendar_id>\d+)', render_appointment_list),
+    url(r'^app/cancel/(?P<appointment_id>\d+)', cancel_appointment, name="CancelAppointment"),
     url(r'^overview$', overview, name='Overview'),
     (r'^region/(?P<date_iso>\d{0,8})', chose_a_region),
     (r'^search/', calendar_search_view),

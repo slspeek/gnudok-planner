@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2>{% trans "Viewing saved appointment" %}</h2>
+<h2>{% trans "Do you want to cancel appointment" %}</h2>
 <hr/>
 <div class="container">
 	<table class="table">
@@ -25,7 +25,11 @@
 			<td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
 		</tr>
 	</table>
-	<p><a class="btn" href="{% url CancelAppointment object.id %}"><i class="icon-remove"></i></a>
-	<a class="btn" href="{% url AppointmentEdit appointment_id=object.pk date_iso='' %}"><i class="icon-edit"></i></a></p>
+	<form action="" method="post">
+		{% csrf_token %}
+		<button class="btn" type="submit">{% trans "Yes" %}</button>
+		<a class="btn" href="{% url Overview %}">{% trans "No" %}</a>
+	</form>
+	
 </div>
 {% endblock %}

@@ -30,7 +30,7 @@ def weekview(request, car_id=0 , offset=0, date_iso=""):
     queryset = Calendar.objects.filter(car__pk=int(car_id))
     calendars = queryset.filter(date__range=[begin_date, end_date]).all()
     for cal in calendars:
-        app_list = cal.appointment_set.all()
+        app_list = filter(lambda x:x.status == 1, cal.appointment_set.all())
         free_count = 4 - get_total_weight(app_list)
         cal.free = free_count
         cal.region = get_region(cal)
@@ -75,7 +75,7 @@ def render_appointment_list(request, calendar_id):
                                 'Car': calendar.car,
                                 'date': calendar.date,
                                 'timeslot': calendar.timeslot,
-                                'app_list': calendar.appointment_set.all()
+                                'app_list': filter(lambda x:x.status == 1,calendar.appointment_set.all())
                                 })
 
 @group_required('Viewers')
@@ -86,7 +86,7 @@ def calendar_search_view(request):
     else:
         search_form = CalendarSearchForm(request.POST)
         if search_form.is_valid():
-            search_results = Appointment.objects.filter(customer__name__icontains=search_form.cleaned_data['name'])
+            search_results = Appointment.objects.filter(customer__name__icontains=search_form.cleaned_data['name'], status=1)
     logging.error("No of search results %d" % len(search_results) )
     return render_to_response('calendar_search_view.html',
                               {"search_form": search_form,
