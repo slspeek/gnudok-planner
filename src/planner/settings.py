@@ -118,11 +118,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django_jenkins',
-    'django_nose',
     'bootstrap_toolkit',
     'planner.main',
     'planner.nlpostalcode',
-    'south'
+    'south',
+    'django_nose',
     
 )
 

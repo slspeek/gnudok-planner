@@ -24,10 +24,10 @@ class CancelAppointmentTest(TestCase):
         """ sets up a Django test client """
         self.client = Client()
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
-        self.timeslot = TimeSlotFactory(day_of_week=5,begin=9.0,end=12.5)
+        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
         self.car = CarFactory(name='Zeeburg')
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
-        self.date = datetime.date(year=2012,month=04,day=01) 
+        self.date = datetime.date(year=2012, month=04, day=01) 
         self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
         self.customer = CustomerFactory(name='Alan Turing',
                                         postcode='1051XB',
@@ -40,7 +40,7 @@ class CancelAppointmentTest(TestCase):
                                               stuff='Machines')
 
     @attr('fullsubmit')
-    def testCancelAppointment(self):
+    def test_cancel_appointment(self):
         """ Cancel an appointment """
         assert len(Calendar.objects.all()) == 1
         assert len(Appointment.objects.all()) == 1
@@ -56,6 +56,13 @@ class CancelAppointmentTest(TestCase):
         appointment = Appointment.objects.get(pk=self.appointment.pk)
         logging.error(appointment.status)
         assert 2 == appointment.status
+        assert not Appointment.actives.exists()
+        
+    def test_cancel_appointment_in_calendar(self):
+        self.assertEquals(len(self.calendar.active_appoinments().all()), 1)
+        self.appointment.status = Appointment.CANCELLED
+        self.appointment.save()
+        self.assertEquals(len(self.calendar.active_appoinments().all()), 0)
         
         
         
@@ -68,12 +75,12 @@ class GetOrCreateCalendar(TestCase):
         self.timeslot = TimeSlotFactory()
         self.region = RegionFactory()
         self.car = CarFactory()
-        self.rule = RuleFactory(car=self.car,region=self.region,timeslot=self.timeslot)
+        self.rule = RuleFactory(car=self.car, region=self.region, timeslot=self.timeslot)
         self.date = datetime.date(2012, 10, 29)
         self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
 
     def test_one_filled(self):
-        result = get_or_create_calendar(self.timeslot.pk,self.car.pk,  self.date)
+        result = get_or_create_calendar(self.timeslot.pk, self.car.pk, self.date)
         self.assertEqual(1, len(Calendar.objects.all()))
         assert result == self.calendar
         
@@ -86,7 +93,7 @@ class TestRulesForRegion(TestCase):
         self.timeslot = TimeSlotFactory()
         self.region = RegionFactory()
         self.car = CarFactory()
-        self.rule = RuleFactory(car=self.car,region=self.region,timeslot=self.timeslot)
+        self.rule = RuleFactory(car=self.car, region=self.region, timeslot=self.timeslot)
 
     def test_one_filled(self):
         self.date = datetime.date(2012, 10, 29)
@@ -112,7 +119,7 @@ class CalendarNoDoublesTest(TestCase):
     def test_no_doubles(self):
         rule = RuleFactory()
         def create_calendar():
-            CalendarFactory.create( timeslot=rule.timeslot, car=rule.car)
+            CalendarFactory.create(timeslot=rule.timeslot, car=rule.car)
         create_calendar()
-        self.assertRaises(Exception,create_calendar)
+        self.assertRaises(Exception, create_calendar)
         assert len(Calendar.objects.all()) == 1

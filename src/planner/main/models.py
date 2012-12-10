@@ -119,6 +119,9 @@ class Calendar(models.Model):
     date = models.DateField(_('date'))
     car = models.ForeignKey(Car, verbose_name=_('car'))
     timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
+    
+    def active_appoinments(self):
+        return Appointment.actives.filter(calendar=self)
  
 
     def __str__(self):
@@ -128,17 +131,29 @@ class Calendar(models.Model):
         unique_together = (("date", "car", "timeslot"),)
         ordering = ['date', 'timeslot__begin']
 
+class ActiveManager(models.Manager):
+    use_for_related_fields = True
+    
+    def get_query_set(self):
+        return super(ActiveManager, self).get_query_set().filter(status=self.model.NORMAL)
+    
+        
 
 class Appointment(models.Model):
+    objects = models.Manager()
+    actives = ActiveManager()
+    
     calendar = models.ForeignKey(Calendar, verbose_name=_('calendar'))
     customer = models.ForeignKey(Customer, verbose_name=_('customer'))
     employee = models.ForeignKey(User, verbose_name=_('employee'))
     KIND_CHOICES = ( (1,_("Delivery")),
                 (2,_("Pick up")), )
     kind = models.IntegerField(_('kind'), choices=KIND_CHOICES, default=2)
+    NORMAL = 1
+    CANCELLED = 2
     STATUS_CHOICES = ( (1,_("Normal")),
-                (2,_("Deleted")), )
-    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=1)
+                (2,_("Cancelled")), )
+    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=NORMAL)
     CHOICES = ( (1,_("Normal")),
                 (2,_("Double")),
                 (3, _("Tripel")),
@@ -148,6 +163,7 @@ class Appointment(models.Model):
     stuff = models.TextField(_('stuff'))
     notes = models.TextField(_('notes'), blank=True)
     created = models.DateTimeField(_("created"), default=lambda:datetime.datetime.now())
+
 
     def __str__(self):
         return self.customer.name + ", " + self.stuff
