@@ -17,7 +17,7 @@
 	<tr class="info">
 		<td><a href="{% url planner.main.viewers_views.render_appointment_list calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
 		<td>{{ calendar.timeslot.begin }} - {{ calendar.timeslot.end }} </td>
-		<td>{{calendar.region}}</td>
+		<td>{{calendar.region.name}}</td>
 		<td>{{calendar.free}}</td>
 		<td colspan="6"></td>
 	</tr>
