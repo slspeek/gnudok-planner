@@ -95,7 +95,7 @@ class Region(models.Model):
     description = models.TextField(_('description'))
 
     def __str__(self):
-        return self.name
+        return "%s: %s" % (self.name, self.description)
 
 
 class Car(models.Model):
