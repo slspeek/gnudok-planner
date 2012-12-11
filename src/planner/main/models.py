@@ -50,6 +50,8 @@ class PhoneNumberField(CharField):
         defaults.update(kwargs)
         return super(PhoneNumberField, self).formfield(**defaults)
 
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^planner.main\.models\.PhoneNumberField"])
 
 class Customer(models.Model):
     """ Representa a customer """
