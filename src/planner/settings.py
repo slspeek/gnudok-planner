@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'bootstrap_toolkit',
     'planner.main',
     'planner.nlpostalcode',
+    'planner.area',
     'south',
     'django_nose',
     
@@ -129,6 +130,7 @@ INSTALLED_APPS = (
 PROJECT_APPS = (
     'planner.main',
     'planner.nlpostalcode',
+    'planner.area',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
