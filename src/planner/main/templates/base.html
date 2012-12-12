@@ -7,10 +7,16 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 
 {% bootstrap_javascript_tag "dropdown" %}
-{% block extra_head %}{% endblock %}
+{% block extra_head %}
+<style media="print">
+.control {
+    display: none;
+    }
+</style>
+{% endblock %}
 </head>
 <body class="container">
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top control">
       <div class="navbar-inner">
         <div class="container">
          

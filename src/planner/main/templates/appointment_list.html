@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block extra_head %}
+<style media="print">
+.control {
+    display: none;
+    }
+</style>
+
+
+{% endblock %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
@@ -8,15 +17,15 @@
 <table class="table table-bordered">
 	<tr>
 		<th>{% trans "Name" %}</th><th>{% trans "Address" %}</th><th>{% trans "Postal code" %}</th><th>{% trans "City" %}</th>
-		<th>{% trans "Phone" %}</th><th>{% trans "Stuff" %}</th><th>{% trans "Notes" %}</th><th>{% trans "Edit" %}</th><th>{% trans "Remove" %}</th>
+		<th>{% trans "Phone" %}</th><th>{% trans "Stuff" %}</th><th>{% trans "Notes" %}</th><th class="control">{% trans "Edit" %}</th><th class="control">{% trans "Remove" %}</th>
 	</tr>
 	{% for app in app_list %}
 	<tr>
 		<td>{{ app.customer.name }}</td><td>{{ app.customer.address }} {{ app.customer.number }} {{ app.customer.additions }}</td>
 		<td>{{ app.customer.postcode }}</td><td>{{ app.customer.town }}</td>
 		<td>{{ app.customer.phone }}</td><td>{{ app.stuff }}</td><td>{{ app.notes }}</td>
-		<td><a href="{% url AppointmentEdit appointment_id=app.pk date_iso='' %}"><i class="icon-edit"></i></a></td>
-		<td><a href="{% url CancelAppointment app.id %}"> <i class="icon-remove"></i></a></td>
+		<td class="control"><a href="{% url AppointmentEdit appointment_id=app.pk date_iso='' %}"><i class="icon-edit"></i></a></td>
+		<td class="control"><a href="{% url CancelAppointment app.id %}"> <i class="icon-remove"></i></a></td>
 	</tr>
 	{% endfor %}
 
