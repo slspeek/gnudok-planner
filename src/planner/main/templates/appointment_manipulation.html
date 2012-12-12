@@ -7,20 +7,20 @@
 {{ appointmentForm.media }}
 <script>
 	var set_data = function(data) {
-	$('#region_label').text(data.region);
-	$('#free_space').empty();
-	console.log("Hi");
-	for (var i = 0, len = data.dates.length; i < len; i++) {
-	date = data.dates[i];
-	var calendar_id = date[0];
-	var option;
-	if ( {{ calendar_id }} == calendar_id) {
-		option = '<option selected="selected" value="' + calendar_id + '"> ' + date[1] + '</option>';
-		 } else {
-		option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
-	}
-	$('#free_space').append(option);
-	}
+		$('#region_label').text(data.region);
+		$('#free_space').empty();
+		console.log("Hi");
+		for (var i = 0, len = data.dates.length; i < len; i++) {
+			date = data.dates[i];
+			var calendar_id = date[0];
+			var option;
+			if ({{ calendar_id }} == calendar_id) {
+				option = '<option selected="selected" value="' + calendar_id + '"> ' + date[1] + '</option>';
+			} else {
+				option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
+			}
+			$('#free_space').append(option);
+		}
 	};
 	var set_customer_data = function(data) {
 		$('#id_town').val(data.town);
@@ -28,7 +28,7 @@
 		$('#id_phone').val(data.phone);
 		$('#id_name').val(data.name);
 		$('#id_email').val(data.email);
-		$('#id_found_customer').val(data.id);
+		$('#id_found_customer_id').val(data.id);
 
 	};
 	var get_updates = function() {
@@ -89,6 +89,7 @@
 		</div>
 		<div class="span4">
 			{{ appointmentForm|as_bootstrap }}
+			{{ hiddenForm }}
 		</div>
 		<div class="span4">
 			<div>

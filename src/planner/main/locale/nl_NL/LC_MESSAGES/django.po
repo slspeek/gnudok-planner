@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-11 06:01-0600\n"
+"POT-Creation-Date: 2012-12-12 15:51-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:15 models.py:56 models.py:94 models.py:102
+#: forms.py:15 models.py:58 models.py:94 models.py:102
 msgid "name"
 msgstr "naam"
 
-#: forms.py:36 models.py:111
+#: forms.py:41 models.py:111
 msgid "region"
 msgstr "regio"
 
-#: forms.py:37 models.py:154 models.py:157
+#: forms.py:42 models.py:154 models.py:157
 msgid "Normal"
 msgstr "Normaal"
 
-#: forms.py:38 models.py:158
+#: forms.py:43 models.py:158
 msgid "Double"
 msgstr "Dubbel"
 
-#: forms.py:39 models.py:159
+#: forms.py:44 models.py:159
 msgid "Tripel"
 msgstr "Driedubbel"
 
-#: forms.py:40 models.py:160
+#: forms.py:45 models.py:160
 msgid "Entire half-day"
 msgstr "Een dagdeel"
 
-#: forms.py:42 models.py:162
+#: forms.py:47 models.py:162
 msgid "weight"
 msgstr "grootte"
 
@@ -53,27 +53,27 @@ msgstr "Voer een 9-cijferig telefoonnummer in"
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: models.py:57
+#: models.py:59
 msgid "postalcode"
 msgstr "Postcode"
 
-#: models.py:58
+#: models.py:60
 msgid "number"
 msgstr "huisnummer"
 
-#: models.py:59
+#: models.py:61
 msgid "additions"
 msgstr "toevoeging"
 
-#: models.py:60
+#: models.py:62
 msgid "address"
 msgstr "adres"
 
-#: models.py:61
+#: models.py:63
 msgid "town"
 msgstr "plaats"
 
-#: models.py:64
+#: models.py:66
 msgid "email"
 msgstr "email"
 
@@ -133,7 +133,7 @@ msgstr "werknemer"
 msgid "Delivery"
 msgstr "Bezorg"
 
-#: models.py:150 templates/appointment_list.html:6
+#: models.py:150 templates/appointment_list.html:15
 msgid "Pick up"
 msgstr "Ophaal"
 
@@ -161,7 +161,7 @@ msgstr "Extra"
 msgid "created"
 msgstr "gemaakt"
 
-#: viewers_views.py:17 templates/base.html:24
+#: viewers_views.py:17 templates/base.html:33
 msgid "Overview"
 msgstr "Overzicht"
 
@@ -193,23 +193,37 @@ msgstr "Afspraken lijst"
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 
-#: views.py:44 views.py:63
+#: views.py:26 templates/base.html:23
+msgid "New appointment"
+msgstr "Nieuwe afspraak"
+
+#: views.py:29
+
+msgid "Follow up appointment"
+msgstr "Vervolg afspraak"
+
+#: views.py:32
+msgid "Edit or move appointment"
+msgstr "Afspraak verplaatsen of aanpassen"
+
+#: views.py:143
 msgid "Edit or Move appointment"
 msgstr "Afspraak verplaatsen of aanpassen"
 
-#: views.py:98
+#: views.py:178
 msgid "Appointment details"
 msgstr "Afspraak details"
 
-#: views.py:118
+#: views.py:198
 msgid "Choose a region"
 msgstr "Kies een regio"
 
-#: views.py:132
+#: views.py:212
 msgid "Choose a date"
 msgstr "Kies een datum"
 
-#: templates/appointment.html:41 templates/edit_appointment.html:89
+#: templates/appointment.html:41 templates/appointment_manipulation.html:100
+#: templates/edit_appointment.html:89
 msgid "Save"
 msgstr "Opslaan"
 
@@ -222,32 +236,32 @@ msgstr "Wilt u de afspraak annuleren"
 msgid "Appointment to check in at"
 msgstr "Afspraak om langs te komen op"
 
-#: templates/appointment_cancel.html:14 templates/appointment_list.html:10
+#: templates/appointment_cancel.html:14 templates/appointment_list.html:19
 #: templates/calendar_week.html:26 templates/main/appointment_detail.html:14
 msgid "Name"
 msgstr "Naam"
 
-#: templates/appointment_cancel.html:15 templates/appointment_list.html:10
+#: templates/appointment_cancel.html:15 templates/appointment_list.html:19
 #: templates/calendar_week.html:27 templates/main/appointment_detail.html:15
 msgid "Address"
 msgstr "Adres"
 
-#: templates/appointment_cancel.html:16 templates/appointment_list.html:10
+#: templates/appointment_cancel.html:16 templates/appointment_list.html:19
 #: templates/main/appointment_detail.html:16
 msgid "Postal code"
 msgstr "Postcode"
 
-#: templates/appointment_cancel.html:17 templates/appointment_list.html:10
+#: templates/appointment_cancel.html:17 templates/appointment_list.html:19
 #: templates/main/appointment_detail.html:17
 msgid "City"
 msgstr "Plaats"
 
-#: templates/appointment_cancel.html:18 templates/appointment_list.html:11
+#: templates/appointment_cancel.html:18 templates/appointment_list.html:20
 #: templates/main/appointment_detail.html:18
 msgid "Phone"
 msgstr "Telefoon"
 
-#: templates/appointment_cancel.html:19 templates/appointment_list.html:11
+#: templates/appointment_cancel.html:19 templates/appointment_list.html:20
 #: templates/calendar_week.html:31 templates/main/appointment_detail.html:19
 msgid "Stuff"
 msgstr "Spullen"
@@ -260,36 +274,44 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nee"
 
-#: templates/appointment_list.html:11
+#: templates/appointment_list.html:20
 msgid "Notes"
 msgstr "Extra"
 
-#: templates/appointment_list.html:11 templates/calendar_search_view.html:29
+#: templates/appointment_list.html:20 templates/calendar_search_view.html:29
 #: templates/calendar_week.html:32
 msgid "Edit"
 msgstr "Bewerken"
 
-#: templates/appointment_list.html:11 templates/calendar_week.html:33
+#: templates/appointment_list.html:20 templates/calendar_week.html:33
 msgid "Remove"
 msgstr "Verwijderen"
 
-#: templates/base.html:17
-msgid "New appointment"
-msgstr "Nieuwe afspraak"
+#: templates/appointment_manipulation.html:96
+msgid "Available dates for region:"
+msgstr "Beschikbare data voor regio:"
 
-#: templates/base.html:21
+#: templates/appointment_manipulation.html:96
+msgid "unknown"
+msgstr "Onbekend"
+
+#: templates/base.html:27
+msgid "New (beta)"
+msgstr "Nieuwe (beta)"
+
+#: templates/base.html:30
 msgid "Find customer"
 msgstr "Afspraak zoeken"
 
-#: templates/base.html:28
+#: templates/base.html:37
 msgid "Display collect list"
 msgstr "Ophaal lijst per dag"
 
-#: templates/base.html:31
+#: templates/base.html:40
 msgid "Log out"
 msgstr "Afmelden"
 
-#: templates/base.html:44
+#: templates/base.html:54
 msgid "Copyleft 2012 written by Steven Speek and Jan Terheggen for GNUDok"
 msgstr ""
 "Copyleft 2012 geschreven door Steven Speek en Jan Terheggen voor GNUDok"

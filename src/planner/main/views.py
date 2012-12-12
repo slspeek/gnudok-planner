@@ -19,26 +19,39 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     """ creates or edits an appointment and customer """
     if not date_iso:
         date_iso = tomorrow()
-    title = "Edit deluxe"
-    hidden_form = HiddenForm()
-    
+    if appointment_id == 'create':
+        appointment = Appointment()
+        calendar_id = "-1"
+        if customer_id == 'create':
+            title = _("New appointment")
+            appointment.customer = Customer()
+        else: # customer_id is set
+            title = _("Follow up appointment")
+            appointment.customer = Customer.objects.get(pk=int(customer_id))
+    else: # appointment_id is set
+        title = _("Edit or move appointment")
+        appointment = Appointment.objects.get(pk=int(appointment_id))
+        calendar_id = appointment.calendar.pk
     if request.method == 'GET':
-        if appointment_id == 'create':
-            appointment = Appointment()
-            calendar_id = "-1"
-            if customer_id == 'create':
-                appointment.customer = Customer()
-                
-            else: # customer_id is set
-                appointment.customer = Customer.objects.get(pk=int(customer_id))
-        else: # appointment_id is set
-            appointment = Appointment.objects.get(pk=int(appointment_id))
-            calendar_id = appointment.calendar.pk
+        hidden_form = HiddenForm()
+        appointment_form = BigAppointmentForm(instance=appointment)
+        customer_form = CustomerForm(instance=appointment.customer)
     else: # POST
-        pass
-    
-    appointment_form = BigAppointmentForm(instance=appointment)
-    customer_form = CustomerForm(instance=appointment.customer)        
+        hidden_form = HiddenForm(request.POST)
+        if hidden_form.is_valid():
+            customer_id = hidden_form.cleaned_data['found_customer_id']
+            appointment.customer = Customer.objects.get(pk=customer_id)
+        appointment_form = BigAppointmentForm(request.POST,instance=appointment)
+        customer_form = CustomerForm(request.POST,instance=appointment.customer)
+        free_space = request.POST.get('free_space', '') 
+        if appointment_form.is_valid() and customer_form.is_valid() and free_space:
+            calendar_id = int(free_space)
+            customer = customer_form.save()
+            appointment = appointment_form.save()
+            appointment.calendar = Calendar.objects.get(pk=calendar_id)
+            appointment.save()
+            return redirect('AppointmentView', appointment.id)
+            
     return render_to_response('appointment_manipulation.html',
      {"appointmentForm": appointment_form,
      "title": title,
