@@ -32,21 +32,21 @@ def cancel_appointment(request, appointment_id):
 def edit_appointment(request, appointment_id=0, date_iso=""):
     if not date_iso:
         date_iso=tomorrow()
-
-    appointment = Appointment.objects.get(pk=int(appointment_id))
-    region = get_region(appointment.calendar)
-    free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 28,region, appointment.weight,appointment.calendar)
-    if not request.POST:
+    if appointment_id == 'create':
+        appointment = Appointment() 
+        free_space =[]
+    else:
+        appointment = Appointment.objects.get(pk=int(appointment_id))
+        region = get_region(appointment.calendar)
+        free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 28,region, appointment.weight,appointment.calendar)
+        
+    if request.method == 'GET' and not appointment_id == 'create':
         appointmentForm = AppointmentForm(instance=appointment)
         customerForm = CustomerForm(instance=appointment.customer)
-        return render_to_response('edit_appointment.html',
-             {"appointmentForm": appointmentForm,
-             "title": _("Edit or Move appointment"),
-             "customerForm": customerForm,
-             "free_space": free_space,
-             "calendar_id": appointment.calendar.pk,
-              },
-             context_instance=RequestContext(request))
+    elif request.method == 'GET' and appointment_id == 'create':
+        appointmentForm = AppointmentForm()
+        customerForm = CustomerForm()
+        
     else:
         appointmentForm = AppointmentForm(request.POST, instance=appointment)
         calendar_id = int(request.POST['free_space'])
@@ -57,15 +57,14 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
             appointment.save()
             customerForm.save()
             return redirect('AppointmentView',  appointment.id)
-        else:
-            return render_to_response('edit_appointment.html',
-             {"appointmentForm": appointmentForm,
-             "title": _("Edit or Move appointment"),
-             "customerForm": customerForm,
-             "free_space": free_space,
-             "calendar_id": appointment.calendar.pk,
-              },
-             context_instance=RequestContext(request))
+    return render_to_response('edit_appointment.html',
+     {"appointmentForm": appointmentForm,
+     "title": _("Edit or Move appointment"),
+     "customerForm": customerForm,
+     "free_space": free_space,
+     "calendar_id": appointment.calendar.pk,
+      },
+     context_instance=RequestContext(request))
         
 
 @group_required('Callcenter')

@@ -22,12 +22,30 @@ class GetRegionFromPostalcodeTest(TestCase):
         """ tests an unkown postalcode """
         response = self.client.get("/area/postalcode/5000AD")
         assert 'Unknown' in response.content
-        
     
                                     
     def testZuidOost(self):
         """ tests a known postalcode """
         response = self.client.get("/area/postalcode/1000AC")
         assert 'Zuid-Oost' in response.content
+        
+    def testZuidOost2(self):
+        """ tests a known postalcode """
+        response = self.client.get("/area/postalcode/1000AB")
+        assert 'Zuid-Oost' in response.content
+    
+    def testZuidOost3(self):
+        """ tests a known postalcode """
+        response = self.client.get("/area/postalcode/1000SD")
+        assert 'Zuid-Oost' in response.content
+    
+    def testZuidOost4(self):
+        """ tests a known postalcode """
+        response = self.client.get("/area/postalcode/1000sd")
+        assert 'Zuid-Oost' in response.content
             
+    def testZuidOost5(self):
+        """ tests a known postalcode """
+        response = self.client.get("/area/postalcode/1000ac")
+        assert 'Zuid-Oost' in response.content
     
