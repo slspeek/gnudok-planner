@@ -4,12 +4,80 @@ from .__init__ import group_required, get_date_from_iso, tomorrow
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Region
-from .forms import  CustomerForm, AppointmentForm,\
-    HiddenForm, RegionChooseForm
+from .models import Appointment, Calendar, Region, Customer
+from .forms import  CustomerForm, AppointmentForm, \
+    RegionChooseForm, BigAppointmentForm, HiddenForm
 from .schedule import get_free_entries, get_region, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
+import logging
+from django.utils import simplejson
+from django.http import HttpResponse
+from planner.area.views import get_region_for_postcalcode
 
+@group_required('Callcenter')
+def appointment_manipulation(request, appointment_id, customer_id, date_iso):
+    """ creates or edits an appointment and customer """
+    if not date_iso:
+        date_iso = tomorrow()
+    title = "Edit deluxe"
+    hidden_form = HiddenForm()
+    
+    if request.method == 'GET':
+        if appointment_id == 'create':
+            appointment = Appointment()
+            calendar_id = "-1"
+            if customer_id == 'create':
+                appointment.customer = Customer()
+                
+            else: # customer_id is set
+                appointment.customer = Customer.objects.get(pk=int(customer_id))
+        else: # appointment_id is set
+            appointment = Appointment.objects.get(pk=int(appointment_id))
+            calendar_id = appointment.calendar.pk
+    else: # POST
+        pass
+    
+    appointment_form = BigAppointmentForm(instance=appointment)
+    customer_form = CustomerForm(instance=appointment.customer)        
+    return render_to_response('appointment_manipulation.html',
+     {"appointmentForm": appointment_form,
+     "title": title,
+     "customerForm": customer_form,
+     "hiddenForm": hidden_form,
+     "date_iso": date_iso,
+     "calendar_id": calendar_id,
+      },
+     context_instance=RequestContext(request))
+
+@group_required('Callcenter') 
+def get_available_dates(request, postalcode, weight, date_iso):
+    """ Returns a json object to fill the calendar choices component """
+    logging.error("%s %s" % (postalcode, weight))
+    region = get_region_for_postcalcode(postalcode)
+    available_dates = get_free_entries(get_date_from_iso(date_iso),
+                                       28, region, int(weight))
+    dates = []
+    for a_date in available_dates:
+        dates.append((a_date[0], a_date[1]))
+    data = {'region':region.name, 'dates': dates }
+    json = simplejson.dumps(data)
+    return HttpResponse(json, mimetype='application/json')
+
+@group_required('Callcenter') 
+def get_customer(request, postalcode, number, addition):
+    """ Returns a json object to fill the calendar choices component """
+    logging.error("%s %s %s" % (postalcode, number, addition))
+    customer = Customer.objects.get(postcode=postalcode.capitalize(), number=number, additions=addition)
+    data = {'name':customer.name,
+            'address':customer.address,
+            'town': customer.town,
+            'phone': customer.phone,
+            'id': customer.id,
+            'email': customer.email }
+    json = simplejson.dumps(data)
+    return HttpResponse(json, mimetype='application/json')
+
+    
 def logout_view(request):
     logout(request)
     return redirect('Overview')
@@ -31,14 +99,14 @@ def cancel_appointment(request, appointment_id):
 @group_required('Callcenter')
 def edit_appointment(request, appointment_id=0, date_iso=""):
     if not date_iso:
-        date_iso=tomorrow()
+        date_iso = tomorrow()
     if appointment_id == 'create':
         appointment = Appointment() 
-        free_space =[]
+        free_space = []
     else:
         appointment = Appointment.objects.get(pk=int(appointment_id))
         region = get_region(appointment.calendar)
-        free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 28,region, appointment.weight,appointment.calendar)
+        free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 28, region, appointment.weight, appointment.calendar)
         
     if request.method == 'GET' and not appointment_id == 'create':
         appointmentForm = AppointmentForm(instance=appointment)
@@ -56,7 +124,7 @@ def edit_appointment(request, appointment_id=0, date_iso=""):
             appointment.calendar = Calendar.objects.get(pk=calendar_id)
             appointment.save()
             customerForm.save()
-            return redirect('AppointmentView',  appointment.id)
+            return redirect('AppointmentView', appointment.id)
     return render_to_response('edit_appointment.html',
      {"appointmentForm": appointmentForm,
      "title": _("Edit or Move appointment"),
@@ -83,7 +151,7 @@ def create_appointment(request, calendar_id, weight):
                 appointment.weight = int(weight)
                 appointment.calendar = Calendar.objects.get(pk=int(calendar_id))
                 app = appointmentForm.save()
-                return redirect('AppointmentView',  app.id)
+                return redirect('AppointmentView', app.id)
             else:  # Appointment not valid, so rerender with errors
                 customer.delete()
         else:  # Customer not valid rerender with errors
@@ -103,7 +171,7 @@ def create_appointment(request, calendar_id, weight):
 @group_required('Callcenter')
 def chose_a_region(request, date_iso):
     if not date_iso:
-        date_iso=tomorrow()
+        date_iso = tomorrow()
     
     if request.POST:
         region_form = RegionChooseForm(request.POST)
@@ -120,7 +188,7 @@ def chose_a_region(request, date_iso):
 @group_required('Callcenter')
 def choose_a_date(request, region_id, weight, date_iso):
     if not date_iso:
-        date_iso=tomorrow()
+        date_iso = tomorrow()
     region = Region.objects.get(pk=region_id)
     free_space = get_free_entries(get_date_from_iso(date_iso),
                                        28, region, int(weight))

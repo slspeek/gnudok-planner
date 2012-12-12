@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+{% block extra_head %}
+{{ customerForm.media }}
+{{ appointmentForm.media }}
+<script>
+	var set_data = function(data) {
+	$('#region_label').text(data.region);
+	$('#free_space').empty();
+	console.log("Hi");
+	for (var i = 0, len = data.dates.length; i < len; i++) {
+	date = data.dates[i];
+	var calendar_id = date[0];
+	var option;
+	if ( {{ calendar_id }} == calendar_id) {
+		option = '<option selected="selected" value="' + calendar_id + '"> ' + date[1] + '</option>';
+		 } else {
+		option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
+	}
+	$('#free_space').append(option);
+	}
+	};
+	var set_customer_data = function(data) {
+		$('#id_town').val(data.town);
+		$('#id_address').val(data.address);
+		$('#id_phone').val(data.phone);
+		$('#id_name').val(data.name);
+		$('#id_email').val(data.email);
+		$('#id_found_customer').val(data.id);
+
+	};
+	var get_updates = function() {
+		postcode = $('#id_postcode')[0].value
+		weight = $('#id_weight')[0].value
+		if (postcode.length === 6) {
+			$.getJSON('/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}', set_data);
+		}
+	}
+	var find_customer = function() {
+		postcode = $('#id_postcode')[0].value
+		number = $('#id_number')[0].value
+		addition = $('#id_additions')[0].value
+
+		if (postcode.length === 6) {
+			$.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, set_customer_data);
+		}
+	}
+	$(function() {
+		$("#id_postcode").keyup(function(e) {
+			postcode = $('#id_postcode')[0].value
+			if (postcode.length === 6) {
+				$.getJSON('/pc/get/' + postcode, function(data) {
+					$('#id_town').val(data.town);
+					$('#id_address').val(data.address);
+					$('#id_postcode').val(postcode.toUpperCase());
+				});
+			}
+		});
+		$("#id_postcode").keyup(function(e) {
+			get_updates();
+		});
+		$("#id_weight").change(function(e) {
+			get_updates();
+		});
+		$("#id_number").keyup(function(e) {
+			find_customer();
+		});
+		$("#id_additions").keyup(function(e) {
+			find_customer();
+		});
+		$("#id_postcode").keyup(function(e) {
+			find_customer();
+		});
+		get_updates();
+	}); 
+</script>
+{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<form id="appointment" name="appointment" action="" method="post" class="appointment">
+	{% csrf_token %}
+	<div style="dispaly:inline;" >
+		<div class="span3">
+			{{ customerForm|as_bootstrap }}
+
+		</div>
+		<div class="span4">
+			{{ appointmentForm|as_bootstrap }}
+		</div>
+		<div class="span4">
+			<div>
+				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
+				<select id="free_space" name="free_space" size=10 style="width: 100%;"></select>
+			</div>
+			<button class="btn btn-primary" type="submit">
+				{% trans "Save" %}
+			</button>
+		</div>
+	</div>
+	<div id="status" class="info">
+
+	</div>
+
+</form>
+{% endblock %}

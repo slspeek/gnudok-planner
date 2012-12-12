@@ -24,13 +24,18 @@ class AppointmentForm(ModelForm):
         model = Appointment
         fields = ("stuff", "notes")
         
+class BigAppointmentForm(ModelForm):
+    class Meta:
+        model = Appointment
+        fields = ("weight", "stuff", "notes")
+        
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
 
 class HiddenForm(forms.Form):
-    calendar_id = forms.IntegerField(widget=forms.HiddenInput())
-    weight = forms.IntegerField(widget=forms.HiddenInput())
+    found_customer_id = forms.IntegerField(widget=forms.HiddenInput())
+    
     
 class RegionChooseForm(Form):
     region = forms.ModelChoiceField(label=_('region'), queryset=Region.objects.all()) 
