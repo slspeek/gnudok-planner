@@ -46,10 +46,10 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         free_space = request.POST.get('free_space', '') 
         if appointment_form.is_valid() and customer_form.is_valid() and free_space:
             calendar_id = int(free_space)
+            appointment.calendar = Calendar.objects.get(pk=calendar_id)
             customer = customer_form.save()
             appointment = appointment_form.save()
-            appointment.calendar = Calendar.objects.get(pk=calendar_id)
-            appointment.save()
+            #appointment.save()
             return redirect('AppointmentView', appointment.id)
             
     return render_to_response('appointment_manipulation.html',
