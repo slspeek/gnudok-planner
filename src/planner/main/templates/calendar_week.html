@@ -47,5 +47,7 @@
 	{% endfor %}
 	{% endfor %}
 </table>
+<a class="btn" href="{% url WeekView car.pk prev date_iso %}">{% trans "Previous" %}</a>
+<a class="btn" href="{% url WeekView car.pk next date_iso %}">{% trans "Next" %}</a>
 
 {% endblock %}

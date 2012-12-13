@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-12 15:51-0600\n"
+"POT-Creation-Date: 2012-12-13 16:09-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,37 +17,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:15 models.py:58 models.py:94 models.py:102
+#: forms.py:15 models.py:58 models.py:97 models.py:105
 msgid "name"
 msgstr "naam"
 
-#: forms.py:41 models.py:111
+#: forms.py:41 models.py:114
 msgid "region"
 msgstr "regio"
 
-#: forms.py:42 models.py:154 models.py:157
+#: forms.py:42 models.py:157 models.py:160
 msgid "Normal"
 msgstr "Normaal"
 
-#: forms.py:43 models.py:158
+#: forms.py:43 models.py:161
 msgid "Double"
 msgstr "Dubbel"
 
-#: forms.py:44 models.py:159
+#: forms.py:44 models.py:162
 msgid "Tripel"
 msgstr "Driedubbel"
 
-#: forms.py:45 models.py:160
+#: forms.py:45 models.py:163
 msgid "Entire half-day"
 msgstr "Een dagdeel"
 
-#: forms.py:47 models.py:162
+#: forms.py:47 models.py:165
 msgid "weight"
 msgstr "grootte"
 
 #: models.py:21
 msgid "Enter a valid phone number"
-msgstr "Voer een 9-cijferig telefoonnummer in"
+msgstr "Voer een 10-cijferig telefoonnummer in"
 
 #: models.py:42
 msgid "Phone number"
@@ -77,119 +77,107 @@ msgstr "plaats"
 msgid "email"
 msgstr "email"
 
-#: models.py:74 models.py:80
+#: models.py:77 models.py:83
 msgid "Monday"
 msgstr "Maandag"
 
-#: models.py:74 models.py:81
+#: models.py:77 models.py:84
 msgid "Tuesday"
 msgstr "Dinsdag"
 
-#: models.py:75 models.py:82
+#: models.py:78 models.py:85
 msgid "Wednesday"
 msgstr "Woensdag"
 
-#: models.py:75 models.py:83
+#: models.py:78 models.py:86
 msgid "Thursday"
 msgstr "Donderdag"
 
-#: models.py:76 models.py:84
+#: models.py:79 models.py:87
 msgid "Friday"
 msgstr "Vrijdag"
 
-#: models.py:95
+#: models.py:98
 msgid "description"
 msgstr "beschrijving"
 
-#: models.py:109 models.py:120
+#: models.py:112 models.py:123
 msgid "car"
 msgstr "auto"
 
-#: models.py:110 models.py:121
+#: models.py:113 models.py:124
 msgid "timeslot"
 msgstr "tijdslot"
 
-#: models.py:112
+#: models.py:115
 msgid "active"
 msgstr "actief"
 
-#: models.py:119
+#: models.py:122
 msgid "date"
 msgstr "datum"
 
-#: models.py:146
+#: models.py:149
 msgid "calendar"
 msgstr "kalender"
 
-#: models.py:147
+#: models.py:150
 msgid "customer"
 msgstr "klant"
 
-#: models.py:148
+#: models.py:151
 msgid "employee"
 msgstr "werknemer"
 
-#: models.py:149
+#: models.py:152
 msgid "Delivery"
 msgstr "Bezorg"
 
-#: models.py:150 templates/appointment_list.html:15
+#: models.py:153 templates/appointment_list.html:15
 msgid "Pick up"
 msgstr "Ophaal"
 
-#: models.py:151
+#: models.py:154
 msgid "kind"
 msgstr "soort"
 
-#: models.py:155
+#: models.py:158
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: models.py:156
+#: models.py:159
 msgid "status"
 msgstr "status"
 
-#: models.py:163
+#: models.py:166
 msgid "stuff"
 msgstr "spullen"
 
-#: models.py:164
+#: models.py:167
 msgid "notes"
 msgstr "Extra"
 
-#: models.py:165
+#: models.py:168
 msgid "created"
 msgstr "gemaakt"
 
-#: viewers_views.py:17 templates/base.html:33
+#: viewers_views.py:23 templates/base.html:33
 msgid "Overview"
 msgstr "Overzicht"
 
-#: viewers_views.py:19
-msgid "Last week"
-msgstr "Vorige week"
-
-#: viewers_views.py:20
-msgid "This week"
-msgstr "Deze week"
-
-#: viewers_views.py:21
-msgid "Next week"
-msgstr "Volgende week"
-
-#: viewers_views.py:56
+#: viewers_views.py:68
 msgid "Pick a date"
 msgstr "Kies een datum"
 
-#: viewers_views.py:66
+#: viewers_views.py:78
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: viewers_views.py:74
+#: viewers_views.py:86
 msgid "Appointment list"
 msgstr "Afspraken lijst"
 
-#: viewers_views.py:94
+#: viewers_views.py:111
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 
@@ -198,7 +186,6 @@ msgid "New appointment"
 msgstr "Nieuwe afspraak"
 
 #: views.py:29
-
 msgid "Follow up appointment"
 msgstr "Vervolg afspraak"
 
@@ -206,19 +193,19 @@ msgstr "Vervolg afspraak"
 msgid "Edit or move appointment"
 msgstr "Afspraak verplaatsen of aanpassen"
 
-#: views.py:143
+#: views.py:129 views.py:148
 msgid "Edit or Move appointment"
 msgstr "Afspraak verplaatsen of aanpassen"
 
-#: views.py:178
+#: views.py:183
 msgid "Appointment details"
 msgstr "Afspraak details"
 
-#: views.py:198
+#: views.py:203
 msgid "Choose a region"
 msgstr "Kies een regio"
 
-#: views.py:212
+#: views.py:217
 msgid "Choose a date"
 msgstr "Kies een datum"
 
@@ -237,32 +224,38 @@ msgid "Appointment to check in at"
 msgstr "Afspraak om langs te komen op"
 
 #: templates/appointment_cancel.html:14 templates/appointment_list.html:19
-#: templates/calendar_week.html:26 templates/main/appointment_detail.html:14
+#: templates/calendar_search_view.html:25 templates/calendar_week.html:26
+#: templates/main/appointment_detail.html:14
 msgid "Name"
 msgstr "Naam"
 
 #: templates/appointment_cancel.html:15 templates/appointment_list.html:19
-#: templates/calendar_week.html:27 templates/main/appointment_detail.html:15
+#: templates/calendar_search_view.html:26 templates/calendar_week.html:27
+#: templates/main/appointment_detail.html:17
 msgid "Address"
 msgstr "Adres"
 
 #: templates/appointment_cancel.html:16 templates/appointment_list.html:19
-#: templates/main/appointment_detail.html:16
+#: templates/calendar_search_view.html:27
+#: templates/main/appointment_detail.html:20
 msgid "Postal code"
 msgstr "Postcode"
 
 #: templates/appointment_cancel.html:17 templates/appointment_list.html:19
-#: templates/main/appointment_detail.html:17
+#: templates/calendar_search_view.html:28
+#: templates/main/appointment_detail.html:26
 msgid "City"
 msgstr "Plaats"
 
 #: templates/appointment_cancel.html:18 templates/appointment_list.html:20
-#: templates/main/appointment_detail.html:18
+#: templates/calendar_search_view.html:29
+#: templates/main/appointment_detail.html:23
 msgid "Phone"
 msgstr "Telefoon"
 
 #: templates/appointment_cancel.html:19 templates/appointment_list.html:20
-#: templates/calendar_week.html:31 templates/main/appointment_detail.html:19
+#: templates/calendar_search_view.html:30 templates/calendar_week.html:31
+#: templates/main/appointment_detail.html:29
 msgid "Stuff"
 msgstr "Spullen"
 
@@ -275,17 +268,13 @@ msgid "No"
 msgstr "Nee"
 
 #: templates/appointment_list.html:20
+#: templates/main/appointment_detail.html:32
 msgid "Notes"
 msgstr "Extra"
 
-#: templates/appointment_list.html:20 templates/calendar_search_view.html:29
-#: templates/calendar_week.html:32
-msgid "Edit"
-msgstr "Bewerken"
-
-#: templates/appointment_list.html:20 templates/calendar_week.html:33
-msgid "Remove"
-msgstr "Verwijderen"
+#: templates/appointment_list.html:20 templates/calendar_search_view.html:31
+msgid "View"
+msgstr "Inzien"
 
 #: templates/appointment_manipulation.html:96
 msgid "Available dates for region:"
@@ -319,6 +308,10 @@ msgstr ""
 #: templates/calendar_search_view.html:14
 msgid "Search"
 msgstr "Zoeken"
+
+#: templates/calendar_search_view.html:22
+msgid "appointments found"
+msgstr "afspraken gevonden"
 
 #: templates/calendar_week.html:6
 msgid "Week for"
@@ -356,7 +349,20 @@ msgstr "Plaats"
 msgid "Weight"
 msgstr "Grootte"
 
-#: templates/choose_a_date.html:20 templates/region.html:22
+#: templates/calendar_week.html:32
+msgid "Edit"
+msgstr "Bewerken"
+
+#: templates/calendar_week.html:33
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: templates/calendar_week.html:50
+msgid "Previous"
+msgstr "Terug"
+
+#: templates/calendar_week.html:51 templates/choose_a_date.html:20
+#: templates/region.html:22
 msgid "Next"
 msgstr "Verder"
 
@@ -380,6 +386,18 @@ msgstr "Andere data"
 msgid "Viewing saved appointment"
 msgstr "Gemaakte afspraak"
 
+#: templates/main/appointment_detail.html:35
+msgid "Made by"
+msgstr "Gemaakt door"
+
+#: templates/main/appointment_detail.html:38
+msgid "Created at"
+msgstr "Gemaakt op"
+
+#: templates/main/appointment_detail.html:46
+msgid "Follow up"
+msgstr "Vervolg afspraak"
+
 #: templates/registration/login.html:13
 msgid "Planner login"
 msgstr "Planner login"
@@ -392,6 +410,15 @@ msgstr ""
 #: templates/registration/login.html:32
 msgid "Login"
 msgstr "Aanmelden"
+
+#~ msgid "Last week"
+#~ msgstr "Vorige week"
+
+#~ msgid "This week"
+#~ msgstr "Deze week"
+
+#~ msgid "Next week"
+#~ msgstr "Volgende week"
 
 #~ msgid "Deleted"
 #~ msgstr "Verwijderd"

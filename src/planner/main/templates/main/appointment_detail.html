@@ -8,24 +8,44 @@
 <div class="container">
 	<table class="table">
 		<tr>
-			<th colspan="6">{% trans "Appointment to check in at" %} {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
+			<th colspan="2">{% trans "Appointment to check in at" %} {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
 		</tr>
 		<tr>
-			<th>{% trans "Name" %}</th>
-			<th>{% trans "Address" %}</th>
-			<th>{% trans "Postal code" %}</th>
-			<th>{% trans "City" %}</th>
-			<th>{% trans "Phone" %}</th>
-			<th>{% trans "Stuff" %}</th>
+			<th>{% trans "Name" %}</th><td>{{ object.customer.name }}</td>
 		</tr>
 		<tr>
-			<td>{{ object.customer.name }}</td>
-			<td>{{ object.customer.address }} {{ object.customer.number }} {{ object.customer.additions }}</td>
-			<td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
-			<td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
+			<th>{% trans "Address" %}</th><td>{{ object.customer.address }} {{ object.customer.number }} {{ object.customer.additions }}</td>
 		</tr>
+		<tr>
+			<th>{% trans "Postal code" %}</th><td>{{ object.customer.postcode }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Phone" %}</th><td>{{ object.customer.phone }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "City" %}</th><td>{{ object.customer.town }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Stuff" %}</th><td>{{ object.stuff }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Notes" %}</th><td>{{ object.notes }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Made by" %}</th><td>{{ object.employee.first_name }} {{ object.employee.last_name}}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Created at" %}</th><td>{{ object.created }}</td>
+		</tr>
+
 	</table>
-	<p><a class="btn" href="{% url CancelAppointment object.id %}"><i class="icon-remove"></i></a>
-	<a class="btn" href="{% url AppointmentEdit appointment_id=object.pk date_iso='' %}"><i class="icon-edit"></i></a></p>
+	<p>
+		<a class="btn" href="{% url CancelAppointment object.id %}"><i class="icon-remove"></i></a>
+		<a class="btn" href="{% url AppointmentEditExtra object.pk object.customer.pk '' %}"><i class="icon-edit"></i></a>
+		<a class="btn" href="{% url AppointmentEditExtra 'create' object.customer.pk '' %}">
+			{% trans "Follow up" %}
+		</a>
+		
+	</p>
 </div>
 {% endblock %}
