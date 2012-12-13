@@ -47,6 +47,8 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         if appointment_form.is_valid() and customer_form.is_valid() and free_space:
             calendar_id = int(free_space)
             appointment.calendar = Calendar.objects.get(pk=calendar_id)
+            appointment.employee = request.user
+            logging.error(appointment.calendar)
             customer = customer_form.save()
             appointment = appointment_form.save()
             #appointment.save()
