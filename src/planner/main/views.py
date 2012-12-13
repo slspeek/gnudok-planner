@@ -50,6 +50,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
             appointment.employee = request.user
             logging.error(appointment.calendar)
             customer = customer_form.save()
+            appointment.customer = customer
             appointment = appointment_form.save()
             #appointment.save()
             return redirect('AppointmentView', appointment.id)
