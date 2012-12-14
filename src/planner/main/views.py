@@ -96,7 +96,7 @@ def get_customer(request, postalcode, number, addition):
     
 def logout_view(request):
     logout(request)
-    return redirect('Overview')
+    return redirect('Overview', '')
 
 @group_required('Callcenter')
 def cancel_appointment(request, appointment_id):
@@ -109,7 +109,7 @@ def cancel_appointment(request, appointment_id):
     else:
         appointment.status = 2
         appointment.save()
-        return redirect('Overview')
+        return redirect('Overview', '')
         
 
 @group_required('Callcenter')

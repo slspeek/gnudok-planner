@@ -489,6 +489,7 @@ class ViewersTestCase(DjangoSeleniumTest):
         self.sleep()
         # Appointment has been saved
         driver.get(self.live_server_url + "/accounts/logout/")
+        self.sleep()
         driver.find_element_by_id("id_username").clear()
         driver.find_element_by_id("id_username").send_keys("alien")
         driver.find_element_by_id("id_password").clear()

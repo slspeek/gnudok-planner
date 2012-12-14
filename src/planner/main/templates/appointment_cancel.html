@@ -28,7 +28,7 @@
 	<form action="" method="post">
 		{% csrf_token %}
 		<button class="btn" type="submit">{% trans "Yes" %}</button>
-		<a class="btn" href="{% url Overview %}">{% trans "No" %}</a>
+		<a class="btn" href="{% url Overview '' %}">{% trans "No" %}</a>
 	</form>
 	
 </div>
