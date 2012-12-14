@@ -1,0 +1,433 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-13 16:09-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:15 models.py:58 models.py:97 models.py:105
+msgid "name"
+msgstr "naam"
+
+#: forms.py:41 models.py:114
+msgid "region"
+msgstr "regio"
+
+#: forms.py:42 models.py:157 models.py:160
+msgid "Normal"
+msgstr "Normaal"
+
+#: forms.py:43 models.py:161
+msgid "Double"
+msgstr "Dubbel"
+
+#: forms.py:44 models.py:162
+msgid "Tripel"
+msgstr "Driedubbel"
+
+#: forms.py:45 models.py:163
+msgid "Entire half-day"
+msgstr "Een dagdeel"
+
+#: forms.py:47 models.py:165
+msgid "weight"
+msgstr "grootte"
+
+#: models.py:21
+msgid "Enter a valid phone number"
+msgstr "Voer een 10-cijferig telefoonnummer in"
+
+#: models.py:42
+msgid "Phone number"
+msgstr "Telefoonnummer"
+
+#: models.py:59
+msgid "postalcode"
+msgstr "Postcode"
+
+#: models.py:60
+msgid "number"
+msgstr "huisnummer"
+
+#: models.py:61
+msgid "additions"
+msgstr "toevoeging"
+
+#: models.py:62
+msgid "address"
+msgstr "adres"
+
+#: models.py:63
+msgid "town"
+msgstr "plaats"
+
+#: models.py:66
+msgid "email"
+msgstr "email"
+
+#: models.py:77 models.py:83
+msgid "Monday"
+msgstr "Maandag"
+
+#: models.py:77 models.py:84
+msgid "Tuesday"
+msgstr "Dinsdag"
+
+#: models.py:78 models.py:85
+msgid "Wednesday"
+msgstr "Woensdag"
+
+#: models.py:78 models.py:86
+msgid "Thursday"
+msgstr "Donderdag"
+
+#: models.py:79 models.py:87
+msgid "Friday"
+msgstr "Vrijdag"
+
+#: models.py:98
+msgid "description"
+msgstr "beschrijving"
+
+#: models.py:112 models.py:123
+msgid "car"
+msgstr "auto"
+
+#: models.py:113 models.py:124
+msgid "timeslot"
+msgstr "tijdslot"
+
+#: models.py:115
+msgid "active"
+msgstr "actief"
+
+#: models.py:122
+msgid "date"
+msgstr "datum"
+
+#: models.py:149
+msgid "calendar"
+msgstr "kalender"
+
+#: models.py:150
+msgid "customer"
+msgstr "klant"
+
+#: models.py:151
+msgid "employee"
+msgstr "werknemer"
+
+#: models.py:152
+msgid "Delivery"
+msgstr "Bezorg"
+
+#: models.py:153 templates/appointment_list.html:15
+msgid "Pick up"
+msgstr "Ophaal"
+
+#: models.py:154
+msgid "kind"
+msgstr "soort"
+
+#: models.py:158
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+#: models.py:159
+msgid "status"
+msgstr "status"
+
+#: models.py:166
+msgid "stuff"
+msgstr "spullen"
+
+#: models.py:167
+msgid "notes"
+msgstr "Extra"
+
+#: models.py:168
+msgid "created"
+msgstr "gemaakt"
+
+#: viewers_views.py:23 templates/base.html:33
+msgid "Overview"
+msgstr "Overzicht"
+
+#: viewers_views.py:68
+msgid "Pick a date"
+msgstr "Kies een datum"
+
+#: viewers_views.py:78
+msgid "Choose a region and timeslot"
+msgstr "Kies een lijst"
+
+#: viewers_views.py:86
+msgid "Appointment list"
+msgstr "Afspraken lijst"
+
+#: viewers_views.py:111
+msgid "Customer search"
+msgstr "Afspraak zoeken"
+
+#: views.py:26 templates/base.html:23
+msgid "New appointment"
+msgstr "Nieuwe afspraak"
+
+#: views.py:29
+msgid "Follow up appointment"
+msgstr "Vervolg afspraak"
+
+#: views.py:32
+msgid "Edit or move appointment"
+msgstr "Afspraak verplaatsen of aanpassen"
+
+#: views.py:129 views.py:148
+msgid "Edit or Move appointment"
+msgstr "Afspraak verplaatsen of aanpassen"
+
+#: views.py:183
+msgid "Appointment details"
+msgstr "Afspraak details"
+
+#: views.py:203
+msgid "Choose a region"
+msgstr "Kies een regio"
+
+#: views.py:217
+msgid "Choose a date"
+msgstr "Kies een datum"
+
+#: templates/appointment.html:41 templates/appointment_manipulation.html:100
+#: templates/edit_appointment.html:89
+msgid "Save"
+msgstr "Opslaan"
+
+#: templates/appointment_cancel.html:6
+msgid "Do you want to cancel appointment"
+msgstr "Wilt u de afspraak annuleren"
+
+#: templates/appointment_cancel.html:11
+#: templates/main/appointment_detail.html:11
+msgid "Appointment to check in at"
+msgstr "Afspraak om langs te komen op"
+
+#: templates/appointment_cancel.html:14 templates/appointment_list.html:19
+#: templates/calendar_search_view.html:25 templates/calendar_week.html:26
+#: templates/main/appointment_detail.html:14
+msgid "Name"
+msgstr "Naam"
+
+#: templates/appointment_cancel.html:15 templates/appointment_list.html:19
+#: templates/calendar_search_view.html:26 templates/calendar_week.html:27
+#: templates/main/appointment_detail.html:17
+msgid "Address"
+msgstr "Adres"
+
+#: templates/appointment_cancel.html:16 templates/appointment_list.html:19
+#: templates/calendar_search_view.html:27
+#: templates/main/appointment_detail.html:20
+msgid "Postal code"
+msgstr "Postcode"
+
+#: templates/appointment_cancel.html:17 templates/appointment_list.html:19
+#: templates/calendar_search_view.html:28
+#: templates/main/appointment_detail.html:26
+msgid "City"
+msgstr "Plaats"
+
+#: templates/appointment_cancel.html:18 templates/appointment_list.html:20
+#: templates/calendar_search_view.html:29
+#: templates/main/appointment_detail.html:23
+msgid "Phone"
+msgstr "Telefoon"
+
+#: templates/appointment_cancel.html:19 templates/appointment_list.html:20
+#: templates/calendar_search_view.html:30 templates/calendar_week.html:31
+#: templates/main/appointment_detail.html:29
+msgid "Stuff"
+msgstr "Spullen"
+
+#: templates/appointment_cancel.html:30
+msgid "Yes"
+msgstr "Ja"
+
+#: templates/appointment_cancel.html:31
+msgid "No"
+msgstr "Nee"
+
+#: templates/appointment_list.html:20
+#: templates/main/appointment_detail.html:32
+msgid "Notes"
+msgstr "Extra"
+
+#: templates/appointment_list.html:20 templates/calendar_search_view.html:31
+msgid "View"
+msgstr "Inzien"
+
+#: templates/appointment_manipulation.html:96
+msgid "Available dates for region:"
+msgstr "Beschikbare data voor regio:"
+
+#: templates/appointment_manipulation.html:96
+msgid "unknown"
+msgstr "Onbekend"
+
+#: templates/base.html:27
+msgid "New (beta)"
+msgstr "Nieuwe (beta)"
+
+#: templates/base.html:30
+msgid "Find customer"
+msgstr "Afspraak zoeken"
+
+#: templates/base.html:37
+msgid "Display collect list"
+msgstr "Ophaal lijst per dag"
+
+#: templates/base.html:40
+msgid "Log out"
+msgstr "Afmelden"
+
+#: templates/base.html:54
+msgid "Copyleft 2012 written by Steven Speek and Jan Terheggen for GNUDok"
+msgstr ""
+"Copyleft 2012 geschreven door Steven Speek en Jan Terheggen voor GNUDok"
+
+#: templates/calendar_search_view.html:14
+msgid "Search"
+msgstr "Zoeken"
+
+#: templates/calendar_search_view.html:22
+msgid "appointments found"
+msgstr "afspraken gevonden"
+
+#: templates/calendar_week.html:6
+msgid "Week for"
+msgstr "Weekoverzicht:"
+
+#: templates/calendar_week.html:6
+msgid "to"
+msgstr "tot"
+
+#: templates/calendar_week.html:10 templates/choose_calendar.html:10
+msgid "Date"
+msgstr "Datum"
+
+#: templates/calendar_week.html:11
+msgid "Time"
+msgstr "Tijd"
+
+#: templates/calendar_week.html:12
+msgid "Region"
+msgstr "Regio"
+
+#: templates/calendar_week.html:13
+msgid "Free slots"
+msgstr "Vrije ruimte"
+
+#: templates/calendar_week.html:28
+msgid "Postalcode"
+msgstr "Postcode"
+
+#: templates/calendar_week.html:29
+msgid "Town"
+msgstr "Plaats"
+
+#: templates/calendar_week.html:30
+msgid "Weight"
+msgstr "Grootte"
+
+#: templates/calendar_week.html:32
+msgid "Edit"
+msgstr "Bewerken"
+
+#: templates/calendar_week.html:33
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: templates/calendar_week.html:50
+msgid "Previous"
+msgstr "Terug"
+
+#: templates/calendar_week.html:51 templates/choose_a_date.html:20
+#: templates/region.html:22
+msgid "Next"
+msgstr "Verder"
+
+#: templates/choose_calendar.html:10
+msgid "Car"
+msgstr "Auto"
+
+#: templates/choose_calendar.html:10
+msgid "Timeslot"
+msgstr "Tijdslot"
+
+#: templates/choose_listing_date.html:16
+msgid "Go"
+msgstr "OK"
+
+#: templates/edit_appointment.html:71
+msgid "Alternative dates"
+msgstr "Andere data"
+
+#: templates/main/appointment_detail.html:6
+msgid "Viewing saved appointment"
+msgstr "Gemaakte afspraak"
+
+#: templates/main/appointment_detail.html:35
+msgid "Made by"
+msgstr "Gemaakt door"
+
+#: templates/main/appointment_detail.html:38
+msgid "Created at"
+msgstr "Gemaakt op"
+
+#: templates/main/appointment_detail.html:46
+msgid "Follow up"
+msgstr "Vervolg afspraak"
+
+#: templates/registration/login.html:13
+msgid "Planner login"
+msgstr "Planner login"
+
+#: templates/registration/login.html:16
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+"Uw gebruikersnaam en wachtwoord kwamen niet overeen. Probeert u het opnieuw."
+
+#: templates/registration/login.html:32
+msgid "Login"
+msgstr "Aanmelden"
+
+#~ msgid "Last week"
+#~ msgstr "Vorige week"
+
+#~ msgid "This week"
+#~ msgstr "Deze week"
+
+#~ msgid "Next week"
+#~ msgstr "Volgende week"
+
+#~ msgid "Deleted"
+#~ msgstr "Verwijderd"
+
+#~ msgid "Admin"
+#~ msgstr "Admin"
+
+#~ msgid "phone"
+#~ msgstr "telefoon"
+
+#~ msgid "Customer name"
+#~ msgstr "Klant naam"

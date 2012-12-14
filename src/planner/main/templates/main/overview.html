@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<div class="container">
+	<table class="table">
+
+		<tr>
+			{% for car in car_list %}
+			<th>{{ car }}</th>
+			{% endfor %}
+		</tr>
+		{% for offset, begin, end in range %}
+		<tr>
+			{% for car in car_list %}
+			<td><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"l j E o" }} - {{ end|date:"l j E o" }}</a></td>
+			{% endfor %}
+		</tr>
+
+		{% endfor %}
+	</table>
+
+</div>
+
+{% endblock %}

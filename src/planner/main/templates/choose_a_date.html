@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<form id="date" name="date" action="" method="post">
+{% csrf_token %}
+
+<select id="id_free_space" name="free_space" size=10 style="width: 30%;">
+{% for key, label in free_space %}
+    <option value="{{ key }}">{{ label }}</option>
+{% endfor %}
+</select>
+<input type="hidden" name="region_id" value="{{ region_id }}" />
+<input type="hidden" name="weight" value="{{ weight }}" />
+<p>
+<button class="btn btn-primary" type="submit">{% trans "Next" %}</button>
+</p>
+</form>
+
+{% endblock %}
