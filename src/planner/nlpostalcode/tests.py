@@ -14,8 +14,8 @@ import factory
     
 class SourceFactory(factory.Factory):
     FACTORY_FOR = Source
-    id = 0
-    name = source = 'foo'
+    id = factory.Sequence(lambda n: n)
+    name = source = factory.Sequence(lambda n: "username%s" % n)
     created = updated = datetime.datetime.now()
 
 
@@ -25,6 +25,7 @@ class CountryFactory(factory.Factory):
     id = 0
     created = updated = datetime.datetime.now()
     name = "Nederland"
+    source = factory.SubFactory(SourceFactory)
     
 
 class ProvinceFactory(factory.Factory):
@@ -34,6 +35,7 @@ class ProvinceFactory(factory.Factory):
     name = "Noord-Holland"
     created = updated = datetime.datetime.now()
     country = factory.SubFactory(CountryFactory)
+    source = factory.SubFactory(SourceFactory)
     
 
 class CityFactory(factory.Factory):
@@ -42,6 +44,7 @@ class CityFactory(factory.Factory):
     id = 0
     created = updated = datetime.datetime.now()
     province = factory.SubFactory(ProvinceFactory)
+    source = factory.SubFactory(SourceFactory)
 
 
 class CitynameFactory(factory.Factory):
@@ -51,44 +54,62 @@ class CitynameFactory(factory.Factory):
     name = 'Amsterdam'
     created = updated = datetime.datetime.now()
     city = factory.SubFactory(CityFactory)
+    source = factory.SubFactory(SourceFactory)
 
 
 class PostcodeFactory(factory.Factory):
     FACTORY_FOR = Postcode
     
-    id = 0
+    id = factory.Sequence(lambda n: n)
     fourpp = 1056
     created = updated = datetime.datetime.now()
     city = factory.SubFactory(CityFactory)
+    source = factory.SubFactory(SourceFactory)
 
 class StreetFactory(factory.Factory):
     FACTORY_FOR = Street
 
-    id = 0
-    even = 0
+    id = factory.Sequence(lambda n: n)
+    even = factory.Sequence(lambda n: 2 * n)
     created = updated = datetime.datetime.now()
     street = "Pieter van der Doesstraat"
     postcode = factory.SubFactory(PostcodeFactory)
     chars = "VE"
+    source = factory.SubFactory(SourceFactory)
 
 class SimpleTest(TestCase):
     
     def setUp(self):
         """ sets up a Django test client """
         self.client = Client()
-        self.source = SourceFactory()
-        self.country = CountryFactory(id=0,source=self.source)
-        self.province = ProvinceFactory(id=0,source=self.source,country=self.country)
-        self.city = CityFactory(id=0, source=self.source, province=self.province)
-        self.cityname = CitynameFactory(id=0,source=self.source,city=self.city,name='Amsterdam')
-        self.postcode = PostcodeFactory(id=0, source=self.source, fourpp=1056, city=self.city)
-        self.street = StreetFactory(id=0, postcode=self.postcode, source=self.source, chars='ve', street="Pieter van der Doesstraat")
-        assert len(Street.objects.all()) == 1
+     
+        builder = PostcodeBuilder()
+        self.postcode = builder.create_amsterdam_postcode_number(1056)
+        self.street = builder.create_street(self.postcode, "Pieter van der Doesstraat", 've')
+        self.street = builder.create_street(self.postcode, "Pieter van der Doesstraat 2", 'vx')
+        assert len(Street.objects.all()) == 2
         streets  = Street.objects.filter(postcode__fourpp=1056).filter(chars='ve')
         assert len(streets.all()) == 1
         
         
     def test_postcode_lookup(self):
-         response = self.client.get("/pc/get/1056ve")
-         assert "Pieter van der Doesstraat" in response.content
+        response = self.client.get("/pc/get/1056ve")
+        assert "Pieter van der Doesstraat" in response.content
              
+             
+class PostcodeBuilder(object):
+    
+    def __init__(self):
+        self.country = CountryFactory()
+        self.province = ProvinceFactory(country=self.country)
+        self.city = CityFactory(province=self.province)
+        self.cityname = CitynameFactory(city=self.city,name='Amsterdam')
+    
+    def create_amsterdam_postcode_number(self, four_digit_number):
+        postcode = PostcodeFactory(fourpp=four_digit_number, city=self.city)
+        return postcode
+    
+    def create_street(self, postcode, name, two_letters):
+        street = StreetFactory(postcode=postcode, chars=two_letters, street=name)
+        return street
+        

@@ -17,8 +17,6 @@ import logging
 @attr('functional', 'cancel')
 class CancelAppointmentTest(TestCase):
     """ tests view.create_appointment """
-    
-    
         
     def setUp(self):
         """ sets up a Django test client """

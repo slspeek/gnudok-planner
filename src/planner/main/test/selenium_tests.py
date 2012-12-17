@@ -9,7 +9,7 @@ import time
 from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
 import os
 from nose.plugins.attrib import attr
-from .__init__ import createTestUsers
+from .__init__ import createTestUsers, createRegion, createTestPostcodes
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
@@ -53,8 +53,9 @@ class DjangoSeleniumTest(LiveServerTestCase):
         self.driver.get(self.live_server_url + reverse('Logout'))
         self.sleep()
         
-    def login(self, username, password, next):
-        self.driver.get(self.live_server_url + "/accounts/login/?next=" + next)
+    def login(self, username, password):
+        #self.driver.get(self.live_server_url + "/accounts/login/?next=" + next)
+        self.go_to_view('Login')
         self.sleep()
         self.set_text_field('id_username', username)
         self.set_text_field('id_password', password)
@@ -70,30 +71,30 @@ class SeleniumTestCase(DjangoSeleniumTest):
     
     
     def setUp(self):
-        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
-        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
-        self.car = CarFactory(name='Zeeburg')
-        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+        createRegion()
+        createTestPostcodes()
         createTestUsers(self)
 
     @attr('make_one')
     def test_make_one_appointment(self):
         """ Makes one appointment and verifies that the details are shown in the listing for that car """
         driver = self.driver
-        self.login('steven', 'jansteven', next=reverse('ChooseARegion', args=[20130101, ]))
+        self.login('steven', 'jansteven')
+        self.go_to_view('ChooseARegion', args=[20130101, ])
         self.set_select_field('id_region', ZUID_OOST)
         self.clickPrimairyButton()
         self.set_select_field('id_free_space', VRIJDAG_11JAN)
         self.clickPrimairyButton()
         self.set_text_field('id_name', 'Ada Lovelace')
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_address', 'Bijlmerdreef')
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
+        #self.set_text_field('id_address', '')
+        #self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
         self.set_text_field('id_stuff', "Bed, boeken en servies")
         self.set_text_field("id_notes", "Lift aanwezig")
+        self.sleep()
         self.clickPrimairyButton()
         self.assertBobyContains("Bed, boeken en servies")
         driver.find_element_by_link_text("Ophaal lijst per dag").click()
@@ -101,7 +102,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.set_text_field('id_date', "04-01-2013 ")
         driver.find_element_by_id("title").click()
         self.clickPrimairyButton()
-        driver.find_element_by_link_text("Zeeburg").click()
+        driver.find_element_by_link_text("Auto Zeeburg").click()
         self.sleep()
         self.assertBobyContains("Bed, boeken en servies")
         self.assertBobyContains("Ada Lovelace")
@@ -116,7 +117,8 @@ class SeleniumTestCase(DjangoSeleniumTest):
     def test_search_appointment(self):
         """ Makes one appointment and verifies that the details are the listing for the drivers """
         driver = self.driver
-        self.login('steven', 'jansteven', next=reverse('ChooseARegion', args=[20130101, ]))
+        self.login('steven', 'jansteven')
+        self.go_to_view('ChooseARegion', args=[20130101, ])
         self.set_select_field('id_region', ZUID_OOST)
         self.clickPrimairyButton()
         self.set_select_field('id_free_space', VRIJDAG_11JAN)
@@ -142,7 +144,8 @@ class SeleniumTestCase(DjangoSeleniumTest):
         """ Make four appointments in the same timeslot, region and date to see that that date is no longer 
             suggested """
         driver = self.driver
-        self.login('steven', 'jansteven', next=reverse('ChooseARegion', args=[20130101, ]))
+        self.login('steven', 'jansteven')
+        self.go_to_view('ChooseARegion', args=[20130101, ])
         self.set_select_field('id_region', ZUID_OOST)
         self.clickPrimairyButton()
         self.set_select_field('id_free_space', VRIJDAG_11JAN)  
@@ -184,8 +187,6 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.sleep()
         self.set_text_field('id_name', "Lidia van de Heuvel")
         self.set_text_field('id_postcode', "1102AX")
-        self.set_text_field('id_address', "Raoul Wallenbergstraat")
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "17")
         driver.find_element_by_id("id_phone").clear()
         driver.find_element_by_id("id_phone").send_keys("020-7654321")
@@ -200,8 +201,6 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.clickPrimairyButton()
         self.set_text_field('id_name', "Mirjam de Leeuw")
         self.set_text_field('id_postcode', "1102ZA")
-        self.set_text_field('id_address', "Chestertonlaan")
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "17")
         driver.find_element_by_id("id_phone").clear()
         driver.find_element_by_id("id_phone").send_keys("020-7654321")
@@ -214,7 +213,7 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.set_text_field('id_date', "04-01-2013 ")
         driver.find_element_by_id("title").click()
         self.clickPrimairyButton()
-        driver.find_element_by_link_text("Zeeburg").click()
+        driver.find_element_by_link_text("Auto Zeeburg").click()
         self.sleep()
         self.assertBobyContains("Bed, boeken en servies")
         self.assertBobyContains("Ada Lovelace")
@@ -244,29 +243,28 @@ class EditTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     
     def setUp(self):
-        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
-        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
-        self.car = CarFactory(name='Zeeburg')
-        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
         createTestUsers(self)
+        createRegion()
+        createTestPostcodes()
     
+    @attr('the')
     def test_edit_appointment(self):
         """ Makes one appointment and edits that appointment."""
         driver = self.driver
-        self.login('steven', 'jansteven', next=reverse('ChooseARegion', args=[20130101, ]))
+        self.login('steven', 'jansteven')
+        self.go_to_view('ChooseARegion', args=[20130101, ])
         self.set_select_field('id_region', ZUID_OOST)
         self.clickPrimairyButton()
         self.set_select_field('id_free_space', VRIJDAG_04JAN)
         self.clickPrimairyButton()
         self.set_text_field('id_name', 'Ada Lovelace')
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_address', 'Bijlmerdreef')
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
         self.set_text_field('id_stuff', "Bed, boeken en servies")
         self.set_text_field('id_notes', "Lift aanwezig")
+        self.sleep()
         self.clickPrimairyButton()
         self.sleep()
         # Appointment has been saved
@@ -284,7 +282,7 @@ class EditTestCase(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Bed, boeken, servies en magnetron")
         self.go_to_view('AppointmentEdit', kwargs={ 'appointment_id':1, 'date_iso':20130101})
-        self.set_select_field("id_free_space", "11 January : Vrijdag : 9 - 12 - Zeeburg")
+        self.set_select_field("id_free_space", VR_11JAN)
         self.clickPrimairyButton()
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Bed, boeken, servies en magnetron")
@@ -293,7 +291,8 @@ class EditTestCase(DjangoSeleniumTest):
     def test_edit_big_appointment(self):
         """ Makes one big appointment and edits that appointment."""
         driver = self.driver
-        self.login('steven', 'jansteven', next=reverse('ChooseARegion', args=[20130101, ]))
+        self.login('steven', 'jansteven')
+        self.go_to_view('ChooseARegion', args=[20130101, ])
         self.set_select_field('id_region', ZUID_OOST)
         self.set_select_field("id_weight", "Een dagdeel")
         self.clickPrimairyButton()
@@ -303,8 +302,6 @@ class EditTestCase(DjangoSeleniumTest):
         self.sleep()
         self.set_text_field('id_name', 'Ada Lovelace')
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_address', 'Bijlmerdreef')
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -332,7 +329,7 @@ class EditTestCase(DjangoSeleniumTest):
         self.assertBobyContains("Bed, boeken, servies en magnetron")
         
         self.go_to_view('AppointmentEdit', kwargs={ 'appointment_id':1, 'date_iso':20130101})
-        self.set_select_field("id_free_space", "11 January : Vrijdag : 9 - 12 - Zeeburg")
+        self.set_select_field("id_free_space", VR_11JAN)
         self.clickPrimairyButton()
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Bed, boeken, servies en magnetron")
@@ -344,24 +341,21 @@ class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     
     def setUp(self):
-        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
-        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
-        self.car = CarFactory(name='Zeeburg')
-        self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+        createRegion()
+        createTestPostcodes()
         createTestUsers(self)
     
     def test_view_one_appointment(self):
         """ Makes one appointment and edits that appointment."""
         driver = self.driver
-        self.login('steven', 'jansteven', next=reverse('ChooseARegion', args=[20130101, ]))
+        self.login('steven', 'jansteven')
+        self.go_to_view('ChooseARegion', args=[20130101, ])
         self.set_select_field('id_region', ZUID_OOST)
         self.clickPrimairyButton()
         self.set_select_field('id_free_space', VRIJDAG_04JAN)
         self.clickPrimairyButton()
         self.set_text_field('id_name', 'Ada Lovelace')
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_address', 'Bijlmerdreef')
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -371,7 +365,7 @@ class ViewersTestCase(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.logout()
-        self.login("alien", "jansteven", "/")
+        self.login("alien", "jansteven")
         self.go_to_view('WeekView', args=[1, 0, 20130101])
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
         self.sleep()

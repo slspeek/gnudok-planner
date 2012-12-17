@@ -3,7 +3,25 @@ import factory
 from django.contrib.auth.models import User
 import datetime
 from django_factory_boy.auth import UserF, GroupF
+from planner.nlpostalcode.tests import PostcodeBuilder
+from planner.area.test import IntervalFactory
 
+def createTestPostcodes():
+    builder = PostcodeBuilder()
+    code = builder.create_amsterdam_postcode_number(1102)
+    builder.create_street(code, 'Bijlmerdreef', 'ab')
+    builder.create_street(code, 'Ken Saro-Wiwastraat', 'at')
+    builder.create_street(code, 'Raoul Wallenbergstraat', 'ax')
+    builder.create_street(code, 'Chestertonlaan', 'za')
+
+def createRegion():
+    region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
+    timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
+    car = CarFactory(name='Auto Zeeburg')
+    rule = RuleFactory(timeslot=timeslot, car=car, region=region)
+    interval = IntervalFactory(begin='1102aa', end='1102zz', region=region)
+    
+        
 def createTestUsers(self):
     self.group_callcenter = GroupF(name='Callcenter')
     self.group_viewers = GroupF(name='Viewers')
@@ -52,13 +70,6 @@ class CustomerFactory(factory.Factory):
     email = "wk@example.com"
 
 
-class UserFactory(factory.Factory):
-    FACTORY_FOR = User
-
-    username = "nancy"
-    password = "nancy-secret"
-
-
 class CalendarFactory(factory.Factory):
     FACTORY_FOR = Calendar
 
@@ -73,7 +84,7 @@ class AppointmentFactory(factory.Factory):
 
     calendar = factory.SubFactory(CalendarFactory)
     customer = factory.SubFactory(CustomerFactory)
-    employee = factory.SubFactory(UserFactory)
+    employee = factory.SubFactory(UserF)
     stuff = "Gold, Platina and lots of Silver"
     notes = "Bring boxes"
     created = datetime.datetime.now()
