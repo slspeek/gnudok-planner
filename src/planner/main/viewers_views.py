@@ -1,6 +1,7 @@
 """ Read-only views """
 from __future__ import absolute_import
 from .__init__ import tomorrow, get_date_from_iso, group_required, to_iso
+from django.contrib.auth.models import User
 import logging
 import datetime
 from django.shortcuts import render_to_response, redirect
@@ -33,8 +34,13 @@ def appointments_made_today(request, date_iso):
                                "appointment_list": appointment_list,
                                })
 
-
-
+@group_required('Viewers')
+def appointments_made_by(request, employee_id):
+    appointment_list = Appointment.actives.filter(employee__pk=employee_id)
+    return render_to_response("appointments_made_by.html", 
+                              {"employee": User.objects.get(pk=employee_id),
+                               "appointment_list": appointment_list,
+                               })
 
 @group_required('Viewers')
 def overview(request, date_iso):
