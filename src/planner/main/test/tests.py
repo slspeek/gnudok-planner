@@ -18,7 +18,7 @@ import logging
 class CancelAppointmentTest(TestCase):
     """ tests view.create_appointment """
     
-    fixtures = ['test_data.json']
+    
         
     def setUp(self):
         """ sets up a Django test client """
@@ -38,6 +38,7 @@ class CancelAppointmentTest(TestCase):
         self.appointment = AppointmentFactory(calendar=self.calendar,
                                               customer=self.customer,
                                               stuff='Machines')
+        createTestUsers(self)
 
     @attr('fullsubmit')
     def test_cancel_appointment(self):

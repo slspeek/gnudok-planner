@@ -7,11 +7,10 @@ from django_webtest import WebTest
 import logging
 from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 import datetime
+from .__init__ import createTestUsers
 
 @attr('functional', 'webtest')
 class MyTestCase(WebTest):
-
-    fixtures = ['test_data.json',]
     
     def setUp(self):
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
@@ -20,6 +19,7 @@ class MyTestCase(WebTest):
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
         self.date = datetime.date(year=2012,month=04,day=01) 
         self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
+        createTestUsers(self)
          
     def testNewAppointment(self):
         login = self.app.get('/main/edit/create/create').follow().follow()

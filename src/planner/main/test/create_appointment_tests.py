@@ -9,13 +9,12 @@ from django.test.testcases import TestCase
 import datetime
 from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 from nose.plugins.attrib import attr
+from .__init__ import createTestUsers
 
 @attr('functional')
 class CreateAppointmentTest(TestCase):
     """ tests view.create_appointment """
     
-    fixtures = ['test_data.json']
-        
     def setUp(self):
         """ sets up a Django test client """
         self.client = Client()
@@ -25,7 +24,8 @@ class CreateAppointmentTest(TestCase):
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
         self.date = datetime.date(year=2012,month=04,day=01) 
         self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-
+        createTestUsers(self)
+        
     @attr('fullsubmit')
     def testFullSubmit(self):
         """ tests a successfull submit """

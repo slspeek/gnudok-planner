@@ -9,12 +9,15 @@ import time
 from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
 import os
 from nose.plugins.attrib import attr
+from .__init__ import createTestUsers
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
 VRIJDAG_04JAN = "04 January : Vrijdag : 9 - 12 - Zeeburg"
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
  
+
+
 class DjangoSeleniumTest(LiveServerTestCase):
     """ Base class for the django selenium testing """
 
@@ -64,13 +67,14 @@ class DjangoSeleniumTest(LiveServerTestCase):
 @attr('selenium', 'big') 
 class SeleniumTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
-    fixtures = ['test_data.json']
+    
     
     def setUp(self):
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
         self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
         self.car = CarFactory(name='Zeeburg')
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+        createTestUsers(self)
 
     @attr('make_one')
     def test_make_one_appointment(self):
@@ -238,13 +242,13 @@ VR_11JAN = "11 January : Vrijdag : 9 - 12 - Auto Zeeburg"
 @attr('selenium', 'edit')
 class EditTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
-    fixtures = ['test_data.json']
     
     def setUp(self):
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
         self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
         self.car = CarFactory(name='Zeeburg')
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+        createTestUsers(self)
     
     def test_edit_appointment(self):
         """ Makes one appointment and edits that appointment."""
@@ -338,13 +342,13 @@ class EditTestCase(DjangoSeleniumTest):
 @attr('selenium', 'viewers')
 class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
-    fixtures = ['test_data.json']
     
     def setUp(self):
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
         self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
         self.car = CarFactory(name='Zeeburg')
         self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+        createTestUsers(self)
     
     def test_view_one_appointment(self):
         """ Makes one appointment and edits that appointment."""
