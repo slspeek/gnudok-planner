@@ -36,7 +36,7 @@ def appointments_made_today(request, date_iso):
 
 @group_required('Viewers')
 def appointments_made_by(request, employee_id):
-    appointment_list = Appointment.actives.filter(employee__pk=employee_id)
+    appointment_list = Appointment.actives.filter(employee__pk=employee_id).order_by('calendar__date')
     return render_to_response("appointments_made_by.html", 
                               {"employee": User.objects.get(pk=employee_id),
                                "appointment_list": appointment_list,
