@@ -48,5 +48,5 @@ class RegionChooseForm(Form):
     weight = forms.ChoiceField(label=_('weight'), choices=CHOICES, initial=1)
     
 class EmployeeChooseForm(Form):
-    employee = forms.ModelChoiceField(label=_('employee'), queryset=User.objects.all()) 
+    employee = forms.ModelChoiceField(label=_('employee'), queryset=User.objects.filter(groups__name='Callcenter')) 
     
