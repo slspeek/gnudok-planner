@@ -10,6 +10,19 @@ from .models import Appointment, Calendar, Car
 from .forms import CalendarSearchForm, DatePickForm
 from .schedule import get_region, get_total_weight
 
+
+@group_required('Viewers')
+def appointment_detail(request, pk):
+    appointment = Appointment.objects.get(pk=int(pk))
+    region = get_region(appointment.calendar)
+    return render_to_response("main/appointment_detail.html", 
+                              {
+                               "object": appointment,
+                               "region": region,
+                               })
+
+
+
 @group_required('Viewers')
 def overview(request, date_iso):
     if not date_iso:
@@ -84,8 +97,9 @@ def render_appointment_list(request, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
     return render_to_response('appointment_list.html',
                                {"title": _("Appointment list"),
-                                'Car': calendar.car,
+                                'car': calendar.car,
                                 'date': calendar.date,
+                                'region': get_region(calendar),
                                 'timeslot': calendar.timeslot,
                                 'app_list': calendar.active_appoinments().all()
                                 })

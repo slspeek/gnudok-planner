@@ -8,8 +8,16 @@
 <div class="container">
 	<table class="table">
 		<tr>
-			<th colspan="2">{% trans "Appointment to check in at" %} {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
+			<th>{% trans "Date and time" %}</th><th> {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
+			
 		</tr>
+		<tr>
+			<th>{% trans "Region" %}</th><th>{{ region.name }}</th>
+		</tr>
+		<tr>
+			<th>{% trans "Car" %}</th><th>{{ object.calendar.car }}</th>
+		</tr>
+		
 		<tr>
 			<th>{% trans "Name" %}</th><td>{{ object.customer.name }}</td>
 		</tr>

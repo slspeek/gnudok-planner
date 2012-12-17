@@ -14,7 +14,7 @@ class AppointmentInline(admin.TabularInline):
 
 class CalendarAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
-    
+        
     inlines = [AppointmentInline,]
     
 class AppointmentAdmin(admin.ModelAdmin):
