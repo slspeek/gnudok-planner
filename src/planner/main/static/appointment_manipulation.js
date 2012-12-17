@@ -18,13 +18,14 @@ var find_customer = function() {
 	var addition = $('#id_additions')[0].value
 
 	if (postcode.length === 6) {
+		console.log("Postcode: " + postcode + ".")
 		$.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, set_customer_data);
 	}
 }
 
 var get_normalized_postcode = function() {
 	var postcode = $('#id_postcode')[0].value
-	return postcode.replace(/ /, '').toUpperCase();
+	return postcode.replace(/ /g, '').toUpperCase();
 	
 };
 $(function() {
