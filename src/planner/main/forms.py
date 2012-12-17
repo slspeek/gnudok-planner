@@ -6,6 +6,7 @@ Created on 15 nov. 2012
 from __future__ import absolute_import
 from django import forms
 from bootstrap_toolkit.widgets import BootstrapDateInput
+from django.contrib.auth.models import User
 from django.forms.models import ModelForm
 from .models import Appointment, Customer, Region
 from django.forms.forms import Form
@@ -45,3 +46,7 @@ class RegionChooseForm(Form):
                 (4, _("Entire half-day")),
                  )
     weight = forms.ChoiceField(label=_('weight'), choices=CHOICES, initial=1)
+    
+class EmployeeChooseForm(Form):
+    employee = forms.ModelChoiceField(label=_('employee'), queryset=User.objects.all()) 
+    

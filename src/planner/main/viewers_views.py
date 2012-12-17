@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from .models import Appointment, Calendar, Car
-from .forms import CalendarSearchForm, DatePickForm
+from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region, get_total_weight
 
 
@@ -22,6 +22,18 @@ def appointment_detail(request, pk):
                                "region": region,
                                })
 
+@group_required('Viewers')
+def choose_an_employee(request):
+    if request.POST:
+        form = EmployeeChooseForm(request.POST)
+        if form.is_valid():
+            employee = form.cleaned_data['employee']
+            return redirect(appointments_made_by, employee.pk)
+    else:
+        form = EmployeeChooseForm()
+    return render_to_response('choose_an_employee.html',
+                              {"form": form, "title": _("Choose an employee") },
+                               context_instance=RequestContext(request))
 
 @group_required('Viewers')
 def appointments_made_today(request, date_iso):
