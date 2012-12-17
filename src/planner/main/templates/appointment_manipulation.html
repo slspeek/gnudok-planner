@@ -21,7 +21,7 @@
 			} else {
 				option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
 			}
-			$('#free_space').append(option);
+			$('#id_free_space').append(option);
 		}
 	};
 	var get_updates = function() {
@@ -51,7 +51,7 @@
 		<div class="span4">
 			<div>
 				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
-				<select id="free_space" name="free_space" size=10 style="width: 100%;"></select>
+				<select id="id_free_space" name="free_space" size=10 style="width: 100%;"></select>
 			</div>
 			<button class="btn btn-primary" type="submit">
 				{% trans "Save" %}

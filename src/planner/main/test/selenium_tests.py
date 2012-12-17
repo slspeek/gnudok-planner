@@ -11,9 +11,10 @@ import os
 from nose.plugins.attrib import attr
 from .__init__ import createTestUsers, createRegion, createTestPostcodes
 
-VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Zeeburg"
+VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
-VRIJDAG_04JAN = "04 January : Vrijdag : 9 - 12 - Zeeburg"
+VRIJDAG_04JAN = "04 January : Vrijdag : 9 - 12 - Auto Zeeburg"
+
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
  
 
@@ -306,8 +307,7 @@ class EditTestCase(DjangoSeleniumTest):
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
         self.set_text_field('id_stuff', "Bed, boeken en servies")
-        driver.find_element_by_id("id_notes").clear()
-        driver.find_element_by_id("id_notes").send_keys("Lift aanwezig")
+        self.set_text_field('id_notes', "Lift aanwezig")
         self.clickPrimairyButton()
         self.sleep()
         # Appointment has been saved
@@ -360,14 +360,44 @@ class ViewersTestCase(DjangoSeleniumTest):
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
         self.set_text_field('id_stuff', "Bed, boeken en servies")
-        driver.find_element_by_id("id_notes").clear()
-        driver.find_element_by_id("id_notes").send_keys("Lift aanwezig")
+        self.set_text_field('id_notes', "Lift aanwezig")
         self.clickPrimairyButton()
         # Appointment has been saved
         self.logout()
         self.login("alien", "jansteven")
         self.go_to_view('WeekView', args=[1, 0, 20130101])
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Bed, boeken en servies")
+        self.assertBobyContains("4 januari")
+            
+@attr('selenium', 'new_edit')
+class AppointmentEditExtra(DjangoSeleniumTest):
+    """ Appointment create and edit test """
+    
+    def setUp(self):
+        createRegion()
+        createTestPostcodes()
+        createTestUsers(self)
+    
+    def test_create_one_appointment(self):
+        """ Makes one appointment """
+        self.login('steven', 'jansteven')
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_number', "144")
+        self.set_text_field('id_additions', "sous")
+        self.set_text_field('id_phone', '020-7123456')
+        self.set_text_field('id_stuff', "Bed, boeken en servies")
+        self.set_text_field('id_notes', "Lift aanwezig")
+        self.sleep()
+        self.sleep()
+        self.set_select_field('id_free_space', VRIJDAG_04JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
         self.sleep()
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Bed, boeken en servies")
