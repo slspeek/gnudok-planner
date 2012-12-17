@@ -22,6 +22,19 @@ def appointment_detail(request, pk):
                                })
 
 
+@group_required('Viewers')
+def appointments_made_today(request, date_iso):
+    if not date_iso:
+        date_iso=datetime.date.today().strftime('%Y%m%d')
+    date = get_date_from_iso(date_iso)
+    appointment_list = Appointment.actives.filter(created__range=[date, date + datetime.timedelta(days=1 )])
+    return render_to_response("appointments_today.html", 
+                              {"date": date,
+                               "appointment_list": appointment_list,
+                               })
+
+
+
 
 @group_required('Viewers')
 def overview(request, date_iso):
