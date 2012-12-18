@@ -88,6 +88,7 @@ def weekview(request, car_id=0 , offset=0, date_iso=""):
         free_count = 4 - get_total_weight(app_list)
         cal.free = free_count
         cal.region = get_region(cal)
+        cal.appointments = cal.active_appoinments().all()
         
     car = Car.objects.get(pk=int(car_id))
     return render_to_response("calendar_week.html",
@@ -145,8 +146,22 @@ def calendar_search_view(request):
     else:
         search_form = CalendarSearchForm(request.POST)
         if search_form.is_valid():
-            search_results = Appointment.actives.filter(customer__name__icontains=search_form.cleaned_data['name'])
+            search_results = Appointment.actives
+            name = search_form.cleaned_data['name']
+            if name:
+                search_results = search_results.filter(customer__name__icontains=name)
+            postcode = search_form.cleaned_data['postcode']
+            if postcode:
+                search_results = search_results.filter(customer__postcode__icontains=postcode)
+            street = search_form.cleaned_data['street']
+            if street:
+                search_results = search_results.filter(customer__address__icontains=street)
+            date = search_form.cleaned_data['date']
+            if date:
+                search_results = search_results.filter(calendar__date=date)
             searched = True
+            if not name and (not postcode) and not date and not street:
+                search_results = search_results.all()
             result_count = len(search_results)
     return render_to_response('calendar_search_view.html',
                               {"search_form": search_form,

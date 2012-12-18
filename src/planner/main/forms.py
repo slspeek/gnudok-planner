@@ -14,8 +14,11 @@ from django.utils.translation import ugettext_lazy as _
 
 class CalendarSearchForm(forms.Form):
     name = forms.CharField(label=_('name'), required=False)
-    #postcode = forms.CharField(required=False)
-    #date = forms.DateField(required=False)
+    postcode = forms.CharField(label=_('postalcode'), required=False)
+    street = forms.CharField(label=_('street'), required=False)
+    date = forms.DateField(label=_('date'),
+                            required=False,
+                            widget=BootstrapDateInput())
    
 class DatePickForm(forms.Form):
     date = forms.DateField(widget=BootstrapDateInput())

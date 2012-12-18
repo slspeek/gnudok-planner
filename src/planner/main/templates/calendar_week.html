@@ -33,7 +33,7 @@
 		<th>{% trans "Remove" %}</th>
 	</tr>
 	{% endif %}
-	{% for appointment in calendar.appointment_set.all %}
+	{% for appointment in calendar.appointments %}
 		<tr>
 			<td colspan="2">{{ appointment.customer.name }}</td>
 			<td colspan="2">{{ appointment.customer.address }} {{ appointment.customer.number }} {{ appointment.customer.additions }}</td>
