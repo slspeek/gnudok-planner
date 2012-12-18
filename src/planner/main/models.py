@@ -55,10 +55,10 @@ add_introspection_rules([], ["^planner.main\.models\.PhoneNumberField"])
 
 class Customer(models.Model):
     """ Representa a customer """
-    name = models.CharField(_('name'), max_length=30)
     postcode = models.CharField(_('postalcode'), max_length=14)
     number = models.CharField(_('number'), max_length=10)
     additions = models.CharField(_('additions'), max_length=10, blank=True)
+    name = models.CharField(_('name'), max_length=30)
     address = models.CharField(_('address'), max_length=120)
     town = models.CharField(_('town'), max_length=120)
     #phone = models.CharField(_('phone'), max_length=20, form_class=nl_forms.NLPhoneNumberField)
