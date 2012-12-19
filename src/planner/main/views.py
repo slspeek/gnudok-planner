@@ -40,7 +40,8 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         hidden_form = HiddenForm(request.POST)
         if hidden_form.is_valid():
             customer_id = hidden_form.cleaned_data['found_customer_id']
-            appointment.customer = Customer.objects.get(pk=customer_id)
+            if customer_id:
+                appointment.customer = Customer.objects.get(pk=customer_id)
         appointment_form = BigAppointmentForm(request.POST,instance=appointment)
         customer_form = CustomerForm(request.POST,instance=appointment.customer)
         free_space = request.POST.get('free_space', '') 

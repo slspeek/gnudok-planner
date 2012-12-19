@@ -6,10 +6,13 @@ from django.core.urlresolvers import reverse
 
 
 import time
-from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory
+import datetime
+from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
+from .__init__ import CustomerFactory, AppointmentFactory
 import os
 from nose.plugins.attrib import attr
-from .__init__ import createTestUsers, createRegion, createTestPostcodes
+from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment
+from planner.main.models import Customer
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
@@ -70,11 +73,11 @@ class DjangoSeleniumTest(LiveServerTestCase):
 class SeleniumTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     
-    
     def setUp(self):
-        createRegion()
+        createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
+        super(SeleniumTestCase, self).setUp()
 
     @attr('make_one')
     def test_make_one_appointment(self):
@@ -114,9 +117,9 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.assertBobyContains("020-7123456")
         self.assertBobyContains("sous")
         
-        
+    @attr('search')    
     def test_search_appointment(self):
-        """ Makes one appointment and verifies that the details are the listing for the drivers """
+        """ Makes one appointment and verifies that it is found in search """
         driver = self.driver
         self.login('steven', 'jansteven')
         self.go_to_view('ChooseARegion', args=[20130101, ])
@@ -126,8 +129,6 @@ class SeleniumTestCase(DjangoSeleniumTest):
         self.clickPrimairyButton()
         self.set_text_field('id_name', 'Ada Lovelace')
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_address', 'Bijlmerdreef')
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
         self.set_text_field('id_number', "144")
         self.set_text_field('id_phone', '020-7123456')
         self.set_text_field('id_stuff', "Bed, boeken en servies")
@@ -140,6 +141,9 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn").click()
         self.sleep()
         self.assertBobyContains("Ada Lovelace")
+        #driver.quit()
+        self.sleep()
+        self.go_to_view('ChooseARegion', args=[20130101, ]) #XXX
 
     def test_make_four_appointments(self):
         """ Make four appointments in the same timeslot, region and date to see that that date is no longer 
@@ -245,7 +249,7 @@ class EditTestCase(DjangoSeleniumTest):
     
     def setUp(self):
         createTestUsers(self)
-        createRegion()
+        createRegion(self)
         createTestPostcodes()
     
     @attr('the')
@@ -340,36 +344,25 @@ class EditTestCase(DjangoSeleniumTest):
 class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
     
+
+   
+
     def setUp(self):
-        createRegion()
+        createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
+        adaMakesAppointment(self)
     
     def test_view_one_appointment(self):
-        """ Makes one appointment and edits that appointment."""
+        """ Makes one appointment and verifies it be viewing the list as Viewer."""
         driver = self.driver
-        self.login('steven', 'jansteven')
-        self.go_to_view('ChooseARegion', args=[20130101, ])
-        self.set_select_field('id_region', ZUID_OOST)
-        self.clickPrimairyButton()
-        self.set_select_field('id_free_space', VRIJDAG_04JAN)
-        self.clickPrimairyButton()
-        self.set_text_field('id_name', 'Ada Lovelace')
-        self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_number', "144")
-        self.set_text_field('id_additions', "sous")
-        self.set_text_field('id_phone', '020-7123456')
-        self.set_text_field('id_stuff', "Bed, boeken en servies")
-        self.set_text_field('id_notes', "Lift aanwezig")
-        self.clickPrimairyButton()
-        # Appointment has been saved
-        self.logout()
         self.login("alien", "jansteven")
         self.go_to_view('WeekView', args=[1, 0, 20130101])
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
         self.sleep()
         self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Bed, boeken en servies")
+        self.assertBobyContains("Virtual Machines")
+        self.assertBobyContains("Lift aanwezig")
         self.assertBobyContains("4 januari")
             
 @attr('selenium', 'new_edit')
@@ -377,7 +370,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
     """ Appointment create and edit test """
     
     def setUp(self):
-        createRegion()
+        createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
     
@@ -403,3 +396,95 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Bed, boeken en servies")
         self.assertBobyContains("4 januari")
             
+    def test_edit_appointment(self):
+        """ Makes edit appointment """
+        adaMakesAppointment(self)
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+
+        self.set_text_field('id_stuff', "Aantekeningen")
+        self.set_text_field('id_notes', "Eerste programmeur")
+        self.sleep()
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Aantekeningen")
+        self.assertBobyContains("4 januari")
+    
+    def test_create_follow_up(self):
+        """ Makes edit appointment """
+        adaMakesAppointment(self)
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=['create', 1, 20130101, ])
+
+        self.set_text_field('id_stuff', "Oude wiskunde boeken")
+        self.set_text_field('id_notes', "Er een programmeertaal naar haar genoemd")
+        #self.sleep()
+        #self.sleep()
+        self.set_select_field('id_free_space', VR_11JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Oude wiskunde boeken")
+        self.assertBobyContains("11 januari")
+
+    @attr('right_now')
+    def test_existing_cutomer(self):
+        """ Makes edit appointment """
+        adaMakesAppointment(self)
+        self.appointment.delete()
+        assert Customer.objects.all().exists()
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+        
+        self.set_text_field('id_postcode', '1102AB')
+        self.sleep()
+        self.set_text_field('id_number', "42")
+        self.sleep()
+        self.set_text_field('id_additions', "")
+        self.sleep()
+        self.set_text_field('id_stuff', "Oude wiskunde boeken")
+        self.set_text_field('id_notes', "Er een programmeertaal naar haar genoemd")
+        self.sleep()
+        #
+        self.set_select_field('id_free_space', VR_11JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Oude wiskunde boeken")
+        self.assertBobyContains("11 januari")
+
+    
+    def test_existing_cutomer_at_first(self):
+        """ Makes edit appointment """
+        adaMakesAppointment(self)
+        self.appointment.delete()
+        assert Customer.objects.all().exists()
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_number', "42")
+        self.set_text_field('id_additions', "")
+        self.sleep()
+        self.set_text_field('id_number', "43")
+        self.set_text_field('id_stuff', "Oude wiskunde boeken")
+        self.set_text_field('id_notes', "Er een programmeertaal naar haar genoemd")
+        #self.sleep()
+        #self.sleep()
+        self.set_select_field('id_free_space', VR_11JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Oude wiskunde boeken")
+        self.assertBobyContains("11 januari")
+        assert len(Customer.objects.all()) == 2

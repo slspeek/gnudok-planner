@@ -9,7 +9,7 @@ from django.test.testcases import TestCase
 from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
 
-@attr('functional')
+@attr('functional', 'settings')
 class TestNoAppointmentsOnCalendar(TestCase):
 
     def setUp(self):
@@ -20,6 +20,10 @@ class TestNoAppointmentsOnCalendar(TestCase):
         date = datetime.date(2012, 10, 29)
         result = get_free_count(date, self.rule)
         self.assertEqual(4, result, "Expected 4 free places")
+        
+    def test_settings(self):
+        import planner.settings as s
+        print s.MEDIA_ROOT
 
 @attr('functional')
 class TestAppointmentCalendarPresent(TestCase):

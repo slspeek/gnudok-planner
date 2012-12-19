@@ -38,7 +38,7 @@ class CustomerForm(ModelForm):
         model = Customer
 
 class HiddenForm(forms.Form):
-    found_customer_id = forms.IntegerField(widget=forms.HiddenInput())
+    found_customer_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     
     
 class RegionChooseForm(Form):

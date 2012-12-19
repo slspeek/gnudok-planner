@@ -7,7 +7,7 @@ from .views import create_appointment, choose_a_date,\
 from .viewers_views import display_date_form,\
     render_appointment_list, choose_calendar, \
     calendar_search_view, weekview, overview, \
-    appointment_detail, appointments_made_today, appointments_made_by, choose_an_employee
+    appointment_detail, appointments_by_date, appointments_made_by, choose_an_employee
 from .views import appointment_manipulation
 from .views import get_available_dates, get_customer
     
@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     url(r'^region/(?P<date_iso>\d{0,8})', chose_a_region, name='ChooseARegion'),
     (r'^search/', calendar_search_view),
     url(r'^week/(?P<car_id>\d+)/(?P<offset>[-]?\d+)/(?P<date_iso>\d{0,8})$', weekview, name='WeekView'),
-    url(r'^made_at/(?P<date_iso>\d{0,8})$', appointments_made_today, name='AppointmentsToday'),
+    url(r'^made_at/(?P<date_iso>\d{0,8})$', appointments_by_date, name='AppointmentsToday'),
     url(r'^made_by/(?P<employee_id>\d+)', appointments_made_by, name='AppointmentsMadeBy'),
     url(r'^employee/', choose_an_employee, name='ChooseAnEmployee'),
 )

@@ -36,7 +36,7 @@ def choose_an_employee(request):
                                context_instance=RequestContext(request))
 
 @group_required('Viewers')
-def appointments_made_today(request, date_iso):
+def appointments_by_date(request, date_iso):
     if not date_iso:
         date_iso=datetime.date.today().strftime('%Y%m%d')
     date = get_date_from_iso(date_iso)

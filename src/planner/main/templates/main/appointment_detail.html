@@ -34,7 +34,7 @@
 			<th>{% trans "City" %}</th><td>{{ object.customer.town }}</td>
 		</tr>
 		<tr>
-			<th>{% trans "Weight" %}</th><td>{{ object.weight }}</td>
+			<th>{% trans "Weight" %}</th><td>{{ object.get_weight_display }}</td>
 		</tr>
 		<tr>
 			<th>{% trans "Stuff" %}</th><td>{{ object.stuff }}</td>

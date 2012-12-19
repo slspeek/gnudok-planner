@@ -14,12 +14,12 @@ def createTestPostcodes():
     builder.create_street(code, 'Raoul Wallenbergstraat', 'ax')
     builder.create_street(code, 'Chestertonlaan', 'za')
 
-def createRegion():
-    region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
-    timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
-    car = CarFactory(name='Auto Zeeburg')
-    rule = RuleFactory(timeslot=timeslot, car=car, region=region)
-    interval = IntervalFactory(begin='1102aa', end='1102zz', region=region)
+def createRegion(self):
+    self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost') 
+    self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
+    self.car = CarFactory(name='Auto Zeeburg')
+    self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
+    self.interval = IntervalFactory(begin='1102aa', end='1102zz', region=self.region)
     
         
 def createTestUsers(self):
@@ -31,6 +31,20 @@ def createTestUsers(self):
     self.user_steven.save()
     self.user_alien.groups = [ self.group_viewers ]
 
+def adaMakesAppointment(self):
+    self.date = datetime.date(year=2013, month=01, day=04)
+    self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
+    self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB', 
+        number=42, 
+        address='Bijlmerdreef', 
+        town='Amsterdam', 
+        phone='06-12345678')
+    self.appointment = AppointmentFactory(calendar=self.calendar,
+        created=datetime.date(year=2012,month=12,day=20), 
+        customer=self.customer, 
+        employee=self.user_steven,
+        stuff='Virtual Machines', notes='Lift aanwezig')
+    
 class CarFactory(factory.Factory):
     FACTORY_FOR = Car
     

@@ -18,6 +18,7 @@
                         <th>{% trans "City" %}</th>
                         <th>{% trans "Phone" %}</th>
                         <th>{% trans "Stuff" %}</th>
+                        <th>{% trans "Notes" %}</th>
                         <th>{% trans "Made by" %}</th>
                         <th>{% trans "View" %}</th>
                 </tr>
@@ -28,8 +29,11 @@
                 	<td>{{ object.calendar.date }}</td>
                         <td>{{ object.customer.name }}</td>
                         <td>{{ object.customer.address }} {{ object.customer.number }} {{ object.customer.additions }}</td>
-                        <td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
-                        <td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
+                        <td>{{ object.customer.postcode }}</td>
+                        <td>{{ object.customer.town }}</td>
+                        <td>{{ object.customer.phone }}</td>
+                        <td>{{ object.stuff }}</td>
+                        <td>{{ object.notes }}</td>
                         <td>{{ object.employee.first_name }} {{ object.employee.last_name }}</td>
                         <td><a href="{% url AppointmentView object.pk  %}"><i class="icon-eye-open"></i></a></td>
                 </tr>

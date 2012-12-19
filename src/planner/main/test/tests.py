@@ -12,6 +12,7 @@ from django.test.testcases import TestCase
 from nose.plugins.attrib import attr
 from django.test.client import Client
 import logging
+from django.core.urlresolvers import reverse
 
 
 @attr('functional', 'cancel')
@@ -45,7 +46,7 @@ class CancelAppointmentTest(TestCase):
         assert len(Appointment.objects.all()) == 1
         assert len(Customer.objects.all()) == 1
         self.client.login(username='steven', password='jansteven')
-        response = self.client.get("/main/app/cancel/%d" % (self.appointment.pk),
+        response = self.client.get(reverse('CancelAppointment', args=[self.appointment.pk,]),
                                     {}, follow=True)
         assert response.status_code == 200
         assert 'Alan Turing' in response.content
