@@ -67,16 +67,21 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
      context_instance=RequestContext(request))
 
 @group_required('Callcenter') 
-def get_available_dates(request, postalcode, weight, date_iso):
+def get_available_dates(request, postalcode, weight, date_iso, unrestricted=False):
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s" % (postalcode, weight))
-    region = get_region_for_postcalcode(postalcode)
+    if unrestricted:
+        region = None
+        region_code = _("Unrestricted")
+    else:
+        region = get_region_for_postcalcode(postalcode)
+        region_code = region.name
     available_dates = get_free_entries(get_date_from_iso(date_iso),
                                        28, region, int(weight))
     dates = []
     for a_date in available_dates:
         dates.append((a_date[0], a_date[1]))
-    data = {'region':region.name, 'dates': dates }
+    data = {'region':region_code, 'dates': dates }
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype='application/json')
 

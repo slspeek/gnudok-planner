@@ -11,7 +11,7 @@
 	"use strict";
 	var set_data = function(data) {
 		$('#region_label').text(data.region);
-		$('#free_space').empty();
+		$('#id_free_space').empty();
 		for (var i = 0, len = data.dates.length; i < len; i++) {
 			var date = data.dates[i];
 			var calendar_id = date[0];
@@ -24,11 +24,24 @@
 			$('#id_free_space').append(option);
 		}
 	};
+	var clear_data = function(error) {
+		
+		$('#id_free_space').empty();
+		
+	};
 	var get_updates = function() {
 	var postcode = get_normalized_postcode();
-	var weight = $('#id_weight')[0].value
-	if (postcode.length === 6) {
-		$.getJSON('/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}', set_data);
+	var unresticted = $('#id_unrestricted').prop('checked');
+	console.log("%%%%%%%%%----" + unresticted);
+	var weight = $('#id_weight')[0].value;
+	var url;
+	if (unresticted === true) {
+		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/UNRESTRICTED/';
+	} else {
+		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}//';
+	}
+	if (postcode.length === 6 || unresticted === true) {
+		$.getJSON(url, set_data, clear_data);
 	}
 };
 	
@@ -50,8 +63,9 @@
 		</div>
 		<div class="span4">
 			<div>
+				<label>{% trans "Unrestricted" %}</label><input id="id_unrestricted" type="checkbox"/>
 				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
-				<select id="id_free_space" name="free_space" size=10 style="width: 100%;"></select>
+				<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
 			</div>
 			<button class="btn btn-primary" type="submit">
 				{% trans "Save" %}

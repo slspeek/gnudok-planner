@@ -8,8 +8,33 @@ from planner.main.schedule import *
 from django.test.testcases import TestCase
 from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
+from planner.main.test import RegionFactory
 
-@attr('functional', 'settings')
+@attr('functional', 'get_rules')
+class GetRules(TestCase):
+    
+    def setUp(self):
+        TestCase.setUp(self)
+        self.car = CarFactory()
+        self.region = RegionFactory()
+        self.timeslot = TimeSlotFactory()
+        self.rule = RuleFactory(car=self.car, timeslot=self.timeslot, region=self.region)
+        self.appointment = AppointmentFactory.create(
+            calendar__car=self.car,
+            calendar__timeslot=self.timeslot)
+        self.date = datetime.date(2012, 10, 29)
+        self.other_date = datetime.date(2012, 10, 30)
+
+    def testRules(self):
+        assert get_rules(self.date, self.region)
+    
+    def testNoRules(self):
+        assert not get_rules(self.other_date, self.region)
+    
+    def testUnrestrictedRules(self):
+        assert get_rules(self.date, None)
+        
+@attr('functional')
 class TestNoAppointmentsOnCalendar(TestCase):
 
     def setUp(self):

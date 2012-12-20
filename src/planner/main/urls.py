@@ -13,7 +13,7 @@ from .views import get_available_dates, get_customer
     
 urlpatterns = patterns('',
     
-    (r'^get_available_dates/(?P<postalcode>\w+)/(?P<weight>\d+)/(?P<date_iso>\d{0,8})', get_available_dates),
+    (r'^get_available_dates/(?P<postalcode>\w*)/(?P<weight>\d+)/(?P<date_iso>\d{0,8})/(?P<unrestricted>\w*)', get_available_dates),
     (r'^get_customer/(?P<postalcode>\w+)/(?P<number>\w+)/(?P<addition>\w*)', get_customer),
     url(r'^app/detail/(?P<pk>\d+)$', appointment_detail, name='AppointmentView'),
     (r'^app/create/(?P<calendar_id>\d+)/(?P<weight>\d+)', create_appointment),

@@ -44,6 +44,13 @@ $(function() {
 			});
 		}
 	});
+	$('#id_unrestricted').change(function(e) {
+		var unresticted = $('#id_unrestricted').prop('checked');
+		if (unresticted === false) {
+			clear_data();
+		}
+		get_updates();
+	});
 	$("#id_postcode").keyup(function(e) {
 		get_updates();
 	});

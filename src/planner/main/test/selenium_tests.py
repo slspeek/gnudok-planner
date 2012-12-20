@@ -14,9 +14,9 @@ from nose.plugins.attrib import attr
 from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment
 from planner.main.models import Customer
 
-VRIJDAG_11JAN = "11 January : Vrijdag :  13 - 16 - Auto Zeeburg"
+VRIJDAG_11JAN = "11 January : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
-VRIJDAG_04JAN = "04 January : Vrijdag : 9 - 12 - Auto Zeeburg"
+VRIJDAG_04JAN = "04 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
 
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
  
@@ -141,107 +141,9 @@ class SeleniumTestCase(DjangoSeleniumTest):
         driver.find_element_by_css_selector("button.btn").click()
         self.sleep()
         self.assertBobyContains("Ada Lovelace")
-        #driver.quit()
-        self.sleep()
-        self.go_to_view('ChooseARegion', args=[20130101, ]) #XXX
-
-    def test_make_four_appointments(self):
-        """ Make four appointments in the same timeslot, region and date to see that that date is no longer 
-            suggested """
-        driver = self.driver
-        self.login('steven', 'jansteven')
-        self.go_to_view('ChooseARegion', args=[20130101, ])
-        self.set_select_field('id_region', ZUID_OOST)
-        self.clickPrimairyButton()
-        self.set_select_field('id_free_space', VRIJDAG_11JAN)  
-        self.clickPrimairyButton()
-        self.set_text_field('id_name', 'Ada Lovelace')
-        self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_address', 'Bijlmerdreef')
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
-        self.set_text_field('id_number', "144")
-        self.set_text_field('id_phone', '020-7123456')
-        self.set_text_field('id_stuff', "Bed, boeken en servies")
-        self.set_text_field("id_notes", "Lift aanwezig")
-        self.clickPrimairyButton()
-        self.assertBobyContains("Bed, boeken en servies")
-
-        self.go_to_view('ChooseARegion', args=[20130101, ])
-        self.set_select_field('id_region', ZUID_OOST)
-        self.clickPrimairyButton()
-        self.set_select_field('id_free_space', VRIJDAG_11JAN)  
-        self.clickPrimairyButton()
-        self.set_text_field('id_name', "Mark de Jong")
-        self.set_text_field('id_postcode', "1102AT")
-        self.set_text_field('id_address', "Ken Saro-Wiwastraat")
-        self.set_text_field('id_town', 'Amsterdam-Zuidoost')
-        self.set_text_field('id_number', "21")
-        driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-7654321")
-        self.set_text_field('id_stuff', "Speelgoed en ikea meubel")
-        self.clickPrimairyButton()
-        self.assertBobyContains("Speelgoed en ikea meubel")
-
-        self.go_to_view('ChooseARegion', args=[20130101, ])
-        self.set_select_field('id_region', ZUID_OOST)
-        self.clickPrimairyButton()
-        self.sleep()
-        self.set_select_field('id_free_space', VRIJDAG_11JAN)  
-        self.sleep()
-        self.clickPrimairyButton()
-        self.sleep()
-        self.set_text_field('id_name', "Lidia van de Heuvel")
-        self.set_text_field('id_postcode', "1102AX")
-        self.set_text_field('id_number', "17")
-        driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-7654321")
-        self.set_text_field('id_stuff', "Speelgoed, kastjes en bank")
-        self.clickPrimairyButton()
-        self.assertBobyContains("Speelgoed, kastjes en bank")
-        
-        self.go_to_view('ChooseARegion', args=[20130101, ])
-        self.set_select_field('id_region', ZUID_OOST)
-        self.clickPrimairyButton()
-        self.set_select_field('id_free_space', VRIJDAG_11JAN)  
-        self.clickPrimairyButton()
-        self.set_text_field('id_name', "Mirjam de Leeuw")
-        self.set_text_field('id_postcode', "1102ZA")
-        self.set_text_field('id_number', "17")
-        driver.find_element_by_id("id_phone").clear()
-        driver.find_element_by_id("id_phone").send_keys("020-7654321")
-        self.set_text_field('id_stuff', "Dozen met kleren")
-        self.clickPrimairyButton()
-        self.assertBobyContains("Dozen met kleren")
-        
-        driver.find_element_by_link_text(OPHAALDAG).click()
-        self.sleep()
-        self.set_text_field('id_date', "04-01-2013 ")
-        driver.find_element_by_id("title").click()
-        self.clickPrimairyButton()
-        driver.find_element_by_link_text("Auto Zeeburg").click()
-        self.sleep()
-        self.assertBobyContains("Bed, boeken en servies")
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("1102AB")
-        self.assertBobyContains("Lift aanwezig")
-        self.assertBobyContains("144")
-        self.assertBobyContains("020-7123456")
-        self.go_to_view('ChooseARegion', args=[20130101, ])
-        self.set_select_field('id_region', ZUID_OOST)
-        self.clickPrimairyButton()
-        try:
-            self.assertBobyContains("11 January Friday : 9 - 12")
-            raise Exception()
-        except  Exception:
-            pass
-        driver.find_element_by_link_text("Overzicht").click()
-        self.sleep()
-        self.go_to_view('WeekView', args=[1, 0, 20130101])
-        self.assertBobyContains("1102AB")
-        self.assertBobyContains("Ada Lovelace")
-        
+        self.go_to_view('Logout')
  
-VR_11JAN = "11 January : Vrijdag : 9 - 12 - Auto Zeeburg"
+VR_11JAN = "11 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
    
 @attr('selenium', 'edit')
 class EditTestCase(DjangoSeleniumTest):
@@ -397,7 +299,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("4 januari")
             
     def test_edit_appointment(self):
-        """ Makes edit appointment """
+        """ Edit appointments stuff"""
         adaMakesAppointment(self)
         self.login('steven', 'jansteven')
         
@@ -414,7 +316,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("4 januari")
     
     def test_create_follow_up(self):
-        """ Makes edit appointment """
+        """ Create follow up """
         adaMakesAppointment(self)
         self.login('steven', 'jansteven')
         
@@ -434,7 +336,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
 
     @attr('right_now')
     def test_existing_cutomer(self):
-        """ Makes edit appointment """
+        """ Creating with existing cutomer """
         adaMakesAppointment(self)
         self.appointment.delete()
         assert Customer.objects.all().exists()
@@ -449,21 +351,15 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.set_text_field('id_additions', "")
         self.sleep()
         self.set_text_field('id_stuff', "Oude wiskunde boeken")
-        self.set_text_field('id_notes', "Er een programmeertaal naar haar genoemd")
-        self.sleep()
-        #
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
-        # Appointment has been saved
-        self.sleep()
-        self.sleep()
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
 
     
     def test_existing_cutomer_at_first(self):
-        """ Makes edit appointment """
+        """ Look like an exiting customer, and then change again to new customer """
         adaMakesAppointment(self)
         self.appointment.delete()
         assert Customer.objects.all().exists()
@@ -482,9 +378,32 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         #self.sleep()
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
-        # Appointment has been saved
-        self.sleep()
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
         assert len(Customer.objects.all()) == 2
+    
+    @attr('unres')
+    def test_unrestricted(self):
+        """ Create unrestricted appointment """
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+        self.driver.find_element_by_id("id_unrestricted").click()
+        self.sleep()
+        self.sleep()
+        self.set_text_field('id_postcode', '1000AA')
+        self.set_text_field('id_number', "42")
+        self.set_text_field('id_address', "Town street")
+        self.set_text_field('id_town', "London")
+        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_stuff', "Oude wiskunde boeken")
+        self.set_text_field('id_phone', '020-7123456')
+        self.sleep()
+        self.set_select_field('id_free_space', VR_11JAN)
+        self.clickPrimairyButton()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Oude wiskunde boeken")
+        self.assertBobyContains("11 januari")
+        self.assertBobyContains("London")
+        

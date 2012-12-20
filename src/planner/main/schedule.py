@@ -41,13 +41,16 @@ def get_free_count(date, rule):
 def get_rules(date, region):
     """ Returns a list of timeslots for the given region on the given date. """
     week_day = date.weekday() + 1
-    
-    rules = Rule.objects.filter(region=region,timeslot__day_of_week=week_day)
+    if region:
+        rules = Rule.objects.filter(region=region,timeslot__day_of_week=week_day)
+    else:
+        rules = Rule.objects.filter(timeslot__day_of_week=week_day)
     return rules
 
 
+
 def get_free_entries(fromDate, daysAhead, region, min_weight):
-    """ Return a list of pairs containing calendar.pk and a human readable
+    """ Returns a list of pairs containing calendar.pk and a human readable
     representation of the calendar entry.
      A pair with no free slots is left out. """
     result = []
@@ -84,7 +87,7 @@ def entry(date, rule):
     return (calendar.pk, u"%s: %s - %s" % (date.strftime('%d %B '), str(rule.timeslot), str(rule.car)))
     
 def get_or_create_calendar(timeslot_id, car_id, date):
-    """ Return exiting calendar object for this triplet or creates one 
+    """ Returns exiting calendar object for this triplet or creates one 
     if non-existent"""
     calendars = Calendar.objects.filter(date=date).filter(timeslot__pk=timeslot_id).filter(car__pk=car_id)
     if calendars:
