@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import datetime
 from django.db import models
 from django.contrib.auth.models import User
@@ -8,6 +9,7 @@ from django.forms import ValidationError
 from django.utils.encoding import smart_unicode
 import re
 from django import forms
+from .__init__ import float_to_time
 
 pc_re = re.compile('^\d{4}[A-Z]{2}$')
 sofi_re = re.compile('^\d{9}$')
@@ -88,9 +90,15 @@ class TimeSlot(models.Model):
     day_of_week = models.IntegerField(choices=CHOICES)
     begin = models.FloatField()
     end = models.FloatField()
+    
+    def get_begin_display(self):
+        return float_to_time(self.begin)
+
+    def get_end_display(self):
+        return float_to_time(self.end)
 
     def __str__(self):
-        return u"%s :  %d - %d" % (weekDayName(self.day_of_week), self.begin, self.end)
+        return u"%s :  %s - %s" % (weekDayName(self.day_of_week), float_to_time(self.begin), float_to_time(self.end))
 
 
 class Region(models.Model):

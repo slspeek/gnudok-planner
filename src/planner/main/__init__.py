@@ -20,3 +20,9 @@ def group_required(*group_names):
         return False
     return user_passes_test(in_groups)
 
+def float_to_time(number):
+    import math
+    frac = math.modf(number)[0]
+    minutes = ("%.2f" % (frac * (60.0 /100.0)))[2:]
+    whole =  int(math.modf(number)[1])
+    return "%d:%s" % (whole, minutes) 
