@@ -29,8 +29,8 @@
 		<th>{% trans "Town" %}</th>
 		<th>{% trans "Weight" %}</th>
 		<th>{% trans "Stuff" %}</th>
-		<th>{% trans "Edit" %}</th>
-		<th>{% trans "Remove" %}</th>
+		<th>{% trans "View" %}</th>
+		
 	</tr>
 	{% endif %}
 	{% for appointment in calendar.appointments %}
@@ -41,8 +41,7 @@
 			<td>{{ appointment.customer.town }}</td>
 			<td>{{ appointment.weight }}</td>
 			<td>{{ appointment.stuff|truncatechars:9 }}</td>
-			<td><a class="btn" href="{% url AppointmentEdit appointment_id=appointment.pk date_iso='' %}"><i class="icon-edit"></i></a></td>
-			<td><a class="btn" href="{% url CancelAppointment appointment.pk %}"> <i class="icon-remove"></i></a></td>
+			<td><a href="{% url AppointmentView appointment.pk  %}"><i class="icon-eye-open"></i></a></td>
 		</tr>
 	{% endfor %}
 	{% endfor %}
