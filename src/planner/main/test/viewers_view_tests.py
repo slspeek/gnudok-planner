@@ -43,10 +43,11 @@ class AppointmentsByDate(WebTest):
         createTestUsers(self)
         adaMakesAppointment(self)
     
+    @attr('today')
     def testAppointmentsToday(self):
         """ Verifies that if no arguments given today is assumed """
-        self.calendar.date = datetime.date.today()
-        self.calendar.save()
+        self.appointment.created = datetime.date.today()
+        self.appointment.save()
         login = self.app.get(reverse('AppointmentsToday', args=['',])).follow()
         login_form = login.form
         login_form['username'] = 'alien'

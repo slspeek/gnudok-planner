@@ -12,8 +12,6 @@ var set_customer_data = function(data) {
 
 var reset_customer_id = function() {
 	$('#id_found_customer_id').val('');
-	console.log('reset');
-
 };
 
 
@@ -23,7 +21,6 @@ var find_customer = function() {
 	var addition = $('#id_additions')[0].value
 
 	if (postcode.length === 6) {
-		console.log("Postcode: " + postcode + ".")
 		$.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, set_customer_data).error(reset_customer_id);
 	}
 }
