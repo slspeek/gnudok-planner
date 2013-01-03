@@ -66,25 +66,20 @@ def get_free_entries(fromDate, daysAhead, region, min_weight):
     return result
 
 def get_free_entries_with_extra_calendar(fromDate, daysAhead, region, min_weight, calendar):
-    extra_date = calendar.date
-    extra_rule = Rule.objects.get(timeslot=calendar.timeslot,car=calendar.car)
-    result = []
-    for offset in range(0, 60):
-        date = fromDate + datetime.timedelta(days=offset)
-        rules = get_rules(date, region)
-        for rule in rules:
-            free_count = get_free_count(date, rule)
-            if free_count >= min_weight or (date == extra_date and rule == extra_rule):
-                result.append(entry(date, rule))
-        if len(result) >= 2 and offset >= daysAhead - 1:
-            break;
+    result = get_free_entries(fromDate, daysAhead, region, min_weight)
+    found = False
+    for entry in result:
+        if entry[0] == calendar.pk:
+            found = True
+    if not found:
+        result = [ (calendar.pk, str(calendar))] + result
     return result
 
 def entry(date, rule):
     timeslot_id = rule.timeslot.pk
     car_id = rule.car.pk
     calendar = get_or_create_calendar(timeslot_id, car_id, date)
-    return (calendar.pk, u"%s: %s - %s" % (date.strftime('%d %B '), str(rule.timeslot), str(rule.car)))
+    return (calendar.pk, str(calendar))
     
 def get_or_create_calendar(timeslot_id, car_id, date):
     """ Returns exiting calendar object for this triplet or creates one 

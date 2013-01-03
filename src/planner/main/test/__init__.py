@@ -26,7 +26,7 @@ def createTestUsers(self):
     self.group_callcenter = GroupF(name='Callcenter')
     self.group_viewers = GroupF(name='Viewers')
     self.user_steven = UserF(username='steven', password='pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=')
-    self.user_alien =  UserF(username='alien', password='pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=')
+    self.user_alien = UserF(username='alien', password='pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=')
     self.user_steven.groups = [ self.group_callcenter, self.group_viewers ]
     self.user_steven.save()
     self.user_alien.groups = [ self.group_viewers ]
@@ -34,17 +34,31 @@ def createTestUsers(self):
 def adaMakesAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB', 
-        number=42, 
-        address='Bijlmerdreef', 
-        town='Amsterdam', 
+    self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
+        number=42,
+        address='Bijlmerdreef',
+        town='Amsterdam',
         phone='06-12345678')
     self.appointment = AppointmentFactory(calendar=self.calendar,
-        created=datetime.date(year=2012,month=12,day=20), 
-        customer=self.customer, 
+        created=datetime.date(year=2012, month=12, day=20),
+        customer=self.customer,
         employee=self.user_steven,
         stuff='Virtual Machines', notes='Lift aanwezig')
-    
+ 
+def adaMakesBigAppointment(self):
+    self.date = datetime.date(year=2013, month=01, day=04)
+    self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
+    self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
+        number=42,
+        address='Bijlmerdreef',
+        town='Amsterdam',
+        phone='06-12345678')
+    self.appointment = AppointmentFactory(calendar=self.calendar,
+        created=datetime.date(year=2012, month=12, day=20),
+        customer=self.customer,
+        employee=self.user_steven,
+        stuff='Gehele nalatenschap', weight=4, notes='Lift aanwezig')
+       
 class CarFactory(factory.Factory):
     FACTORY_FOR = Car
     

@@ -11,7 +11,7 @@ from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, C
 from .__init__ import CustomerFactory, AppointmentFactory
 import os
 from nose.plugins.attrib import attr
-from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment
+from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
 from planner.main.models import Customer
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
@@ -301,6 +301,43 @@ class AppointmentEditExtra(DjangoSeleniumTest):
     def test_edit_appointment(self):
         """ Edit appointments stuff"""
         adaMakesAppointment(self)
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+
+        self.set_text_field('id_stuff', "Aantekeningen")
+        self.set_text_field('id_notes', "Eerste programmeur")
+        self.sleep()
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Aantekeningen")
+        self.assertBobyContains("4 januari")
+    
+    @attr('past')
+    def test_edit_appointment_from_the_past(self):
+        """ Edit appointments stuff from the past"""
+        adaMakesAppointment(self)
+        self.appointment.calendar.date = datetime.date(2012,12,12)
+        self.appointment.calendar.save()
+        self.login('steven', 'jansteven')
+        
+        self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+
+        self.set_text_field('id_stuff', "Aantekeningen")
+        self.set_text_field('id_notes', "Eerste programmeur")
+        self.sleep()
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Aantekeningen")
+        self.assertBobyContains("12 december")
+        
+    def test_edit_appointment_in_full_timeslot(self):
+        """ Edit appointments stuff, in full timeslot"""
+        adaMakesBigAppointment(self)
         self.login('steven', 'jansteven')
         
         self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])

@@ -35,9 +35,9 @@
 	var weight = $('#id_weight')[0].value;
 	var url;
 	if (unresticted === true) {
-		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/UNRESTRICTED/';
+		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
 	} else {
-		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}//';
+		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
 	}
 	if (postcode.length === 6 || unresticted === true) {
 		$.getJSON(url, set_data, clear_data);

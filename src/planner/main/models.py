@@ -136,7 +136,7 @@ class Calendar(models.Model):
  
 
     def __str__(self):
-        return u"(%s %s %s)" % (str(self.date), self.car, self.timeslot)
+        return u"%s: %s - %s" % (self.date.strftime('%d %B '), str(self.timeslot), str(self.car))
     
     class Meta:
         unique_together = (("date", "car", "timeslot"),)
