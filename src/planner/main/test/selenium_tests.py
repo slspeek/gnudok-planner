@@ -245,9 +245,6 @@ class EditTestCase(DjangoSeleniumTest):
 @attr('selenium', 'viewers')
 class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
-    
-
-   
 
     def setUp(self):
         createRegion(self)
@@ -319,7 +316,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
     def test_edit_appointment_from_the_past(self):
         """ Edit appointments stuff from the past"""
         adaMakesAppointment(self)
-        self.appointment.calendar.date = datetime.date(2012,12,12)
+        self.appointment.calendar.date = datetime.date(2012, 12, 12)
         self.appointment.calendar.save()
         self.login('steven', 'jansteven')
         
