@@ -36,7 +36,7 @@
 	{% for appointment in calendar.appointments %}
 		<tr>
 			<td colspan="2">{{ appointment.customer.name }}</td>
-			<td colspan="2">{{ appointment.customer.address }} {{ appointment.customer.number }} {{ appointment.customer.additions }}</td>
+			<td colspan="2">{{ object.customer.get_address_display }}</td>
 			<td>{{ appointment.customer.postcode }}</td>
 			<td>{{ appointment.customer.town }}</td>
 			<td>{{ appointment.weight }}</td>

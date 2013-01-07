@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2>{% trans "Appointments made by" %} {{ employee }}</h2>
+<h2>{% trans "Appointments made by" %} {{ employee.get_full_name }}</h2>
 <hr/>
 
 <div class="container">
@@ -27,7 +27,7 @@
 			<td>{{ object.calendar.timeslot }}</td>
 			<td>{{ object.calendar.date }}</td>
 			<td>{{ object.customer.name }}</td>
-			<td>{{ object.customer.address }} {{ object.customer.number }} {{ object.customer.additions }}</td>
+			<td>{{ object.customer.get_address_display }}</td>
 			<td>{{ object.customer.postcode }}</td>
 			<td>{{ object.customer.town }}</td>
 			<td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>

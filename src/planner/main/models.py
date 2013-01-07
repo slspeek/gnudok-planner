@@ -70,6 +70,12 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
     
+    def get_address_display(self):
+        if self.additions:
+            return u'%s %s - %s' % (self.address, self.number, self.additions)
+        else:
+            return u'%s %s' % (self.address, self.number)
+    
     class Meta:
         unique_together = (("postcode", "number", "additions"),)
    

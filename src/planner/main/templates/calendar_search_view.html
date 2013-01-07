@@ -45,7 +45,7 @@
                 	<td>{{ object.calendar.timeslot }}</td>
                 	<td>{{ object.calendar.date }}</td>
                         <td>{{ object.customer.name }}</td>
-                        <td>{{ object.customer.address }} {{ object.customer.number }} {{ object.customer.additions }}</td>
+                        <td>{{ object.customer.get_address_display }}</td>
                         <td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
                         <td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
                         <td><a href="{% url AppointmentView object.pk  %}"><i class="icon-eye-open"></i></a></td>

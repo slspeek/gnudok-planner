@@ -30,7 +30,7 @@
 	{% for app in app_list %}
 	<tr>
 		<td>{{ app.customer.name }}</td>
-		<td>{{ app.customer.address }} {{ app.customer.number }} {{ app.customer.additions }}</td>
+		<td>{{ app.customer.get_address_display }}</td>
 		<td>{{ app.customer.postcode }}</td>
 		<td>{{ app.customer.town }}</td>
 		<td>{{ app.customer.phone }}</td>

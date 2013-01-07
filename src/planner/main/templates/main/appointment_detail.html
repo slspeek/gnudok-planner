@@ -22,7 +22,7 @@
 			<th>{% trans "Name" %}</th><td>{{ object.customer.name }}</td>
 		</tr>
 		<tr>
-			<th>{% trans "Address" %}</th><td>{{ object.customer.address }} {{ object.customer.number }} {{ object.customer.additions }}</td>
+			<th>{% trans "Address" %}</th><td>{{ object.customer.get_address_display }}</td>
 		</tr>
 		<tr>
 			<th>{% trans "Postal code" %}</th><td>{{ object.customer.postcode }}</td>
@@ -43,7 +43,7 @@
 			<th>{% trans "Notes" %}</th><td>{{ object.notes }}</td>
 		</tr>
 		<tr>
-			<th>{% trans "Made by" %}</th><td>{{ object.employee.first_name }} {{ object.employee.last_name}}</td>
+			<th>{% trans "Made by" %}</th><td>{{ object.employee.get_full_name }}</td>
 		</tr>
 		<tr>
 			<th>{% trans "Created at" %}</th><td>{{ object.created }}</td>
