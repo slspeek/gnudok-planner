@@ -49,7 +49,12 @@ class RegionChooseForm(Form):
                 (4, _("Entire half-day")),
                  )
     weight = forms.ChoiceField(label=_('weight'), choices=CHOICES, initial=1)
+
+class EmployeeModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.get_full_name()
     
 class EmployeeChooseForm(Form):
-    employee = forms.ModelChoiceField(label=_('employee'), queryset=User.objects.filter(groups__name='Callcenter')) 
+    queryset =User.objects.filter(groups__name='Callcenter').order_by('first_name')
+    employee = EmployeeModelChoiceField(label=_('employee'), queryset=queryset) 
     
