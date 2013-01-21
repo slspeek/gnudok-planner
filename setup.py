@@ -13,7 +13,7 @@ setup(
                         'factory_boy',
                         'docutils',
                         'django-bootstrap-toolkit',
-                        'django',
+                        'django==1.4.2',
                         'django-nose',
                         'django-webtest',
                         'WebTest', 
