@@ -41,15 +41,6 @@ class HiddenForm(forms.Form):
     found_customer_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     
     
-class RegionChooseForm(Form):
-    region = forms.ModelChoiceField(label=_('region'), queryset=Region.objects.all()) 
-    CHOICES = ( (1,_("Normal")),
-                (2,_("Double")),
-                (3, _("Tripel")),
-                (4, _("Entire half-day")),
-                 )
-    weight = forms.ChoiceField(label=_('weight'), choices=CHOICES, initial=1)
-
 class EmployeeModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return obj.get_full_name()
