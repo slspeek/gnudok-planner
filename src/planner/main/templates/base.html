@@ -60,7 +60,14 @@
 			{% endblock %}
 		</div>
 		<footer class="footer">
-			<div id="system-message" class="alert alert-info" style="display: none">
+			<div id="date-search" class="alert alert-info" style="display: none">
+				{% trans "Retrieving a list of available dates ..." %}
+			</div>
+			<div id="postcode-search" class="alert alert-info" style="display: none">
+				{% trans "Retrieving postalcode information ..." %}
+			</div>
+			<div id="customer-search" class="alert alert-info" style="display: none">
+				{% trans "Looking for known customers ..." %}
 			</div>
 			<hr/>
 			<div style="margin:auto">

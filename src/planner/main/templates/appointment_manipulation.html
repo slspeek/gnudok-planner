@@ -9,7 +9,7 @@
 <script>
 	"use strict";
 	var set_data = function(data) {
-	call_returned();
+	call_returned_available_dates();
 	$('#region_label').text(data.region);
 	$('#id_free_space').empty();
 	for (var i = 0, len = data.dates.length; i < len; i++) {
@@ -25,24 +25,31 @@
 	}
 	};
 	var clear_data = function(error) {
-
-		call_returned();
-		$('#id_free_space').empty();
-
+		call_returned_available_dates();
+		if (unresticted === false) {
+			$('#id_free_space').empty();
+		}
 	};
 	var get_updates = function() {
 		var postcode = get_normalized_postcode();
 		var unresticted = $('#id_unrestricted').prop('checked');
 		var weight = $('#id_weight')[0].value;
 		var url;
+		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
+		if (postcode.length === 6 ) {
+			callout_available_dates();
+			$.getJSON(url, set_data).error(clear_data);
+		}
+	};
+	var get_updates_unrestricted = function() {
+		var postcode = get_normalized_postcode();
+		var unresticted = $('#id_unrestricted').prop('checked');
+		var weight = $('#id_weight')[0].value;
+		var url;
 		if (unresticted === true) {
 			var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
-		} else {
-			var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
-		}
-		if (postcode.length === 6 || unresticted === true) {
-			callout();
-			$.getJSON(url, set_data, clear_data);
+			callout_available_dates();
+			$.getJSON(url, set_data).error(clear_data);
 		}
 	};
 
