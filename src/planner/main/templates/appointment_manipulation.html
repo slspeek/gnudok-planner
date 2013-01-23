@@ -25,6 +25,7 @@
 	}
 	};
 	var clear_data = function(error) {
+		var unresticted = $('#id_unrestricted').prop('checked');
 		call_returned_available_dates();
 		if (unresticted === false) {
 			$('#id_free_space').empty();
@@ -35,7 +36,11 @@
 		var unresticted = $('#id_unrestricted').prop('checked');
 		var weight = $('#id_weight')[0].value;
 		var url;
-		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
+		if (unresticted === true) {
+			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
+		} else {
+			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
+		}
 		if (postcode.length === 6 ) {
 			callout_available_dates();
 			$.getJSON(url, set_data).error(clear_data);
