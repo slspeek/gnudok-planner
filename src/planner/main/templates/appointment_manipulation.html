@@ -5,53 +5,57 @@
 {% block extra_head %}
 {{ customerForm.media }}
 {{ appointmentForm.media }}
-<script src="{{ STATIC_URL }}appointment_manipulation.js"  > 
-</script>
+<script src="{{ STATIC_URL }}appointment_manipulation.js"  ></script>
 <script>
 	"use strict";
 	var set_data = function(data) {
-		$('#region_label').text(data.region);
-		$('#id_free_space').empty();
-		for (var i = 0, len = data.dates.length; i < len; i++) {
-			var date = data.dates[i];
-			var calendar_id = date[0];
-			var option;
-			if ({{ calendar_id }} == calendar_id) {
-				option = '<option selected="selected" value="' + calendar_id + '"> ' + date[1] + '</option>';
-			} else {
-				option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
-			}
-			$('#id_free_space').append(option);
-		}
+	call_returned();
+	$('#region_label').text(data.region);
+	$('#id_free_space').empty();
+	for (var i = 0, len = data.dates.length; i < len; i++) {
+	var date = data.dates[i];
+	var calendar_id = date[0];
+	var option;
+	if ({{ calendar_id }} == calendar_id) {
+		option = '<option selected="selected" value="' + calendar_id + '"> ' + date[1] + '</option>';
+	} else {
+		option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
+	}
+	$('#id_free_space').append(option);
+	}
 	};
 	var clear_data = function(error) {
-		
+
+		call_returned();
 		$('#id_free_space').empty();
-		
+
 	};
 	var get_updates = function() {
-	var postcode = get_normalized_postcode();
-	var unresticted = $('#id_unrestricted').prop('checked');
-	var weight = $('#id_weight')[0].value;
-	var url;
-	if (unresticted === true) {
-		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
-	} else {
-		var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
-	}
-	if (postcode.length === 6 || unresticted === true) {
-		$.getJSON(url, set_data, clear_data);
-	}
-};
-	
+		var postcode = get_normalized_postcode();
+		var unresticted = $('#id_unrestricted').prop('checked');
+		var weight = $('#id_weight')[0].value;
+		var url;
+		if (unresticted === true) {
+			var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
+		} else {
+			var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
+		}
+		if (postcode.length === 6 || unresticted === true) {
+			callout();
+			$.getJSON(url, set_data, clear_data);
+		}
+	};
+
 </script>
 {% endblock %}
 {% block content %}
 <h2>{{ title }}</h2>
 <hr/>
+
 <form id="appointment" name="appointment" action="" method="post" class="appointment">
+	
 	{% csrf_token %}
-	<div style="dispaly:inline;" >
+	<div style="display: inline;" >
 		<div class="span3">
 			{{ customerForm|as_bootstrap }}
 
@@ -62,7 +66,8 @@
 		</div>
 		<div class="span4">
 			<div>
-				<label>{% trans "Unrestricted" %}</label><input id="id_unrestricted" type="checkbox"/>
+				<label>{% trans "Unrestricted" %}</label>
+				<input id="id_unrestricted" type="checkbox"/>
 				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
 				<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
 			</div>

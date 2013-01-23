@@ -1,6 +1,15 @@
 "use strict";
 
+var callout = function() {
+	$('#system-message').text("Calling remote ...").show();	
+};
+
+var call_returned = function() {
+	$('#system-message').hide();	
+};
+
 var set_customer_data = function(data) {
+	call_returned();
 	$('#id_town').val(data.town);
 	$('#id_address').val(data.address);
 	$('#id_phone').val(data.phone);
@@ -11,6 +20,7 @@ var set_customer_data = function(data) {
 };
 
 var reset_customer_id = function() {
+	call_returned();
 	$('#id_found_customer_id').val('');
 };
 
@@ -21,6 +31,7 @@ var find_customer = function() {
 	var addition = $('#id_additions')[0].value
 
 	if (postcode.length === 6) {
+		callout();
 		$.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, set_customer_data).error(reset_customer_id);
 	}
 }
