@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 from .models import Appointment
 from django.conf.urls import patterns, url
-from .views import create_appointment, choose_a_date,\
+from .views import choose_a_date,\
     chose_a_region,\
-    edit_appointment, cancel_appointment
+    cancel_appointment
 from .viewers_views import display_date_form,\
     render_appointment_list, choose_calendar, \
     calendar_search_view, weekview, overview, \

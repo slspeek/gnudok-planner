@@ -12,15 +12,13 @@ from .__init__ import CustomerFactory, AppointmentFactory
 import os
 from nose.plugins.attrib import attr
 from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
-from planner.main.models import Customer
+from planner.main.models import Customer, Calendar
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
 VRIJDAG_04JAN = "04 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
 
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
- 
-
 
 class DjangoSeleniumTest(LiveServerTestCase):
     """ Base class for the django selenium testing """
@@ -68,7 +66,60 @@ class DjangoSeleniumTest(LiveServerTestCase):
     
     def go_to_view(self, view, args=None, kwargs=None):
         self.driver.get(self.live_server_url + reverse(view, args=args, kwargs=kwargs))
+        
+@attr('hook') 
+class TestPreCommitHook(DjangoSeleniumTest):
+    def setUp(self):
+        createRegion(self)
+        createTestPostcodes()
+        createTestUsers(self)
+    
+    def test_create_two_appointment_at_same_time(self):
+        """ Create two appointments at the same time """
+        self.login('steven', 'jansteven')
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_number', "25")
+        self.set_text_field('id_additions', "sous")
+        self.set_text_field('id_phone', '020-7123456')
+        self.set_text_field('id_stuff', "Bed, boeken en servies")
+        self.set_text_field('id_notes', "Lift aanwezig")
+        self.set_select_field('id_weight', 'Een dagdeel')
+        self.sleep()
+        self.sleep()
+        self.set_select_field('id_free_space', VRIJDAG_04JAN)
+        #self.clickPrimairyButton()
+         #Appointment has been saved
+        self.date = datetime.date(year=2013, month=01, day=04)
+        self.calendar = Calendar.objects.get(date=self.date, car=self.car, timeslot=self.timeslot)
+        self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
+                                        number=42,
+                                        address='Bijlmerdreef',
+                                        town='Amsterdam',
+                                        phone='06-12345678')
+        self.appointment = AppointmentFactory(calendar=self.calendar,
+                                              created=datetime.date(year=2012, month=12, day=20),
+                                              customer=self.customer,
+                                              employee=self.user_steven,
+                                              stuff='Gehele nalatenschap',
+                                              weight=4,
+                                              notes='Lift aanwezig')
+        self.clickPrimairyButton()
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Bed, boeken en servies")
+        self.assertBobyContains("4 januari")
+        
+        
+        self.go_to_view('WeekView', args=[1, 0, 20130101])
+        self.driver.find_element_by_link_text("Vrijdag 4 jan").click()
+        self.sleep()
+        self.sleep()
+        self.sleep()
+        
+  
 VR_11JAN = "11 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
 
 @attr('selenium', 'viewers')

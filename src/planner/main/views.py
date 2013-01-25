@@ -14,6 +14,12 @@ from django.utils import simplejson
 from django.http import HttpResponse
 from planner.area.views import get_region_for_postcalcode
 
+def space_available(calendar_id_string, appointment):
+    if calendar_id_string:
+        return True
+    else:
+        return False
+
 @group_required('Callcenter')
 def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     """ creates or edits an appointment and customer """
@@ -45,7 +51,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         appointment_form = BigAppointmentForm(request.POST,instance=appointment)
         customer_form = CustomerForm(request.POST,instance=appointment.customer)
         free_space = request.POST.get('free_space', '') 
-        if appointment_form.is_valid() and customer_form.is_valid() and free_space:
+        if appointment_form.is_valid() and customer_form.is_valid() and space_available(free_space, appointment):
             calendar_id = int(free_space)
             appointment.calendar = Calendar.objects.get(pk=calendar_id)
             appointment.employee = request.user
@@ -53,7 +59,6 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
             customer = customer_form.save()
             appointment.customer = customer
             appointment = appointment_form.save()
-            #appointment.save()
             return redirect('AppointmentView', appointment.id)
             
     return render_to_response('appointment_manipulation.html',
@@ -121,81 +126,6 @@ def cancel_appointment(request, appointment_id):
         appointment.status = 2
         appointment.save()
         return redirect('Overview', '')
-        
-
-@group_required('Callcenter')
-@group_required('Callcenter')
-def edit_appointment(request, appointment_id=0, date_iso=""):
-    if not date_iso:
-        date_iso=tomorrow()
-
-    appointment = Appointment.objects.get(pk=int(appointment_id))
-    region = get_region(appointment.calendar)
-    free_space = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso), 28,region, appointment.weight,appointment.calendar)
-    if not request.POST:
-        appointmentForm = AppointmentForm(instance=appointment)
-        customerForm = CustomerForm(instance=appointment.customer)
-        return render_to_response('edit_appointment.html',
-             {"appointmentForm": appointmentForm,
-             "title": _("Edit or Move appointment"),
-             "customerForm": customerForm,
-             "free_space": free_space,
-             "calendar_id": appointment.calendar.pk,
-              },
-             context_instance=RequestContext(request))
-    else:
-        appointmentForm = AppointmentForm(request.POST, instance=appointment)
-        calendar_id = int(request.POST['free_space'])
-        customerForm = CustomerForm(request.POST, instance=appointment.customer)
-        if appointmentForm.is_valid() and customerForm.is_valid():
-            appointment = appointmentForm.save(commit=False)
-            appointment.calendar = Calendar.objects.get(pk=calendar_id)
-            appointment.save()
-            customerForm.save()
-            return redirect('AppointmentView',  appointment.id)
-        else:
-            return render_to_response('edit_appointment.html',
-             {"appointmentForm": appointmentForm,
-             "title": _("Edit or Move appointment"),
-             "customerForm": customerForm,
-             "free_space": free_space,
-             "calendar_id": appointment.calendar.pk,
-              },
-             context_instance=RequestContext(request))
-        
-
-@group_required('Callcenter')
-def create_appointment(request, calendar_id, weight):
-    """ Saves an Appointment and Customer object corresponding to a
-    real world appointment. """
-    if request.POST:
-        appointment = Appointment()
-        customerForm = CustomerForm(request.POST)
-        if customerForm.is_valid():  # Customer form valid, save Cutomer
-            customer = customerForm.save()
-            appointment.customer = customer
-            appointment.employee = request.user
-            appointmentForm = AppointmentForm(request.POST, instance=appointment)
-            if appointmentForm.is_valid():  # Both valid, so save
-                appointment.weight = int(weight)
-                appointment.calendar = Calendar.objects.get(pk=int(calendar_id))
-                app = appointmentForm.save()
-                return redirect('AppointmentView', app.id)
-            else:  # Appointment not valid, so rerender with errors
-                customer.delete()
-        else:  # Customer not valid rerender with errors
-            appointmentForm = AppointmentForm(request.POST)
-            appointmentForm.is_valid()
-    else:
-        appointmentForm = AppointmentForm()
-        customerForm = CustomerForm()
-    return render_to_response('appointment.html',
-         {"appointmentForm": appointmentForm,
-         "title": _("Appointment details"),
-         "customerForm": customerForm
-          },
-         context_instance=RequestContext(request))
-
 
 @group_required('Callcenter')
 def chose_a_region(request, date_iso):
