@@ -108,17 +108,8 @@ class TestPreCommitHook(DjangoSeleniumTest):
                                               notes='Lift aanwezig')
         self.clickPrimairyButton()
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Bed, boeken en servies")
-        self.assertBobyContains("4 januari")
-        
-        
-        self.go_to_view('WeekView', args=[1, 0, 20130101])
-        self.driver.find_element_by_link_text("Vrijdag 4 jan").click()
-        self.sleep()
-        self.sleep()
-        self.sleep()
-        
+        self.assertBobyContains("No more space left")
+              
   
 VR_11JAN = "11 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
 

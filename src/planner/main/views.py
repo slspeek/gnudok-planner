@@ -13,10 +13,26 @@ import logging
 from django.utils import simplejson
 from django.http import HttpResponse
 from planner.area.views import get_region_for_postcalcode
+from planner.main.schedule import get_total_weight
+from django.forms.util import ErrorList
 
-def space_available(calendar_id_string, appointment):
+def space_available(calendar_id_string, appointment_form, appointment_id):
     if calendar_id_string:
-        return True
+        calendar_id = int(calendar_id_string)
+        calendar = Calendar.objects.get(pk=calendar_id)
+        existing_apps = calendar.active_appoinments()
+        logging.error(existing_apps)
+        logging.error(appointment_form.cleaned_data)
+        old_weight = 0
+        if not appointment_id == 'create':
+            app = Appointment.actives.get(pk=int(appointment_id))
+            old_weight = app.weight
+        logging.error(old_weight)
+        weight = get_total_weight(existing_apps) - old_weight
+        logging.error(weight)
+        aw = int(appointment_form.cleaned_data['weight'])
+        logging.error(aw)
+        return weight + aw <= 4
     else:
         return False
 
@@ -50,16 +66,21 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                 appointment.customer = Customer.objects.get(pk=customer_id)
         appointment_form = BigAppointmentForm(request.POST,instance=appointment)
         customer_form = CustomerForm(request.POST,instance=appointment.customer)
-        free_space = request.POST.get('free_space', '') 
-        if appointment_form.is_valid() and customer_form.is_valid() and space_available(free_space, appointment):
-            calendar_id = int(free_space)
-            appointment.calendar = Calendar.objects.get(pk=calendar_id)
-            appointment.employee = request.user
-            logging.error(appointment.calendar)
-            customer = customer_form.save()
-            appointment.customer = customer
-            appointment = appointment_form.save()
-            return redirect('AppointmentView', appointment.id)
+        free_space = request.POST.get('free_space', '')
+        app_valid = appointment_form.is_valid() 
+        if space_available(free_space, appointment_form, appointment_id):
+            
+            if app_valid and customer_form.is_valid(): 
+                calendar_id = int(free_space)
+                appointment.calendar = Calendar.objects.get(pk=calendar_id)
+                appointment.employee = request.user
+                logging.error(appointment.calendar)
+                customer = customer_form.save()
+                appointment.customer = customer
+                appointment = appointment_form.save()
+                return redirect('AppointmentView', appointment.id)
+        else:
+           appointment_form._errors['weight'] = ErrorList([u"No more space left"]) 
             
     return render_to_response('appointment_manipulation.html',
      {"appointmentForm": appointment_form,
