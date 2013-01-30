@@ -58,16 +58,24 @@ def appointments_made_by(request, employee_id):
 def overview(request, date_iso):
     if not date_iso:
         date_iso=tomorrow()
-    range_list = []
-    for counter in range(-2, 4):
+    range_list0, range_list1, range_list2  = [], [], []
+    for counter in range(-2, 0):
         begin, end = get_date_interval(date_iso, counter)
-        range_list.append((counter, begin, end))
+        range_list0.append((counter, begin, end))
+    for counter in range(0, 1):
+        begin, end = get_date_interval(date_iso, counter)
+        range_list1.append((counter, begin, end))
+    for counter in range(1, 4):
+        begin, end = get_date_interval(date_iso, counter)
+        range_list2.append((counter, begin, end))
     car_list = Car.objects.all()
     return render_to_response("main/overview.html", 
                               {"title": _("Overview"),
                                "date_iso": date_iso,
                                "car_list": car_list,
-                               "range": range_list,
+                               "range0": range_list0,
+                               "range1": range_list1,
+                               "range2": range_list2,
                                })
     
 def get_date_interval(date_iso, offset):

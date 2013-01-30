@@ -13,10 +13,32 @@
 			<th>{{ car }}</th>
 			{% endfor %}
 		</tr>
-		{% for offset, begin, end in range %}
+		{% for offset, begin, end in range0 %}
+		
 		<tr>
+			
 			{% for car in car_list %}
-			<td><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"l j E o" }} - {{ end|date:"l j E o" }}</a></td>
+			<td><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></td>
+			{% endfor %}
+		</tr>
+
+		{% endfor %}
+		{% for offset, begin, end in range1 %}
+		
+		<tr>
+			
+			{% for car in car_list %}
+			<td><b><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></b></td>
+			{% endfor %}
+		</tr>
+
+		{% endfor %}
+		{% for offset, begin, end in range2 %}
+		
+		<tr>
+			
+			{% for car in car_list %}
+			<td><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></td>
 			{% endfor %}
 		</tr>
 
