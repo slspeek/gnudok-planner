@@ -5,9 +5,8 @@ from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from .models import Appointment, Calendar, Region, Customer
-from .forms import  CustomerForm, AppointmentForm, \
-    BigAppointmentForm, HiddenForm
-from .schedule import get_free_entries, get_region, get_free_entries_with_extra_calendar
+from .forms import CustomerForm, BigAppointmentForm, HiddenForm
+from .schedule import get_free_entries, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
 import logging
 from django.utils import simplejson
@@ -15,6 +14,7 @@ from django.http import HttpResponse
 from planner.area.views import get_region_for_postcalcode
 from planner.main.schedule import get_total_weight
 from django.forms.util import ErrorList
+
 
 def space_available(calendar_id_string, appointment_form, appointment_id):
     if calendar_id_string:
@@ -36,6 +36,7 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
     else:
         return False
 
+
 @group_required('Callcenter')
 def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     """ creates or edits an appointment and customer """
@@ -47,10 +48,10 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         if customer_id == 'create':
             title = _("New appointment")
             appointment.customer = Customer()
-        else: # customer_id is set
+        else:  # customer_id is set
             title = _("Follow up appointment")
             appointment.customer = Customer.objects.get(pk=int(customer_id))
-    else: # appointment_id is set
+    else:  # appointment_id is set
         title = _("Edit or move appointment")
         appointment = Appointment.objects.get(pk=int(appointment_id))
         calendar_id = appointment.calendar.pk
@@ -58,19 +59,21 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         hidden_form = HiddenForm()
         appointment_form = BigAppointmentForm(instance=appointment)
         customer_form = CustomerForm(instance=appointment.customer)
-    else: # POST
+    else:  # POST
         hidden_form = HiddenForm(request.POST)
         if hidden_form.is_valid():
             customer_id = hidden_form.cleaned_data['found_customer_id']
             if customer_id:
                 appointment.customer = Customer.objects.get(pk=customer_id)
-        appointment_form = BigAppointmentForm(request.POST,instance=appointment)
-        customer_form = CustomerForm(request.POST,instance=appointment.customer)
+        appointment_form = BigAppointmentForm(request.POST,
+                                              instance=appointment)
+        customer_form = CustomerForm(request.POST,
+                                     instance=appointment.customer)
         free_space = request.POST.get('free_space', '')
-        app_valid = appointment_form.is_valid() 
+        app_valid = appointment_form.is_valid()
         if space_available(free_space, appointment_form, appointment_id):
-            
-            if app_valid and customer_form.is_valid(): 
+
+            if app_valid and customer_form.is_valid():
                 calendar_id = int(free_space)
                 appointment.calendar = Calendar.objects.get(pk=calendar_id)
                 appointment.employee = request.user
@@ -80,20 +83,27 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                 appointment = appointment_form.save()
                 return redirect('AppointmentView', appointment.id)
         else:
-           appointment_form._errors['weight'] = ErrorList([u"No more space left"]) 
-            
-    return render_to_response('appointment_manipulation.html',
-     {"appointmentForm": appointment_form,
-     "title": title,
-     "customerForm": customer_form,
-     "hiddenForm": hidden_form,
-     "date_iso": date_iso,
-     "calendar_id": calendar_id,
-      },
-     context_instance=RequestContext(request))
+            appointment_form._errors['weight'] = \
+                ErrorList([u"No more space left"])
 
-@group_required('Callcenter') 
-def get_available_dates(request, postalcode, weight, date_iso, calendar_id, unrestricted=False):
+    return render_to_response('appointment_manipulation.html',
+                              {"appointmentForm": appointment_form,
+                               "title": title,
+                               "customerForm": customer_form,
+                               "hiddenForm": hidden_form,
+                               "date_iso": date_iso,
+                               "calendar_id": calendar_id,
+                               },
+                              context_instance=RequestContext(request))
+
+
+@group_required('Callcenter')
+def get_available_dates(request,
+                        postalcode,
+                        weight,
+                        date_iso,
+                        calendar_id,
+                        unrestricted=False):
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s" % (postalcode, weight))
     if unrestricted:
@@ -105,35 +115,42 @@ def get_available_dates(request, postalcode, weight, date_iso, calendar_id, unre
     if calendar_id == "-1":
         available_dates = get_free_entries(get_date_from_iso(date_iso),
                                            28, region, int(weight))
-    else: 
+    else:
         calendar = Calendar.objects.get(pk=int(calendar_id))
-        available_dates = get_free_entries_with_extra_calendar(get_date_from_iso(date_iso),
-                                           28, region, int(weight), calendar)
+        date = get_date_from_iso(date_iso)
+        available_dates = get_free_entries_with_extra_calendar(date,
+                                                               28,
+                                                               region,
+                                                               int(weight),
+                                                               calendar)
     dates = []
     for a_date in available_dates:
         dates.append((a_date[0], a_date[1]))
-    data = {'region':region_code, 'dates': dates }
+    data = {'region': region_code, 'dates': dates}
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype='application/json')
 
-@group_required('Callcenter') 
+
+@group_required('Callcenter')
 def get_customer(request, postalcode, number, addition):
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s %s" % (postalcode, number, addition))
-    customer = Customer.objects.get(postcode=postalcode.capitalize(), number=number, additions=addition)
-    data = {'name':customer.name,
-            'address':customer.address,
+    customer = Customer.objects.get(postcode=postalcode.capitalize(),
+                                    number=number, additions=addition)
+    data = {'name': customer.name,
+            'address': customer.address,
             'town': customer.town,
             'phone': customer.phone,
             'id': customer.id,
-            'email': customer.email }
+            'email': customer.email}
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype='application/json')
 
-    
+
 def logout_view(request):
     logout(request)
     return redirect('Overview', '')
+
 
 @group_required('Callcenter')
 def cancel_appointment(request, appointment_id):
@@ -147,36 +164,3 @@ def cancel_appointment(request, appointment_id):
         appointment.status = 2
         appointment.save()
         return redirect('Overview', '')
-
-@group_required('Callcenter')
-def chose_a_region(request, date_iso):
-    if not date_iso:
-        date_iso = tomorrow()
-    
-    if request.POST:
-        region_form = RegionChooseForm(request.POST)
-        if region_form.is_valid():
-            region = region_form.cleaned_data['region']
-            weight = int(region_form.cleaned_data['weight'])
-            return redirect(choose_a_date, region.pk, weight, date_iso)
-    else:
-        region_form = RegionChooseForm()
-    return render_to_response('region.html',
-                              {"form": region_form, "title": _("Choose a region") },
-                               context_instance=RequestContext(request))
-
-@group_required('Callcenter')
-def choose_a_date(request, region_id, weight, date_iso):
-    if not date_iso:
-        date_iso = tomorrow()
-    region = Region.objects.get(pk=region_id)
-    free_space = get_free_entries(get_date_from_iso(date_iso),
-                                       28, region, int(weight))
-    if request.POST:
-        chosen_calendar = request.POST['free_space']
-        return redirect(create_appointment, chosen_calendar, weight)
-    return render_to_response('choose_a_date.html',
-                                   { "title": _("Choose a date"),
-                                     "free_space": free_space,
-                                      },
-                                  context_instance=RequestContext(request))    
