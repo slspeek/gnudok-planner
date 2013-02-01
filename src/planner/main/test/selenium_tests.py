@@ -13,6 +13,7 @@ import os
 from nose.plugins.attrib import attr
 from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
 from planner.main.models import Customer, Calendar
+from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
@@ -32,7 +33,16 @@ class DjangoSeleniumTest(LiveServerTestCase):
     def tearDownClass(cls):
         super(DjangoSeleniumTest, cls).tearDownClass()
         cls.driver.quit()
-        
+     
+    def tearDown(self):
+        Source.objects.all().delete()
+        Country.objects.all().delete()
+        Province.objects.all().delete()
+        Cityname.objects.all().delete()
+        City.objects.all().delete()
+        Street.objects.all().delete()
+        Postcode.objects.all().delete()
+           
     def sleep(self):
         amount = float(os.environ.get("TEST_PAUSE", failobj=2))
         time.sleep(amount)
@@ -118,11 +128,13 @@ class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
 
     def setUp(self):
+        self.tearDown();
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
         adaMakesAppointment(self)
-    
+        
+  
     def test_view_one_appointment(self):
         """ Makes one appointment and verifies it be viewing the list as Viewer."""
         driver = self.driver
@@ -143,7 +155,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
-    
+        
     def test_create_one_appointment(self):
         """ Makes one appointment """
         self.login('steven', 'jansteven')

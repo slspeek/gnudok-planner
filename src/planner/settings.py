@@ -13,13 +13,23 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangoplanner',             
-        'USER': 'djangoplanner',                      
-        'PASSWORD': 'djangoplanner',                  
+        'NAME': 'djangoplanner',
+        'USER': 'djangoplanner',
+        'PASSWORD': 'djangoplanner',
+        'HOST': '',
+        'PORT': '',
+    },
+    'nlpostcode' :  {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nlpostcode',
+        'USER': 'nlpostcode',
+        'PASSWORD': 'nlpostcode',
         'HOST': '',
         'PORT': '',
     }
 }
+
+DATABASE_ROUTERS = ['planner.nlpostalcode.nlpostcode_router.NlpostcodeRouter', 'planner.main.main_router.MainRouter']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -56,7 +66,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-#ADMIN_MEDIA_PREFIX = '/media/'
+# ADMIN_MEDIA_PREFIX = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_PATH, "static/")
 
@@ -94,7 +104,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'planner.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-#WSGI_APPLICATION = 'planner.wsgi.application'
+# WSGI_APPLICATION = 'planner.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'main/templates'),
@@ -122,9 +132,7 @@ INSTALLED_APPS = (
     'planner.main',
     'planner.nlpostalcode',
     'planner.area',
-    'south',
     'django_nose',
-    
 )
 
 PROJECT_APPS = (
@@ -134,3 +142,5 @@ PROJECT_APPS = (
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# SOUTH_TESTS_MIGRATE = False

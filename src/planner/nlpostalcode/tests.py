@@ -22,17 +22,17 @@ class SourceFactory(factory.Factory):
 class CountryFactory(factory.Factory):
     FACTORY_FOR = Country
     
-    id = 0
+    id = factory.Sequence(lambda n: n)
     created = updated = datetime.datetime.now()
-    name = "Nederland"
+    name = factory.Sequence(lambda n: "Nederland%s" % n)
     source = factory.SubFactory(SourceFactory)
     
 
 class ProvinceFactory(factory.Factory):
     FACTORY_FOR = Province
     
-    id = 0
-    name = "Noord-Holland"
+    id = factory.Sequence(lambda n: n)
+    name = factory.Sequence(lambda n: "Provincie:%s" % n)
     created = updated = datetime.datetime.now()
     country = factory.SubFactory(CountryFactory)
     source = factory.SubFactory(SourceFactory)
@@ -41,7 +41,7 @@ class ProvinceFactory(factory.Factory):
 class CityFactory(factory.Factory):
     FACTORY_FOR = City
     
-    id = 0
+    id = factory.Sequence(lambda n: n)
     created = updated = datetime.datetime.now()
     province = factory.SubFactory(ProvinceFactory)
     source = factory.SubFactory(SourceFactory)
@@ -50,8 +50,8 @@ class CityFactory(factory.Factory):
 class CitynameFactory(factory.Factory):
     FACTORY_FOR = Cityname
     
-    id = 0
-    name = 'Amsterdam'
+    id = factory.Sequence(lambda n: n)
+    name = factory.Sequence(lambda n: "Amsterdam:%s" % n)
     created = updated = datetime.datetime.now()
     city = factory.SubFactory(CityFactory)
     source = factory.SubFactory(SourceFactory)
