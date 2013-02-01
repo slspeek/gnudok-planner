@@ -8,11 +8,13 @@ import datetime
 from .models import Calendar
 from .models import TimeSlot, Car, Rule
 
+
 def get_region(calendar):
     car = calendar.car
     timeslot = calendar.timeslot
     rule = Rule.objects.filter(timeslot=timeslot, car=car).all()[0]
     return rule.region
+
 
 def get_total_weight(appointment_list):
     """ Returns the total weigth of the appointments is the given list """
@@ -20,7 +22,7 @@ def get_total_weight(appointment_list):
     for app in appointment_list:
         weight += app.weight
     return weight
-    
+
 
 def get_free_count(date, rule):
     """ Given a date, timeslot and region return the number of free slots """
@@ -33,7 +35,7 @@ def get_free_count(date, rule):
     else:
         entry = calendar_entries[0]
         appointment_list = entry.appointment_set.all()
-        total_weight = get_total_weight(appointment_list)  
+        total_weight = get_total_weight(appointment_list)
         left = 4 - total_weight
         return left
 
@@ -42,11 +44,11 @@ def get_rules(date, region):
     """ Returns a list of timeslots for the given region on the given date. """
     week_day = date.weekday() + 1
     if region:
-        rules = Rule.objects.filter(region=region,timeslot__day_of_week=week_day)
+        rules = Rule.objects.filter(region=region,
+                                    timeslot__day_of_week=week_day)
     else:
         rules = Rule.objects.filter(timeslot__day_of_week=week_day)
     return rules
-
 
 
 def get_free_entries(fromDate, daysAhead, region, min_weight):
@@ -62,29 +64,37 @@ def get_free_entries(fromDate, daysAhead, region, min_weight):
             if free_count >= min_weight:
                 result.append(entry(date, rule))
         if len(result) >= 2 and offset >= daysAhead - 1:
-            break;
+            break
     return result
 
-def get_free_entries_with_extra_calendar(fromDate, daysAhead, region, min_weight, calendar):
+
+def get_free_entries_with_extra_calendar(fromDate,
+                                         daysAhead,
+                                         region,
+                                         min_weight,
+                                         calendar):
     result = get_free_entries(fromDate, daysAhead, region, min_weight)
     found = False
     for entry in result:
         if entry[0] == calendar.pk:
             found = True
     if not found:
-        result = [ (calendar.pk, str(calendar))] + result
+        result = [(calendar.pk, str(calendar))] + result
     return result
+
 
 def entry(date, rule):
     timeslot_id = rule.timeslot.pk
     car_id = rule.car.pk
     calendar = get_or_create_calendar(timeslot_id, car_id, date)
     return (calendar.pk, str(calendar))
-    
+
+
 def get_or_create_calendar(timeslot_id, car_id, date):
-    """ Returns exiting calendar object for this triplet or creates one 
+    """ Returns exiting calendar object for this triplet or creates one
     if non-existent"""
-    calendars = Calendar.objects.filter(date=date).filter(timeslot__pk=timeslot_id).filter(car__pk=car_id)
+    by_date = Calendar.objects.filter(date=date)
+    calendars = by_date.filter(timeslot__pk=timeslot_id).filter(car__pk=car_id)
     if calendars:
         calendar = calendars[0]
     else:
@@ -94,4 +104,3 @@ def get_or_create_calendar(timeslot_id, car_id, date):
         calendar.car = Car.objects.get(pk=int(car_id))
         calendar.save()
     return calendar
-

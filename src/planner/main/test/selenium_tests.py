@@ -42,6 +42,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
         City.objects.all().delete()
         Street.objects.all().delete()
         Postcode.objects.all().delete()
+        super(DjangoSeleniumTest, self).tearDown()
            
     def sleep(self):
         amount = float(os.environ.get("TEST_PAUSE", failobj=2))
@@ -80,6 +81,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
 @attr('hook') 
 class TestPreCommitHook(DjangoSeleniumTest):
     def setUp(self):
+        super(DjangoSeleniumTest, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
@@ -128,7 +130,7 @@ class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
 
     def setUp(self):
-        self.tearDown()
+        super(DjangoSeleniumTest, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
@@ -152,6 +154,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
     """ Appointment create and edit test """
     
     def setUp(self):
+        super(DjangoSeleniumTest, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)

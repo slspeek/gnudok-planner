@@ -11,9 +11,11 @@ import re
 from django import forms
 from .__init__ import float_to_time
 
+
 pc_re = re.compile('^\d{4}[A-Z]{2}$')
 sofi_re = re.compile('^\d{9}$')
 numeric_re = re.compile('^\d+$')
+
 
 class NLPhoneNumberField(forms.CharField):
     """
@@ -33,11 +35,13 @@ class NLPhoneNumberField(forms.CharField):
         if len(phone_nr) == 10 and numeric_re.search(phone_nr):
             return value
 
-        if phone_nr[:3] == '+31' and len(phone_nr) == 12 and \
-           numeric_re.search(phone_nr[3:]):
+        if phone_nr[:3] == '+31' and \
+                len(phone_nr) == 12 and \
+                numeric_re.search(phone_nr[3:]):
             return value
 
         raise ValidationError(self.error_messages['invalid'])
+
 
 class PhoneNumberField(CharField):
 
@@ -55,6 +59,7 @@ class PhoneNumberField(CharField):
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^planner.main\.models\.PhoneNumberField"])
 
+
 class Customer(models.Model):
     """ Representa a customer """
     postcode = models.CharField(_('postalcode'), max_length=14)
@@ -63,40 +68,32 @@ class Customer(models.Model):
     name = models.CharField(_('name'), max_length=30)
     address = models.CharField(_('address'), max_length=120)
     town = models.CharField(_('town'), max_length=120)
-    #phone = models.CharField(_('phone'), max_length=20, form_class=nl_forms.NLPhoneNumberField)
     phone = PhoneNumberField()
     email = models.EmailField(_('email'), max_length=120, blank=True)
 
     def __str__(self):
         return self.name
-    
+
     def get_address_display(self):
         if self.additions:
             return u'%s %s - %s' % (self.address, self.number, self.additions)
         else:
             return u'%s %s' % (self.address, self.number)
-    
+
     class Meta:
         unique_together = (("postcode", "number", "additions"),)
-   
-
-
-def weekDayName(dayNumber):
-    return [_("Monday"), _("Tuesday"),
-            _("Wednesday"), _("Thursday"),
-            _("Friday")][dayNumber - 1]
 
 
 class TimeSlot(models.Model):
-    CHOICES = ( (1,_("Monday")),
-                (2,_("Tuesday")),
-                (3, _("Wednesday")),
-                (4, _("Thursday")),
-                (5,_("Friday") ))
+    CHOICES = ((1, _("Monday")),
+               (2, _("Tuesday")),
+               (3, _("Wednesday")),
+               (4, _("Thursday")),
+               (5, _("Friday")))
     day_of_week = models.IntegerField(choices=CHOICES)
     begin = models.FloatField()
     end = models.FloatField()
-    
+
     def get_begin_display(self):
         return float_to_time(self.begin)
 
@@ -104,7 +101,9 @@ class TimeSlot(models.Model):
         return float_to_time(self.end)
 
     def __str__(self):
-        return u"%s :  %s - %s" % (weekDayName(self.day_of_week), float_to_time(self.begin), float_to_time(self.end))
+        return u"%s :  %s - %s" % (self.get_day_of_week_display(),
+                                   float_to_time(self.begin),
+                                   float_to_time(self.end))
 
 
 class Region(models.Model):
@@ -117,7 +116,7 @@ class Region(models.Model):
 
 class Car(models.Model):
     name = models.CharField(_('name'), max_length=20)
-    
+
     def __str__(self):
         return self.name
 
@@ -127,63 +126,65 @@ class Rule(models.Model):
     timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
     region = models.ForeignKey(Region, verbose_name=_('region'))
     active = models.BooleanField(default=True, verbose_name=_('active'))
-    
+
     def __str__(self):
-        return u"(%s, %s, %s)" % (str(self.car), str(self.timeslot), str(self.region))
-    
+        return u"(%s, %s, %s)" % \
+            (str(self.car), str(self.timeslot), str(self.region))
+
 
 class Calendar(models.Model):
     date = models.DateField(_('date'))
     car = models.ForeignKey(Car, verbose_name=_('car'))
     timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
-    
+
     def active_appoinments(self):
         return Appointment.actives.filter(calendar=self)
- 
 
     def __str__(self):
-        return u"%s: %s - %s" % (self.date.strftime('%d %B '), str(self.timeslot), str(self.car))
-    
+        return u"%s: %s - %s" %\
+            (self.date.strftime('%d %B '), str(self.timeslot), str(self.car))
+
     class Meta:
         unique_together = (("date", "car", "timeslot"),)
         ordering = ['date', 'timeslot__begin']
 
+
 class ActiveManager(models.Manager):
     use_for_related_fields = True
-    
+
     def get_query_set(self):
-        return super(ActiveManager, self).get_query_set().filter(status=self.model.NORMAL)
-    
-        
+        query_set = super(ActiveManager, self).get_query_set()
+        return query_set.filter(status=self.model.NORMAL)
+
 
 class Appointment(models.Model):
     objects = models.Manager()
     actives = ActiveManager()
-    
+
     calendar = models.ForeignKey(Calendar, verbose_name=_('calendar'))
     customer = models.ForeignKey(Customer, verbose_name=_('customer'))
     employee = models.ForeignKey(User, verbose_name=_('employee'))
-    KIND_CHOICES = ( (1,_("Delivery")),
-                (2,_("Pick up")), )
+    KIND_CHOICES = ((1, _("Delivery")),
+                    (2, _("Pick up")),)
     kind = models.IntegerField(_('kind'), choices=KIND_CHOICES, default=2)
     NORMAL = 1
     CANCELLED = 2
-    STATUS_CHOICES = ( (1,_("Normal")),
-                (2,_("Cancelled")), )
-    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=NORMAL)
-    CHOICES = ( (1,_("Normal")),
-                (2,_("Double")),
-                (3, _("Tripel")),
-                (4, _("Entire half-day")),
-                 )
+    STATUS_CHOICES = ((1, _("Normal")),
+                      (2, _("Cancelled")),)
+    status = models.IntegerField(_('status'),
+                                 choices=STATUS_CHOICES, default=NORMAL)
+    CHOICES = ((1, _("Normal")),
+               (2, _("Double")),
+               (3, _("Tripel")),
+               (4, _("Entire half-day")),)
     weight = models.IntegerField(_('weight'), choices=CHOICES, default=1)
     stuff = models.TextField(_('stuff'))
     notes = models.TextField(_('notes'), blank=True)
-    created = models.DateTimeField(_("created"), default=lambda:datetime.datetime.now())
-
+    created = models.DateTimeField(_("created"),
+                                   default=lambda: datetime.datetime.now())
 
     def __str__(self):
         return self.customer.name + ", " + self.stuff
-    
+
     class Meta:
         ordering = ['customer__postcode']

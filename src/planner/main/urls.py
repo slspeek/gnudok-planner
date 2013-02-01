@@ -11,6 +11,7 @@ from .viewers_views import display_date_form,\
 from .views import appointment_manipulation
 from .views import get_available_dates, get_customer
     
+
 urlpatterns = patterns('',
     
     (r'^get_available_dates/(?P<postalcode>\w*)/(?P<weight>\d+)/(?P<date_iso>\d{0,8})/(?P<calendar_id>[-]?\d+)/(?P<unrestricted>\w*)', get_available_dates),

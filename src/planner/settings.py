@@ -19,7 +19,7 @@ DATABASES = {
         'HOST': '',
         'PORT': '',
     },
-    'nlpostcode' :  {
+    'nlpostcode':  {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nlpostcode',
         'USER': 'nlpostcode',
@@ -29,7 +29,8 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['planner.nlpostalcode.nlpostcode_router.NlpostcodeRouter', 'planner.main.main_router.MainRouter']
+DATABASE_ROUTERS = ['planner.nlpostalcode.nlpostcode_router.NlpostcodeRouter',
+                    'planner.main.main_router.MainRouter']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -75,7 +76,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-#    os.path.join(PROJECT_PATH, 'static'),
+    # os.path.join(PROJECT_PATH, 'static'),
 )
 # List of finder classes that know how to find static files in
 # various locations.
@@ -118,7 +119,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 )
 INSTALLED_APPS = (
-    
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -132,6 +133,7 @@ INSTALLED_APPS = (
     'planner.main',
     'planner.nlpostalcode',
     'planner.area',
+    'south',
     'django_nose',
 )
 
@@ -143,4 +145,4 @@ PROJECT_APPS = (
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-# SOUTH_TESTS_MIGRATE = False
+SOUTH_TESTS_MIGRATE = False

@@ -23,9 +23,8 @@ class NlpostcodeRouter(object):
         """
         Allow relations if a model in the nlpostcode app is involved.
         """
-        if obj1._meta.app_label == 'nlpostalcode' or \
-           obj2._meta.app_label == 'nlpostalcode':
-           return True
+        if obj1._meta.app_label == 'nlpostalcode' or obj2._meta.app_label == 'nlpostalcode':
+            return True
         return None
 
     def allow_syncdb(self, db, model):

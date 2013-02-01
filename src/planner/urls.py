@@ -12,13 +12,16 @@ from .main.views import logout_view
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/login/$', login, name='Login'),
-    url(r'^accounts/logout/$', logout_view, name='Logout'),
-    (r'^main/', include(urls)),
-    (r'^area/', include(area_urls)),
-    (r'^pc/', include(postalcode_urls)),
-    url(r'^$', RedirectView.as_view(url='main/overview')),
-)
+                       (r'^admin/doc/',
+                        include('django.contrib.admindocs.urls')),
+                       (r'^admin/',
+                        include(admin.site.urls)),
+                       url(r'^accounts/login/$',
+                           login, name='Login'),
+                       url(r'^accounts/logout/$', logout_view, name='Logout'),
+                       (r'^main/', include(urls)),
+                       (r'^area/', include(area_urls)),
+                       (r'^pc/', include(postalcode_urls)),
+                       url(r'^$', RedirectView.as_view(url='main/overview')),
+                       )
 urlpatterns += staticfiles_urlpatterns()

@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 from .__init__ import tomorrow, get_date_from_iso, group_required, to_iso
 from django.contrib.auth.models import User
-import logging
 import datetime
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
@@ -16,11 +15,10 @@ from .schedule import get_region, get_total_weight
 def appointment_detail(request, pk):
     appointment = Appointment.objects.get(pk=int(pk))
     region = get_region(appointment.calendar)
-    return render_to_response("main/appointment_detail.html", 
-                              {
-                               "object": appointment,
-                               "region": region,
-                               })
+    return render_to_response("main/appointment_detail.html",
+                              {"object": appointment,
+                               "region": region, })
+
 
 @group_required('Viewers')
 def choose_an_employee(request):
@@ -32,33 +30,42 @@ def choose_an_employee(request):
     else:
         form = EmployeeChooseForm()
     return render_to_response('choose_an_employee.html',
-                              {"form": form, "title": _("Choose an employee") },
-                               context_instance=RequestContext(request))
+                              {"form": form,
+                              "title": _("Choose an employee")},
+                              context_instance=RequestContext(request))
+
 
 @group_required('Viewers')
 def appointments_by_date(request, date_iso):
     if not date_iso:
-        date_iso=datetime.date.today().strftime('%Y%m%d')
+        date_iso = datetime.date.today().strftime('%Y%m%d')
     date = get_date_from_iso(date_iso)
-    appointment_list = Appointment.actives.filter(created__range=[date, date + datetime.timedelta(days=1 )]).order_by('-created')
-    return render_to_response("appointments_today.html", 
+    date_interval = [date, date + datetime.timedelta(days=1)]
+    unordered = Appointment.actives.filter(created__range=date_interval)
+    appointment_list = unordered.order_by('-created')
+    return render_to_response("appointments_today.html",
                               {"date": date,
                                "appointment_list": appointment_list,
                                })
 
+
 @group_required('Viewers')
 def appointments_made_by(request, employee_id):
-    appointment_list = Appointment.actives.filter(employee__pk=employee_id).order_by('calendar__date')
-    return render_to_response("appointments_made_by.html", 
-                              {"employee": User.objects.get(pk=employee_id),
+    by_one_employee = Appointment.actives.filter(employee__pk=employee_id)
+    appointment_list = by_one_employee.order_by('calendar__date')
+
+    employee = User.objects.get(pk=employee_id)
+    return render_to_response("appointments_made_by.html",
+                              {"employee": employee,
                                "appointment_list": appointment_list,
                                })
+
 
 @group_required('Viewers')
 def overview(request, date_iso):
     if not date_iso:
-        date_iso=tomorrow()
-    range_list0, range_list1, range_list2  = [], [], []
+        date_iso = tomorrow()
+    range_list0, range_list1, range_list2 = [], [], []
     for counter in range(-2, 0):
         begin, end = get_date_interval(date_iso, counter)
         range_list0.append((counter, begin, end))
@@ -69,7 +76,7 @@ def overview(request, date_iso):
         begin, end = get_date_interval(date_iso, counter)
         range_list2.append((counter, begin, end))
     car_list = Car.objects.all()
-    return render_to_response("main/overview.html", 
+    return render_to_response("main/overview.html",
                               {"title": _("Overview"),
                                "date_iso": date_iso,
                                "car_list": car_list,
@@ -77,16 +84,19 @@ def overview(request, date_iso):
                                "range1": range_list1,
                                "range2": range_list2,
                                })
-    
+
+
 def get_date_interval(date_iso, offset):
-    begin_date = get_date_from_iso(date_iso) + datetime.timedelta(weeks=int(offset))
+    begin_date = get_date_from_iso(date_iso) + \
+        datetime.timedelta(weeks=int(offset))
     end_date = begin_date + datetime.timedelta(weeks=1)
     return (begin_date, end_date)
 
+
 @group_required('Viewers')
-def weekview(request, car_id=0 , offset=0, date_iso=""):
+def weekview(request, car_id=0, offset=0, date_iso=""):
     if not date_iso:
-        date_iso=tomorrow()
+        date_iso = tomorrow()
     offset = int(offset)
     begin_date, end_date = get_date_interval(date_iso, offset)
     queryset = Calendar.objects.filter(car__pk=int(car_id))
@@ -97,30 +107,31 @@ def weekview(request, car_id=0 , offset=0, date_iso=""):
         cal.free = free_count
         cal.region = get_region(cal)
         cal.appointments = cal.active_appoinments().all()
-        
+
     car = Car.objects.get(pk=int(car_id))
     return render_to_response("calendar_week.html",
-                               {"object_list": calendars,
-                                "from": begin_date,
-                                "to": end_date,
-                                "next": offset + 1,
-                                "prev": offset - 1,
-                                "car":car})
+                              {"object_list": calendars,
+                               "from": begin_date,
+                               "to": end_date,
+                               "next": offset + 1,
+                               "prev": offset - 1,
+                               "car": car})
 
 
 @group_required('Viewers')
 def display_date_form(request):
     if not request.POST:
-        form = DatePickForm({"date": datetime.date.today() + datetime.timedelta(days=1) })
+        tommorrow = datetime.date.today() + datetime.timedelta(days=1)
+        form = DatePickForm({"date": tommorrow})
     else:
         form = DatePickForm(request.POST)
         if form.is_valid():
             date = form.cleaned_data['date']
             return redirect(choose_calendar, to_iso(date))
     return render_to_response('choose_listing_date.html',
-                               {'title': _('Pick a date'),
-                                'form': form },
-                                context_instance=RequestContext(request))
+                              {'title': _('Pick a date'),
+                               'form': form},
+                              context_instance=RequestContext(request))
 
 
 @group_required('Viewers')
@@ -129,24 +140,45 @@ def choose_calendar(request, date_string):
     cals = Calendar.objects.filter(date=date)
     return render_to_response('choose_calendar.html',
                               {"title": _("Choose a region and timeslot"),
-                               'calendar_list':cals},
+                               'calendar_list': cals},
                               context_instance=RequestContext(request))
+
 
 @group_required('Viewers')
 def render_appointment_list(request, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
     return render_to_response('appointment_list.html',
-                               {"title": _("Appointment list"),
-                                'car': calendar.car,
-                                'date': calendar.date,
-                                'region': get_region(calendar),
-                                'timeslot': calendar.timeslot,
-                                'app_list': calendar.active_appoinments().all()
-                                })
+                              {"title": _("Appointment list"),
+                               'car': calendar.car,
+                               'date': calendar.date,
+                               'region': get_region(calendar),
+                               'timeslot': calendar.timeslot,
+                               'app_list': calendar.active_appoinments().all()
+                               })
+
+
+def search(search_form):
+    results = Appointment.actives
+    name = search_form.cleaned_data['name']
+    if name:
+        results = results.filter(customer__name__icontains=name)
+    postcode = search_form.cleaned_data['postcode']
+    if postcode:
+        results = results.filter(customer__postcode__icontains=postcode)
+    street = search_form.cleaned_data['street']
+    if street:
+        results = results.filter(customer__address__icontains=street)
+    date = search_form.cleaned_data['date']
+    if date:
+        results = results.filter(calendar__date=date)
+    if not name and (not postcode) and not date and not street:
+        results = results.all()
+    return results
+
 
 @group_required('Viewers')
 def calendar_search_view(request):
-    search_results = []
+    results = []
     result_count = 0
     if not request.POST:
         search_form = CalendarSearchForm()
@@ -154,31 +186,13 @@ def calendar_search_view(request):
     else:
         search_form = CalendarSearchForm(request.POST)
         if search_form.is_valid():
-            search_results = Appointment.actives
-            name = search_form.cleaned_data['name']
-            if name:
-                search_results = search_results.filter(customer__name__icontains=name)
-            postcode = search_form.cleaned_data['postcode']
-            if postcode:
-                search_results = search_results.filter(customer__postcode__icontains=postcode)
-            street = search_form.cleaned_data['street']
-            if street:
-                search_results = search_results.filter(customer__address__icontains=street)
-            date = search_form.cleaned_data['date']
-            if date:
-                search_results = search_results.filter(calendar__date=date)
+            results = search(results, search_form)
+            result_count = len(results)
             searched = True
-            if not name and (not postcode) and not date and not street:
-                search_results = search_results.all()
-            result_count = len(search_results)
     return render_to_response('calendar_search_view.html',
                               {"search_form": search_form,
                                "searched": searched,
                                "result_count": result_count,
-                               "search_results": search_results,
+                               "results": results,
                                "title": _("Customer search")},
                               context_instance=RequestContext(request))
-
-
-
-

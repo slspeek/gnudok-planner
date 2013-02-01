@@ -15,9 +15,8 @@ class MainRouter(object):
         """
         Allow relations if a model in the nlpostcode app is involved.
         """
-        if obj1._meta.app_label == 'main' or \
-           obj2._meta.app_label == 'main':
-           return True
+        if obj1._meta.app_label == 'main' or obj2._meta.app_label == 'main':
+            return True
         return None
 
     def allow_syncdb(self, db, model):
