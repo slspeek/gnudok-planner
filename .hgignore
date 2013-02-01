@@ -1,6 +1,7 @@
 syntax: glob
 *.pyc
 src/*.pyc
+src/planner/static
 src/html
 eggs
 src/planner.egg-info
