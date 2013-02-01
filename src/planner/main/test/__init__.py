@@ -1,4 +1,5 @@
-from planner.main.models import Car, TimeSlot, Region, Rule, Customer, Appointment, Calendar
+from planner.main.models import Car, TimeSlot, Region,\
+    Rule, Customer, Appointment, Calendar
 import factory
 import datetime
 from django_factory_boy.auth import UserF, GroupF
@@ -15,62 +16,72 @@ def createTestPostcodes():
     builder.create_street(code, 'Chestertonlaan', 'za')
 
 
-
 def createRegion(self):
     self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost')
     self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
     self.car = CarFactory(name='Auto Zeeburg')
-    self.rule = RuleFactory(timeslot=self.timeslot, car=self.car, region=self.region)
-    self.interval = IntervalFactory(begin='1102aa', end='1102zz', region=self.region)
+    self.rule = RuleFactory(timeslot=self.timeslot,
+                            car=self.car,
+                            region=self.region)
+    self.interval = IntervalFactory(begin='1102aa',
+                                    end='1102zz',
+                                    region=self.region)
 
+PASSWORD = 'pbkdf2_sha256$10000$Hk9LhgRtiFgH$x' \
+           'BWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4='
 
 def createTestUsers(self):
     self.group_callcenter = GroupF(name='Callcenter')
     self.group_viewers = GroupF(name='Viewers')
-    self.user_steven = UserF(username='steven', password='pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=')
-    self.user_alien = UserF(username='alien', password='pbkdf2_sha256$10000$Hk9LhgRtiFgH$xBWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4=')
-    self.user_steven.groups = [ self.group_callcenter, self.group_viewers ]
+    
+    self.user_steven = UserF(username='steven',
+                             password=PASSWORD)
+    self.user_alien = UserF(username='alien',
+                             password=PASSWORD)
+    self.user_steven.groups = [self.group_callcenter, self.group_viewers]
     self.user_steven.save()
-    self.user_alien.groups = [ self.group_viewers ]
-
+    self.user_alien.groups = [self.group_viewers]
 
 
 def adaMakesAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
-        number=42,
-        address='Bijlmerdreef',
-        town='Amsterdam',
-        phone='06-12345678')
+    self.customer = CustomerFactory(name='Ada Lovelace',
+                                    postcode='1102AB',
+                                    number=42,
+                                    address='Bijlmerdreef',
+                                    town='Amsterdam',
+                                    phone='06-12345678')
     self.appointment = AppointmentFactory(calendar=self.calendar,
-        created=datetime.date(year=2012, month=12, day=20),
-        customer=self.customer,
-        employee=self.user_steven,
-        stuff='Virtual Machines', notes='Lift aanwezig')
+                                          created=datetime.date(year=2012, month=12, day=20),
+                                          customer=self.customer,
+                                          employee=self.user_steven,
+                                          stuff='Virtual Machines',
+                                          notes='Lift aanwezig')
 
 
 def adaMakesBigAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
-        number=42,
-        address='Bijlmerdreef',
-        town='Amsterdam',
-        phone='06-12345678')
+    self.customer = CustomerFactory(name='Ada Lovelace',
+                                    postcode='1102AB',
+                                    number=42,
+                                    address='Bijlmerdreef',
+                                    town='Amsterdam',
+                                    phone='06-12345678')
     self.appointment = AppointmentFactory(calendar=self.calendar,
-        created=datetime.date(year=2012, month=12, day=20),
-        customer=self.customer,
-        employee=self.user_steven,
-        stuff='Gehele nalatenschap', weight=4, notes='Lift aanwezig')
+                                          created=datetime.date(year=2012, month=12, day=20),
+                                          customer=self.customer,
+                                          employee=self.user_steven,
+                                          stuff='Gehele nalatenschap',
+                                          weight=4,
+                                          notes='Lift aanwezig')
 
 
 class CarFactory(factory.Factory):
     FACTORY_FOR = Car
 
     name = "Open source tractor"
-
-
 
 
 class TimeSlotFactory(factory.Factory):
@@ -81,11 +92,11 @@ class TimeSlotFactory(factory.Factory):
     end = 17
 
 
-
 class RegionFactory(factory.Factory):
     FACTORY_FOR = Region
 
     name = "Groot Oost"
+
 
 class RuleFactory(factory.Factory):
     FACTORY_FOR = Rule
@@ -93,7 +104,6 @@ class RuleFactory(factory.Factory):
     car = factory.SubFactory(CarFactory)
     region = factory.SubFactory(RegionFactory)
     timeslot = factory.SubFactory(TimeSlotFactory)
-
 
 
 class CustomerFactory(factory.Factory):
@@ -107,7 +117,6 @@ class CustomerFactory(factory.Factory):
     email = "wk@example.com"
 
 
-
 class CalendarFactory(factory.Factory):
     FACTORY_FOR = Calendar
 
@@ -115,7 +124,6 @@ class CalendarFactory(factory.Factory):
     timeslot = factory.SubFactory(TimeSlotFactory)
     car = factory.SubFactory(CarFactory)
     #region = factory.SubFactory(RegionFactory)
-
 
 
 class AppointmentFactory(factory.Factory):
@@ -127,4 +135,3 @@ class AppointmentFactory(factory.Factory):
     stuff = "Gold, Platina and lots of Silver"
     notes = "Bring boxes"
     created = datetime.datetime.now()
-

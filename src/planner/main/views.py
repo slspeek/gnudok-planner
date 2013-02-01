@@ -4,7 +4,7 @@ from .__init__ import group_required, get_date_from_iso, tomorrow
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Region, Customer
+from .models import Appointment, Calendar, Customer
 from .forms import CustomerForm, BigAppointmentForm, HiddenForm
 from .schedule import get_free_entries, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
