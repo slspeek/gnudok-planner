@@ -128,7 +128,7 @@ class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
 
     def setUp(self):
-        self.tearDown();
+        self.tearDown()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
