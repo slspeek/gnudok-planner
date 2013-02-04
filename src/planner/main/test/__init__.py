@@ -41,6 +41,7 @@ def createTestUsers(self):
     self.user_steven.groups = [self.group_callcenter, self.group_viewers]
     self.user_steven.save()
     self.user_alien.groups = [self.group_viewers]
+    self.user_alien.save()
 
 
 def adaMakesAppointment(self):

@@ -14,6 +14,7 @@ from nose.plugins.attrib import attr
 from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
 from planner.main.models import Customer, Calendar
 from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
+from planner.main.viewers_views import calendar_search_view
 
 VRIJDAG_11JAN = "11 January : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
@@ -77,7 +78,33 @@ class DjangoSeleniumTest(LiveServerTestCase):
     
     def go_to_view(self, view, args=None, kwargs=None):
         self.driver.get(self.live_server_url + reverse(view, args=args, kwargs=kwargs))
-        
+ 
+@attr('selenium', 'search') 
+class SearchTest(DjangoSeleniumTest):
+
+    def setUp(self):
+        super(DjangoSeleniumTest, self).setUp()
+        createRegion(self)
+        createTestPostcodes()
+        createTestUsers(self)
+        adaMakesAppointment(self)
+    
+    def test_search_ada(self):
+        """ Searches one appointment."""
+        driver = self.driver
+        self.login("alien", "jansteven")
+        self.go_to_view(calendar_search_view)
+       
+        self.sleep()        
+        self.set_text_field('id_name', "lovelac")
+        driver.find_element_by_css_selector("button.btn").click()
+        self.sleep()
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Virtual Machines")
+        self.assertBobyContains("4 januari")    
+    
+            
 @attr('hook') 
 class TestPreCommitHook(DjangoSeleniumTest):
     def setUp(self):
