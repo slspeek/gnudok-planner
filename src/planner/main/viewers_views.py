@@ -186,7 +186,7 @@ def calendar_search_view(request):
     else:
         search_form = CalendarSearchForm(request.POST)
         if search_form.is_valid():
-            results = search(results, search_form)
+            results = search(search_form)
             result_count = len(results)
             searched = True
     return render_to_response('calendar_search_view.html',
