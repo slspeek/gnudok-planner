@@ -193,6 +193,6 @@ def calendar_search_view(request):
                               {"search_form": search_form,
                                "searched": searched,
                                "result_count": result_count,
-                               "results": results,
+                               "search_results": results,
                                "title": _("Customer search")},
                               context_instance=RequestContext(request))
