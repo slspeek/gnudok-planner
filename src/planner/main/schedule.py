@@ -34,7 +34,7 @@ def get_free_count(date, rule):
         return 4
     else:
         entry = calendar_entries[0]
-        appointment_list = entry.appointment_set.all()
+        appointment_list = entry.active_appointments().all()
         total_weight = get_total_weight(appointment_list)
         left = 4 - total_weight
         return left

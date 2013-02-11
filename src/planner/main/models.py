@@ -137,7 +137,7 @@ class Calendar(models.Model):
     car = models.ForeignKey(Car, verbose_name=_('car'))
     timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
 
-    def active_appoinments(self):
+    def active_appointments(self):
         return Appointment.actives.filter(calendar=self)
 
     def __str__(self):

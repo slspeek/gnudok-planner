@@ -20,7 +20,7 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
     if calendar_id_string:
         calendar_id = int(calendar_id_string)
         calendar = Calendar.objects.get(pk=calendar_id)
-        existing_apps = calendar.active_appoinments()
+        existing_apps = calendar.active_appointments()
         logging.error(existing_apps)
         logging.error(appointment_form.cleaned_data)
         old_weight = 0

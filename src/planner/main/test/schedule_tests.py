@@ -67,6 +67,25 @@ class TestAppointmentCalendarPresent(TestCase):
         result = get_free_count(self.date, self.rule)
         self.assertEqual(3, result, "Expected 3 free places left")
 
+@attr('functional', 'cancelled')
+class TestCancelledAppointmentsDoNotCount(TestCase):
+
+    def setUp(self):
+        TestCase.setUp(self)
+        self.car = CarFactory()
+        self.timeslot = TimeSlotFactory()
+        self.rule = RuleFactory(car=self.car, timeslot=self.timeslot)
+        self.appointment = AppointmentFactory.create(
+            calendar__car=self.car,
+            calendar__timeslot=self.timeslot)
+        self.appointment.status = 2
+        self.date = datetime.date(2012, 10, 29)
+        self.appointment.save()
+
+    def test_get_free_count(self):
+        result = get_free_count(self.date, self.rule)
+        self.assertEqual(4, result, "Expected 4 free places left, cancelled should not count")
+
 
 @attr('functional')
 class TestGetFreeEntries(TestCase):

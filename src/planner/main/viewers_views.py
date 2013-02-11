@@ -102,11 +102,11 @@ def weekview(request, car_id=0, offset=0, date_iso=""):
     queryset = Calendar.objects.filter(car__pk=int(car_id))
     calendars = queryset.filter(date__range=[begin_date, end_date]).all()
     for cal in calendars:
-        app_list = cal.active_appoinments().all()
+        app_list = cal.active_appointments().all()
         free_count = 4 - get_total_weight(app_list)
         cal.free = free_count
         cal.region = get_region(cal)
-        cal.appointments = cal.active_appoinments().all()
+        cal.appointments = cal.active_appointments().all()
 
     car = Car.objects.get(pk=int(car_id))
     return render_to_response("calendar_week.html",
@@ -153,7 +153,7 @@ def render_appointment_list(request, calendar_id):
                                'date': calendar.date,
                                'region': get_region(calendar),
                                'timeslot': calendar.timeslot,
-                               'app_list': calendar.active_appoinments().all()
+                               'app_list': calendar.active_appointments().all()
                                })
 
 

@@ -59,10 +59,10 @@ class CancelAppointmentTest(TestCase):
         assert not Appointment.actives.exists()
         
     def test_cancel_appointment_in_calendar(self):
-        self.assertEquals(len(self.calendar.active_appoinments().all()), 1)
+        self.assertEquals(len(self.calendar.active_appointments().all()), 1)
         self.appointment.status = Appointment.CANCELLED
         self.appointment.save()
-        self.assertEquals(len(self.calendar.active_appoinments().all()), 0)
+        self.assertEquals(len(self.calendar.active_appointments().all()), 0)
         
         
         
