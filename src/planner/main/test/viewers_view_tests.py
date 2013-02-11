@@ -130,7 +130,7 @@ class AppointmentsByEmployee(WebTest):
         choose_an_employee = redirect.follow()
         form = choose_an_employee.form
         print choose_an_employee, form.fields.values()
-        form['employee'] = u'1'
+        form['employee'] = u'1000'
         details = form.submit().follow()
         assert "Ada Lovelace" in details
         assert "Virtual Machines" in details

@@ -41,7 +41,7 @@
 		} else {
 			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
 		}
-		if (postcode.length === 6 ) {
+		if (postcode.length === 6) {
 			callout_available_dates();
 			$.getJSON(url, set_data).error(clear_data);
 		}
@@ -65,7 +65,7 @@
 <hr/>
 
 <form id="appointment" name="appointment" action="" method="post" class="appointment">
-	
+
 	{% csrf_token %}
 	<div style="display: inline;" >
 		<div class="span3">
@@ -77,11 +77,13 @@
 			{{ hiddenForm }}
 		</div>
 		<div class="span4">
-			<div>
+			<div class="control-group">
 				<label>{% trans "Unrestricted" %}</label>
 				<input id="id_unrestricted" type="checkbox"/>
 				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
-				<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
+				<div class="controls">
+					<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
+				</div>
 			</div>
 			<button class="btn btn-primary" type="submit">
 				{% trans "Save" %}

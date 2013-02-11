@@ -32,12 +32,12 @@ PASSWORD = 'pbkdf2_sha256$10000$Hk9LhgRtiFgH$x' \
            'BWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4='
 
 def createTestUsers(self):
-    User.objects.all().delete()
+    #User.objects.all().delete()
     self.group_callcenter = GroupF(name='Callcenter')
     self.group_viewers = GroupF(name='Viewers')
     
-    self.user_steven = UserF(id=1, username='steven', password=PASSWORD)
-    self.user_alien = UserF(id=2, username='alien',  password=PASSWORD)
+    self.user_steven = UserF(id=1000, username='steven', password=PASSWORD)
+    self.user_alien = UserF(id=2000, username='alien',  password=PASSWORD)
     self.user_steven.groups = [self.group_callcenter, self.group_viewers]
     self.user_steven.save()
     self.user_alien.groups = [self.group_viewers]
