@@ -304,7 +304,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
 
-    
+    @attr('at_first')
     def test_existing_cutomer_at_first(self):
         """ Look like an exiting customer, and then change again to new customer """
         adaMakesAppointment(self)
@@ -328,7 +328,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
-        self.assertEquals(2, Customer.objects.all())
+        self.assertEquals(2, len(Customer.objects.all()))
         
     @attr('unres')
     def test_unrestricted(self):
