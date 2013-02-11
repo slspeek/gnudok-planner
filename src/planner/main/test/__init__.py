@@ -34,7 +34,7 @@ def createTestUsers(self):
     self.group_callcenter = GroupF(name='Callcenter')
     self.group_viewers = GroupF(name='Viewers')
     
-    self.user_steven = UserF(username='steven',
+    self.user_steven = UserF(id=1, username='steven',
                              password=PASSWORD)
     self.user_alien = UserF(username='alien',
                              password=PASSWORD)
