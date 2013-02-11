@@ -5,6 +5,7 @@ import datetime
 from django_factory_boy.auth import UserF, GroupF
 from planner.nlpostalcode.tests import PostcodeBuilder
 from planner.area.test import IntervalFactory
+from django.contrib.auth.models import User
 
 
 def createTestPostcodes():
@@ -31,13 +32,12 @@ PASSWORD = 'pbkdf2_sha256$10000$Hk9LhgRtiFgH$x' \
            'BWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4='
 
 def createTestUsers(self):
+    User.objects.all().delete()
     self.group_callcenter = GroupF(name='Callcenter')
     self.group_viewers = GroupF(name='Viewers')
     
-    self.user_steven = UserF(id=1, username='steven',
-                             password=PASSWORD)
-    self.user_alien = UserF(username='alien',
-                             password=PASSWORD)
+    self.user_steven = UserF(id=1, username='steven', password=PASSWORD)
+    self.user_alien = UserF(id=2, username='alien',  password=PASSWORD)
     self.user_steven.groups = [self.group_callcenter, self.group_viewers]
     self.user_steven.save()
     self.user_alien.groups = [self.group_viewers]

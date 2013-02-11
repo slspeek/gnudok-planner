@@ -64,7 +64,10 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         if hidden_form.is_valid():
             customer_id = hidden_form.cleaned_data['found_customer_id']
             if customer_id:
+                logging.error("Customer known")
                 appointment.customer = Customer.objects.get(pk=customer_id)
+        else:
+            logging.error("Customer unknown")
         appointment_form = BigAppointmentForm(request.POST,
                                               instance=appointment)
         customer_form = CustomerForm(request.POST,

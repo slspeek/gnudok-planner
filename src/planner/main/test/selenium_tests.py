@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 
 
 import time
+import logging
 import datetime
 from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 from .__init__ import CustomerFactory, AppointmentFactory
@@ -311,7 +312,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.appointment.delete()
         assert Customer.objects.all().exists()
         self.login('steven', 'jansteven')
-        
+        logging.error(Customer.objects.all())
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
         self.set_text_field('id_postcode', '1102AB')
@@ -329,7 +330,13 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
         self.assertEquals(2, len(Customer.objects.all()))
-        
+        logging.error(Customer.objects.all())
+     
+    @attr('at_first')
+    def test_existing_cutomer_at_first2(self):
+        """ Look like an exiting customer, and then change again to new customer """
+        logging.error(Customer.objects.all())
+           
     @attr('unres')
     def test_unrestricted(self):
         """ Create unrestricted appointment """

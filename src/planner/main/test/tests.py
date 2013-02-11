@@ -38,13 +38,16 @@ class CancelAppointmentTest(TestCase):
                                               customer=self.customer,
                                               stuff='Machines')
         createTestUsers(self)
+        
+    def tearDown(self):
+        User.objects.all().delete()
 
     @attr('fullsubmit')
     def test_cancel_appointment(self):
         """ Cancel an appointment """
-        assert len(Calendar.objects.all()) == 1
-        assert len(Appointment.objects.all()) == 1
-        assert len(Customer.objects.all()) == 1
+        self.assertEquals(1, len(Calendar.objects.all()))
+        self.assertEquals(1, len(Appointment.objects.all()))
+        self.assertEquals(1, len(Customer.objects.all()))
         self.client.login(username='steven', password='jansteven')
         response = self.client.get(reverse('CancelAppointment', args=[self.appointment.pk,]),
                                     {}, follow=True)
@@ -55,7 +58,7 @@ class CancelAppointmentTest(TestCase):
         assert response.status_code == 200
         appointment = Appointment.objects.get(pk=self.appointment.pk)
         logging.error(appointment.status)
-        assert 2 == appointment.status
+        self.assertEquals(2, appointment.status)
         assert not Appointment.actives.exists()
         
     def test_cancel_appointment_in_calendar(self):
