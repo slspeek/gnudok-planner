@@ -328,8 +328,8 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
-        assert len(Customer.objects.all()) == 2
-    
+        self.assertEquals(2, Customer.objects.all(), "Expected 2 customers in total")
+        
     @attr('unres')
     def test_unrestricted(self):
         """ Create unrestricted appointment """
