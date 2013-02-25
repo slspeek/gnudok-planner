@@ -332,10 +332,27 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertEquals(2, len(Customer.objects.all()))
         logging.error(Customer.objects.all())
      
-    @attr('at_first')
-    def test_existing_cutomer_at_first2(self):
-        """ Look like an exiting customer, and then change again to new customer """
-        logging.error(Customer.objects.all())
+    @attr('no_stuff') 
+    def test_create_one_appointment_without_stuff(self):
+        """ Makes one appointment without stuff"""
+        self.login('steven', 'jansteven')
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+        
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_number', "144")
+        self.set_text_field('id_additions', "sous")
+        self.set_text_field('id_phone', '020-7123456')
+        #self.set_text_field('id_stuff', "Bed, boeken en servies")
+        self.set_text_field('id_notes', "Lift aanwezig")
+        self.sleep()
+        self.sleep()
+        self.set_select_field('id_free_space', VRIJDAG_04JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        
+        self.assertBobyContains("Dit veld is verplicht")
            
     @attr('unres')
     def test_unrestricted(self):

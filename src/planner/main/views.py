@@ -17,6 +17,7 @@ from django.forms.util import ErrorList
 
 
 def space_available(calendar_id_string, appointment_form, appointment_id):
+    """ Assumes appointment_form's  is_valid was called and returned True"""
     if calendar_id_string:
         calendar_id = int(calendar_id_string)
         calendar = Calendar.objects.get(pk=calendar_id)
@@ -74,9 +75,8 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                      instance=appointment.customer)
         free_space = request.POST.get('free_space', '')
         app_valid = appointment_form.is_valid()
-        if space_available(free_space, appointment_form, appointment_id):
-
-            if app_valid and customer_form.is_valid():
+        if app_valid and space_available(free_space, appointment_form, appointment_id):
+            if customer_form.is_valid():
                 calendar_id = int(free_space)
                 appointment.calendar = Calendar.objects.get(pk=calendar_id)
                 appointment.employee = request.user
