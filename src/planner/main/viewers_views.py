@@ -147,8 +147,10 @@ def choose_calendar(request, date_string):
 @group_required('Viewers')
 def render_appointment_list(request, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
+    title = calendar.date.strftime('%d %b') + ':' + str(calendar.car) + str(calendar.timeslot.begin)
+    
     return render_to_response('appointment_list.html',
-                              {"title": _("Appointment list"),
+                              {"title": title,
                                'car': calendar.car,
                                'date': calendar.date,
                                'region': get_region(calendar),

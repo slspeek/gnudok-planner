@@ -6,8 +6,18 @@
 {{ customerForm.media }}
 {{ appointmentForm.media }}
 <script src="{{ STATIC_URL }}appointment_manipulation.js"  ></script>
+
 <script>
 	"use strict";
+	
+	var on_click = function(calendar_id) {
+		return function(e) {
+			if(e.ctrlKey) {
+				 window.open('/main/list/appointments/' + calendar_id);
+			 }
+		};
+			 
+	}
 	var set_data = function(data) {
 	call_returned_available_dates();
 	$('#region_label').text(data.region);
@@ -17,12 +27,15 @@
 	var calendar_id = date[0];
 	var option;
 	if ({{ calendar_id }} == calendar_id) {
-		option = '<option selected="selected" value="' + calendar_id + '"> ' + date[1] + '</option>';
+		option = '<option id="' + calendar_id + '" selected="selected" value="' + calendar_id + '">' +  date[1] + '</option>';
 	} else {
-		option = '<option value="' + calendar_id + '"> ' + date[1] + '</option>';
+		option = '<option id="' + calendar_id + '" value="' + calendar_id + '">' +  date[1] + '</option>';
 	}
 	$('#id_free_space').append(option);
+	$('#' + calendar_id).click(on_click(calendar_id));
+	
 	}
+	
 	};
 	var clear_data = function(error) {
 		var unresticted = $('#id_unrestricted').prop('checked');

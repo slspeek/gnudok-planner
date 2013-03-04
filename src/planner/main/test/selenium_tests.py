@@ -17,9 +17,9 @@ from planner.main.models import Customer, Calendar
 from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
 from planner.main.viewers_views import calendar_search_view
 
-VRIJDAG_11JAN = "11 January : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
+VRIJDAG_11JAN = "11 Jan : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
-VRIJDAG_04JAN = "04 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
+VRIJDAG_04JAN = "04 Jan : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
 
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
 
@@ -151,7 +151,7 @@ class TestPreCommitHook(DjangoSeleniumTest):
         self.assertBobyContains("No more space left")
               
   
-VR_11JAN = "11 January : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
+VR_11JAN = "11 Jan : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
 
 @attr('selenium', 'viewers')
 class ViewersTestCase(DjangoSeleniumTest):
