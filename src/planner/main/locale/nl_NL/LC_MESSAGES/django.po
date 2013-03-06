@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-05 12:08+0100\n"
+"POT-Creation-Date: 2013-03-06 13:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,17 +22,25 @@ msgstr "naam"
 
 #: forms.py:18 models.py:65
 msgid "postalcode"
-msgstr "Postcode"
+msgstr "postcode"
 
 #: forms.py:19
 msgid "street"
-msgstr "Straatnaam"
+msgstr "straatnaam"
 
-#: forms.py:20 models.py:136
+#: forms.py:20 models.py:70
+msgid "town"
+msgstr "plaats"
+
+#: forms.py:21 models.py:136
 msgid "date"
 msgstr "datum"
 
-#: forms.py:59 models.py:166
+#: forms.py:24 models.py:181
+msgid "stuff"
+msgstr "spullen"
+
+#: forms.py:61 models.py:166
 msgid "employee"
 msgstr "werknemer"
 
@@ -55,10 +63,6 @@ msgstr "toevoeging"
 #: models.py:69
 msgid "address"
 msgstr "adres"
-
-#: models.py:70
-msgid "town"
-msgstr "plaats"
 
 #: models.py:72
 msgid "email"
@@ -152,10 +156,6 @@ msgstr "Een dagdeel"
 msgid "weight"
 msgstr "grootte"
 
-#: models.py:181
-msgid "stuff"
-msgstr "spullen"
-
 #: models.py:182
 msgid "notes"
 msgstr "Extra"
@@ -180,7 +180,7 @@ msgstr "Kies een datum"
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: viewers_views.py:199
+#: viewers_views.py:209
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 

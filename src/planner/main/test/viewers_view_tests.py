@@ -9,10 +9,66 @@ from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, 
 import datetime
 from .__init__ import createTestUsers, createRegion, adaMakesAppointment
 from django.core.urlresolvers import reverse
-from planner.main.viewers_views import appointment_detail
+from planner.main.viewers_views import appointment_detail, calendar_search_view
 from django.test.testcases import TestCase
 from planner.main.models import Appointment
 
+@attr('functional', 'webtest', 'wsearch')
+class Search(WebTest):
+    
+    def setUp(self):
+        super(Search, self).setUp()
+        createRegion(self)
+        createTestUsers(self)
+        adaMakesAppointment(self)
+         
+    def login_viewer(self):
+        login = self.app.get(reverse(calendar_search_view, args=[])).follow()
+        login_form = login.form
+        login_form['username'] = 'alien'
+        login_form['password'] = 'jansteven'
+        redirect = login_form.submit()
+        search = redirect.follow()
+        return search
+
+    def testSearchOnName(self):
+        """ Search on name"""
+        search = self.login_viewer()
+        assert "naam" in search
+        assert "Postcode" in search
+        assert "datum" in search
+        assert "Straatnaam" in search
+        search_form = search.form
+        search_form['name'] = 'lac'
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
+        
+    def testSearchOnPostcode(self):
+        """ Search on ill-entered postcode"""
+        search = self.login_viewer()
+        search_form = search.form
+        search_form['postcode'] = '1102 a B'
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
+        
+    def testSearchOnStuff(self):
+        """ Search on stuff"""
+        search = self.login_viewer()
+        search_form = search.form
+        search_form['stuff'] = 'machine'
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
+    
+    def testSearchOnTown(self):
+        """ Search on town"""
+        search = self.login_viewer()
+        search_form = search.form
+        search_form['town'] = 'dam'
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
+        
+        
+        
 @attr('functional', 'webtest')
 class AppointmentDetail(WebTest):
     

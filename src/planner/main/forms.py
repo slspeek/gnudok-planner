@@ -17,9 +17,11 @@ class CalendarSearchForm(forms.Form):
     name = forms.CharField(label=_('name'), required=False)
     postcode = forms.CharField(label=_('postalcode'), required=False)
     street = forms.CharField(label=_('street'), required=False)
+    town = forms.CharField(label=_('town'), required=False)
     date = forms.DateField(label=_('date'),
                            required=False,
                            widget=BootstrapDateInput())
+    stuff = forms.CharField(label=_('stuff'), required=False)
 
 
 class DatePickForm(forms.Form):

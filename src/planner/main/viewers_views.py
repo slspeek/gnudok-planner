@@ -158,6 +158,9 @@ def render_appointment_list(request, calendar_id):
                                'app_list': calendar.active_appointments().all()
                                })
 
+def normalize_postalcode(postalcode):
+    result = postalcode.replace(' ', '')
+    return result.strip()
 
 def search(search_form):
     results = Appointment.actives
@@ -166,14 +169,21 @@ def search(search_form):
         results = results.filter(customer__name__icontains=name)
     postcode = search_form.cleaned_data['postcode']
     if postcode:
+        postcode = normalize_postalcode(postcode)
         results = results.filter(customer__postcode__icontains=postcode)
     street = search_form.cleaned_data['street']
     if street:
         results = results.filter(customer__address__icontains=street)
+    town = search_form.cleaned_data['town']
+    if town:
+        results = results.filter(customer__town__icontains=town)
     date = search_form.cleaned_data['date']
     if date:
         results = results.filter(calendar__date=date)
-    if not name and (not postcode) and not date and not street:
+    stuff = search_form.cleaned_data['stuff']
+    if stuff:
+        results = results.filter(stuff__icontains=stuff)
+    if not name and (not postcode) and not date and not street and not stuff:
         results = results.all()
     return results
 
