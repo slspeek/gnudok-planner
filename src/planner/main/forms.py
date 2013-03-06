@@ -22,6 +22,7 @@ class CalendarSearchForm(forms.Form):
                            required=False,
                            widget=BootstrapDateInput())
     stuff = forms.CharField(label=_('stuff'), required=False)
+    include_past = forms.BooleanField(label=_('include past'), required=False)
 
 
 class DatePickForm(forms.Form):

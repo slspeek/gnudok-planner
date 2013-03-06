@@ -23,7 +23,7 @@ class Search(WebTest):
         adaMakesAppointment(self)
          
     def login_viewer(self):
-        login = self.app.get(reverse(calendar_search_view, args=[])).follow()
+        login = self.app.get(reverse('Search', args=[], kwargs={ 'date_iso':'20130102'})).follow()
         login_form = login.form
         login_form['username'] = 'alien'
         login_form['password'] = 'jansteven'
@@ -34,10 +34,6 @@ class Search(WebTest):
     def testSearchOnName(self):
         """ Search on name"""
         search = self.login_viewer()
-        assert "naam" in search
-        assert "Postcode" in search
-        assert "datum" in search
-        assert "Straatnaam" in search
         search_form = search.form
         search_form['name'] = 'lac'
         results_page = search_form.submit()
@@ -64,6 +60,33 @@ class Search(WebTest):
         search = self.login_viewer()
         search_form = search.form
         search_form['town'] = 'dam'
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
+        
+    def testSearchHidesPast(self):
+        """ Search hides the past"""
+        login = self.app.get(reverse('Search', args=[], kwargs={ 'date_iso':'20130106'})).follow()
+        login_form = login.form
+        login_form['username'] = 'alien'
+        login_form['password'] = 'jansteven'
+        redirect = login_form.submit()
+        search = redirect.follow()
+        search_form = search.form
+        search_form['town'] = 'dam'
+        results_page = search_form.submit()
+        assert "0 afspraken gevonden" in results_page
+        
+    def testCanSearchInPast(self):
+        """ Search hides the past"""
+        login = self.app.get(reverse('Search', args=[], kwargs={ 'date_iso':'20130106'})).follow()
+        login_form = login.form
+        login_form['username'] = 'alien'
+        login_form['password'] = 'jansteven'
+        redirect = login_form.submit()
+        search = redirect.follow()
+        search_form = search.form
+        search_form['town'] = 'dam'
+        search_form['include_past'] = True
         results_page = search_form.submit()
         assert "Lovelace" in results_page
         

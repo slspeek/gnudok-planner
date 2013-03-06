@@ -94,7 +94,7 @@ class SearchTest(DjangoSeleniumTest):
         """ Searches one appointment."""
         driver = self.driver
         self.login("alien", "jansteven")
-        self.go_to_view(calendar_search_view)
+        self.go_to_view(calendar_search_view, kwargs={'date_iso':'20130102'})
        
         self.sleep()        
         self.set_text_field('id_name', "lovelac")

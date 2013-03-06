@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-06 13:17+0100\n"
+"POT-Creation-Date: 2013-03-06 14:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,11 @@ msgstr "datum"
 msgid "stuff"
 msgstr "spullen"
 
-#: forms.py:61 models.py:166
+#: forms.py:25
+msgid "include past"
+msgstr "zoek ook in het verleden"
+
+#: forms.py:62 models.py:166
 msgid "employee"
 msgstr "werknemer"
 
@@ -164,23 +168,23 @@ msgstr "Extra"
 msgid "created"
 msgstr "gemaakt"
 
-#: viewers_views.py:34
+#: viewers_views.py:35
 msgid "Choose an employee"
 msgstr "Kies een werknemer"
 
-#: viewers_views.py:80 templates/base.html:44
+#: viewers_views.py:81 templates/base.html:44
 msgid "Overview"
 msgstr "Overzicht"
 
-#: viewers_views.py:132
+#: viewers_views.py:133
 msgid "Pick a date"
 msgstr "Kies een datum"
 
-#: viewers_views.py:142
+#: viewers_views.py:143
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: viewers_views.py:209
+#: viewers_views.py:218
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 

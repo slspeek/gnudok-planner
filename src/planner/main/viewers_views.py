@@ -9,6 +9,7 @@ from django.template.context import RequestContext
 from .models import Appointment, Calendar, Car
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region, get_total_weight
+import logging
 
 
 @group_required('Viewers')
@@ -162,8 +163,14 @@ def normalize_postalcode(postalcode):
     result = postalcode.replace(' ', '')
     return result.strip()
 
-def search(search_form):
-    results = Appointment.actives
+def search(search_form, date_iso):
+    include_past = search_form.cleaned_data['include_past']
+    logging.error(include_past)
+    if not include_past:
+        date = get_date_from_iso(date_iso)
+        results = Appointment.actives.filter(calendar__date__gt=date)
+    else:
+        results = Appointment.actives
     name = search_form.cleaned_data['name']
     if name:
         results = results.filter(customer__name__icontains=name)
@@ -189,7 +196,9 @@ def search(search_form):
 
 
 @group_required('Viewers')
-def calendar_search_view(request):
+def calendar_search_view(request, date_iso=""):
+    if not date_iso:
+        date_iso = tomorrow()
     results = []
     result_count = 0
     if not request.POST:
@@ -198,7 +207,7 @@ def calendar_search_view(request):
     else:
         search_form = CalendarSearchForm(request.POST)
         if search_form.is_valid():
-            results = search(search_form)
+            results = search(search_form, date_iso)
             result_count = len(results)
             searched = True
     return render_to_response('calendar_search_view.html',
