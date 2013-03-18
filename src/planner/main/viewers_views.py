@@ -1,6 +1,6 @@
 """ Read-only views """
 from __future__ import absolute_import
-from .__init__ import tomorrow, get_date_from_iso, group_required, to_iso
+from .__init__ import today, tomorrow, get_date_from_iso, group_required, to_iso
 from django.contrib.auth.models import User
 import datetime
 from django.shortcuts import render_to_response, redirect
@@ -163,11 +163,13 @@ def normalize_postalcode(postalcode):
     result = postalcode.replace(' ', '')
     return result.strip()
 
-def search(search_form, date_iso):
+def search(search_form, date_iso=''):
+    if not date_iso:
+        date_iso = today()
     include_past = search_form.cleaned_data['include_past']
-    logging.error(include_past)
     if not include_past:
         date = get_date_from_iso(date_iso)
+        logging.error(date_iso)
         results = Appointment.actives.filter(calendar__date__gt=date)
     else:
         results = Appointment.actives
@@ -198,7 +200,7 @@ def search(search_form, date_iso):
 @group_required('Viewers')
 def calendar_search_view(request, date_iso=""):
     if not date_iso:
-        date_iso = tomorrow()
+        date_iso = today()
     results = []
     result_count = 0
     if not request.POST:

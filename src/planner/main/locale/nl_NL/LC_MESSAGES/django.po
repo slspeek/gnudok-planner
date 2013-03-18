@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-06 14:40+0100\n"
+"POT-Creation-Date: 2013-03-18 16:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -184,11 +184,11 @@ msgstr "Kies een datum"
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: viewers_views.py:218
+#: viewers_views.py:220
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 
-#: views.py:50 templates/base.html:38
+#: views.py:50
 msgid "New appointment"
 msgstr "Nieuwe afspraak"
 
@@ -336,9 +336,13 @@ msgstr "Gemaakt door"
 msgid "Planner"
 msgstr "Planner"
 
+#: templates/base.html:38
+msgid "New"
+msgstr "Nieuw"
+
 #: templates/base.html:41
-msgid "Find customer"
-msgstr "Afspraak zoeken"
+msgid "Find"
+msgstr "Zoeken"
 
 #: templates/base.html:48
 msgid "Display collect list"
@@ -353,22 +357,26 @@ msgid "By employee"
 msgstr "Per medewerker"
 
 #: templates/base.html:57
+msgid "Help"
+msgstr "Help"
+
+#: templates/base.html:60
 msgid "Log out"
 msgstr "Afmelden"
 
-#: templates/base.html:70
+#: templates/base.html:73
 msgid "Retrieving a list of available dates ..."
 msgstr "Bezig met het zoeken van de beschikbare data ..."
 
-#: templates/base.html:73
+#: templates/base.html:76
 msgid "Retrieving postalcode information ..."
 msgstr "Bezig met het opzoeken van de postcode ..."
 
-#: templates/base.html:76
+#: templates/base.html:79
 msgid "Looking for known customers ..."
 msgstr "Bezig met zoeken van eerdere klanten ..."
 
-#: templates/base.html:80
+#: templates/base.html:83
 msgid "Copyleft 2012-2013 written by Steven Speek and Jan Terheggen for GNUDok"
 msgstr ""
 "Copyleft 2012-2013 geschreven door Steven Speek en Jan Terheggen voor GNUDok"
@@ -457,6 +465,9 @@ msgstr ""
 #: templates/registration/login.html:32
 msgid "Login"
 msgstr "Aanmelden"
+
+#~ msgid "Find customer"
+#~ msgstr "Afspraak zoeken"
 
 #~ msgid "Appointment list"
 #~ msgstr "Afspraken lijst"

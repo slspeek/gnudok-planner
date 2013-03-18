@@ -7,6 +7,10 @@ def tomorrow():
     one_day = datetime.timedelta(days=1)
     return (today + one_day).strftime('%Y%m%d')
 
+def today():
+    today = datetime.date.today()
+    return today.strftime('%Y%m%d')
+
 
 def get_date_from_iso(iso_date):
     """ Returns a date object corresponding to the given iso-date string. """
