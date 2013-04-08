@@ -6,12 +6,12 @@ from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from .models import Appointment, Calendar, Customer
 from .forms import CustomerForm, BigAppointmentForm, HiddenForm
-from .schedule import get_free_entries, get_free_entries_with_extra_calendar
+from .schedule import get_free_entries_new, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
 import logging
 from django.utils import simplejson
 from django.http import HttpResponse
-from planner.area.views import get_region_for_postcalcode
+from planner.area.views import get_regions_for_postcalcode
 from planner.main.schedule import get_total_weight
 from django.forms.util import ErrorList
 
@@ -110,20 +110,20 @@ def get_available_dates(request,
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s" % (postalcode, weight))
     if unrestricted:
-        region = None
+        regions = None
         region_code = _("Unrestricted")
     else:
-        region = get_region_for_postcalcode(postalcode)
-        region_code = region.name
+        regions = get_regions_for_postcalcode(postalcode)
+        region_code = str(map (lambda x: x.name, regions))
     if calendar_id == "-1":
-        available_dates = get_free_entries(get_date_from_iso(date_iso),
-                                           28, region, int(weight))
+        available_dates = get_free_entries_new(get_date_from_iso(date_iso),
+                                           28, regions, int(weight))
     else:
         calendar = Calendar.objects.get(pk=int(calendar_id))
         date = get_date_from_iso(date_iso)
         available_dates = get_free_entries_with_extra_calendar(date,
                                                                28,
-                                                               region,
+                                                               regions,
                                                                int(weight),
                                                                calendar)
     dates = []

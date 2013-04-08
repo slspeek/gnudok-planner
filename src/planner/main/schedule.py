@@ -53,12 +53,16 @@ def get_rules(date, region):
 
 def get_rules_new(date, regions):
     result = []
-    for region in regions:
-        rules = get_rules(date, region)
+    if regions:
+        for region in regions:
+            rules = get_rules(date, region)
+            for rule in rules:
+                result.append(rule)
+    else:
+        rules = get_rules(date, None)
         for rule in rules:
-            result.append(rule) 
-    logging.error(result)
-    return result #get_rules(date, regions[0])
+             result.append(rule) 
+    return result
  
 def get_free_entries(fromDate, daysAhead, region, min_weight):
     return get_free_entries_new(fromDate, daysAhead, [region], min_weight)
@@ -79,10 +83,10 @@ def get_free_entries_new(fromDate, daysAhead, regions, min_weight):
 
 def get_free_entries_with_extra_calendar(fromDate,
                                          daysAhead,
-                                         region,
+                                         regions,
                                          min_weight,
                                          calendar):
-    result = get_free_entries(fromDate, daysAhead, region, min_weight)
+    result = get_free_entries_new(fromDate, daysAhead, regions, min_weight)
     found = False
     for entry in result:
         if entry[0] == calendar.pk:
