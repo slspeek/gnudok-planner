@@ -24,6 +24,17 @@ def createRegion(self):
     self.rule = RuleFactory(timeslot=self.timeslot,
                             car=self.car,
                             region=self.region)
+    self.interval = IntervalFactory(begin='1100aa',
+                                    end='1102zz',
+                                    region=self.region)
+
+def createRegionEast(self):
+    self.region = RegionFactory(name='Oost', description='Oost')
+    self.timeslot = TimeSlotFactory(day_of_week=4, begin=9.0, end=12.5)
+    self.car = CarFactory(name='Auto Zeeburg')
+    self.rule = RuleFactory(timeslot=self.timeslot,
+                            car=self.car,
+                            region=self.region)
     self.interval = IntervalFactory(begin='1102aa',
                                     end='1102zz',
                                     region=self.region)

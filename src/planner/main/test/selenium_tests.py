@@ -12,7 +12,7 @@ from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, C
 from .__init__ import CustomerFactory, AppointmentFactory
 import os
 from nose.plugins.attrib import attr
-from .__init__ import createTestUsers, createRegion, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
+from .__init__ import createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
 from planner.main.models import Customer, Calendar
 from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
 from planner.main.viewers_views import calendar_search_view
@@ -20,6 +20,7 @@ from planner.main.viewers_views import calendar_search_view
 VRIJDAG_11JAN = "11 Jan : Vrijdag :  13:00 - 16:30 - Auto Zeeburg"
 OPHAALDAG = 'Ophaal lijst per dag'
 VRIJDAG_04JAN = "04 Jan : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
+DO_24JAN = "24 Jan : Donderdag : 9:00 - 12:30 - Auto Zeeburg"
 
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
 
@@ -378,3 +379,35 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("11 januari")
         self.assertBobyContains("London")
         
+@attr('selenium', 'multiple')
+class AppointmentEditMultipleRegions(DjangoSeleniumTest):
+    """ Appointment create appointment with a multiple region postcode """
+    
+    def setUp(self):
+        super(DjangoSeleniumTest, self).setUp()
+        createRegion(self)
+        createRegionEast(self)
+        createTestPostcodes()
+        createTestUsers(self)
+        
+    def test_create_one_appointment_in_east(self):
+        """ Makes one appointment """
+        self.login('steven', 'jansteven')
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_number', "144")
+        self.set_text_field('id_additions', "sous")
+        self.set_text_field('id_phone', '020-7123456')
+        self.set_text_field('id_stuff', "Bed, boeken en servies")
+        self.set_text_field('id_notes', "Lift aanwezig")
+        self.sleep()
+        self.sleep()
+        self.set_select_field('id_free_space', DO_24JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains("Ada Lovelace")
+        self.assertBobyContains("Bed, boeken en servies")
+        self.assertBobyContains("24 januari")
