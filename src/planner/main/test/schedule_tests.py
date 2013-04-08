@@ -87,7 +87,7 @@ class TestCancelledAppointmentsDoNotCount(TestCase):
         self.assertEqual(4, result, "Expected 4 free places left, cancelled should not count")
 
 
-@attr('functional')
+@attr('functional', 'getfreeentries')
 class TestGetFreeEntries(TestCase):
 
     def setUp(self):

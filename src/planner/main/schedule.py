@@ -7,6 +7,7 @@ from __future__ import absolute_import
 import datetime
 from .models import Calendar
 from .models import TimeSlot, Car, Rule
+import logging
 
 
 def get_region(calendar):
@@ -50,15 +51,23 @@ def get_rules(date, region):
         rules = Rule.objects.filter(timeslot__day_of_week=week_day)
     return rules
 
-
+def get_rules_new(date, regions):
+    result = []
+    for region in regions:
+        rules = get_rules(date, region)
+        for rule in rules:
+            result.append(rule) 
+    logging.error(result)
+    return result #get_rules(date, regions[0])
+ 
 def get_free_entries(fromDate, daysAhead, region, min_weight):
-    """ Returns a list of pairs containing calendar.pk and a human readable
-    representation of the calendar entry.
-     A pair with no free slots is left out. """
+    return get_free_entries_new(fromDate, daysAhead, [region], min_weight)
+
+def get_free_entries_new(fromDate, daysAhead, regions, min_weight):
     result = []
     for offset in range(0, 60):
         date = fromDate + datetime.timedelta(days=offset)
-        rules = get_rules(date, region)
+        rules = get_rules_new(date, regions)
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:

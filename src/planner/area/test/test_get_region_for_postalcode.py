@@ -3,14 +3,15 @@ from unittest import TestCase
 from planner.main.test.__init__ import RegionFactory
 from nose.plugins.attrib import attr
 from planner.area.models import Interval, Region
-from planner.area.views import get_region_for_postcalcode
+from planner.area.views import get_region_for_postcalcode, get_regions_for_postcalcode
 
 
 @attr('functional', 'postalcode')
 class GetRegionFromPostalcodeTest(TestCase):
 
     def setUp(self):
-        """ sets up a Django test client """
+        Region.objects.all().delete()
+        
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost')
         self.region_east = RegionFactory(name='Oost', description='Oost')
         self.interval = Interval(begin='1000ab',
@@ -24,12 +25,18 @@ class GetRegionFromPostalcodeTest(TestCase):
     
     def tearDown(self):
         Region.objects.all().delete()
-        
+           
         
     def doPostcodeTest(self, code, expected_string):
         regions = get_region_for_postcalcode(code)
         assert expected_string in str(regions) 
 
+
+    def testInTwoAreas(self):
+        regions = get_regions_for_postcalcode("1001CC")
+        assert self.region in regions
+        assert self.region_east in regions
+        
     def testUnknown(self):
         """ tests an unkown postalcode """
         self.doPostcodeTest("5000AD", 'Unknown')
