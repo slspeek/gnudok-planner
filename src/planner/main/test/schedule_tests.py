@@ -4,7 +4,8 @@ Created on 29 nov. 2012
 @author: steven
 '''
 from __future__ import absolute_import
-from planner.main.schedule import *
+import datetime
+from planner.main.schedule import _get_rules, get_free_count, get_free_entries
 from django.test.testcases import TestCase
 from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
@@ -26,13 +27,13 @@ class GetRules(TestCase):
         self.other_date = datetime.date(2012, 10, 30)
 
     def testRules(self):
-        assert get_rules(self.date, self.region)
+        assert _get_rules(self.date, self.region)
     
     def testNoRules(self):
-        assert not get_rules(self.other_date, self.region)
+        assert not _get_rules(self.other_date, self.region)
     
     def testUnrestrictedRules(self):
-        assert get_rules(self.date, None)
+        assert _get_rules(self.date, None)
         
 @attr('functional')
 class TestNoAppointmentsOnCalendar(TestCase):

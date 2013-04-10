@@ -11,6 +11,7 @@ import logging
 
 
 def get_region(calendar):
+    """ Return the region for given calendar object, just for the heading """ 
     car = calendar.car
     timeslot = calendar.timeslot
     rule = Rule.objects.filter(timeslot=timeslot, car=car).all()[0]
@@ -41,8 +42,8 @@ def get_free_count(date, rule):
         return left
 
 
-def get_rules(date, region):
-    """ Returns a list of timeslots for the given region on the given date. """
+def _get_rules(date, region):
+    """ Returns a list of rules for the given region on the given date. """
     week_day = date.weekday() + 1
     if region:
         rules = Rule.objects.filter(region=region,
@@ -51,15 +52,15 @@ def get_rules(date, region):
         rules = Rule.objects.filter(timeslot__day_of_week=week_day)
     return rules
 
-def get_rules_new(date, regions):
+def get_rules(date, regions):
     result = []
     if regions:
         for region in regions:
-            rules = get_rules(date, region)
+            rules = _get_rules(date, region)
             for rule in rules:
                 result.append(rule)
     else:
-        rules = get_rules(date, None)
+        rules = _get_rules(date, None)
         for rule in rules:
              result.append(rule) 
     return result
@@ -71,7 +72,7 @@ def get_free_entries_new(fromDate, daysAhead, regions, min_weight):
     result = []
     for offset in range(0, 60):
         date = fromDate + datetime.timedelta(days=offset)
-        rules = get_rules_new(date, regions)
+        rules = get_rules(date, regions)
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:

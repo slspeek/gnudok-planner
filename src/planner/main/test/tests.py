@@ -4,7 +4,7 @@ Test module
 from __future__ import absolute_import
 from .__init__ import *
 from planner.main.models import Region, TimeSlot, Calendar, Appointment, Customer, Rule, Car
-from planner.main.schedule import get_rules, get_or_create_calendar
+from planner.main.schedule import _get_rules, get_or_create_calendar
 from planner.main.views import get_date_from_iso
 import datetime
 from django.contrib.auth.models import User
@@ -100,12 +100,12 @@ class TestRulesForRegion(TestCase):
 
     def test_one_filled(self):
         self.date = datetime.date(2012, 10, 29)
-        result = get_rules(self.date, self.region)
+        result = _get_rules(self.date, self.region)
         self.assertEqual(1, len(result))
 
     def test_empty(self):
         self.date = datetime.date(2012, 10, 25)
-        result = get_rules(self.date, self.region)
+        result = _get_rules(self.date, self.region)
         self.assertEqual(0, len(result))
 
 

@@ -3,7 +3,7 @@ from unittest import TestCase
 from planner.main.test.__init__ import RegionFactory
 from nose.plugins.attrib import attr
 from planner.area.models import Interval, Region
-from planner.area.views import get_region_for_postcalcode, get_regions_for_postcalcode
+from planner.area.views import get_regions_for_postcalcode
 
 
 @attr('functional', 'postalcode')
@@ -28,7 +28,7 @@ class GetRegionFromPostalcodeTest(TestCase):
            
         
     def doPostcodeTest(self, code, expected_string):
-        regions = get_region_for_postcalcode(code)
+        regions = get_regions_for_postcalcode(code)
         assert expected_string in str(regions) 
 
 
@@ -39,7 +39,7 @@ class GetRegionFromPostalcodeTest(TestCase):
         
     def testUnknown(self):
         """ tests an unkown postalcode """
-        self.doPostcodeTest("5000AD", 'Unknown')
+        self.doPostcodeTest("5000AD", '')
         
 
     def testZuidOost(self):
