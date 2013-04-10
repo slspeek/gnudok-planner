@@ -54,15 +54,15 @@ def _get_rules(date, region):
 
 def get_rules(date, regions):
     result = []
-    if regions:
+    if regions == None:
+        rules = _get_rules(date, None)
+        for rule in rules:
+             result.append(rule)
+    else:
         for region in regions:
             rules = _get_rules(date, region)
             for rule in rules:
                 result.append(rule)
-    else:
-        rules = _get_rules(date, None)
-        for rule in rules:
-             result.append(rule) 
     return result
  
 def get_free_entries(fromDate, daysAhead, region, min_weight):

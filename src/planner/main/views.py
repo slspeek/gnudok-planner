@@ -99,6 +99,11 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                },
                               context_instance=RequestContext(request))
 
+def get_region_description(regions):
+    if regions:
+        return str(map (lambda x: str(x.name), regions))
+    else:
+        return _("Unknown")
 
 @group_required('Callcenter')
 def get_available_dates(request,
@@ -114,7 +119,7 @@ def get_available_dates(request,
         region_code = _("Unrestricted")
     else:
         regions = get_regions_for_postcalcode(postalcode)
-        region_code = str(map (lambda x: str(x.name), regions))
+        region_code = get_region_description(regions)
     if calendar_id == "-1":
         available_dates = get_free_entries_new(get_date_from_iso(date_iso),
                                            28, regions, int(weight))
