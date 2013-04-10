@@ -114,7 +114,7 @@ def get_available_dates(request,
         region_code = _("Unrestricted")
     else:
         regions = get_regions_for_postcalcode(postalcode)
-        region_code = str(map (lambda x: x.name, regions))
+        region_code = str(map (lambda x: str(x.name), regions))
     if calendar_id == "-1":
         available_dates = get_free_entries_new(get_date_from_iso(date_iso),
                                            28, regions, int(weight))
