@@ -89,6 +89,24 @@ def adaMakesBigAppointment(self):
                                           weight=4,
                                           notes='Lift aanwezig')
 
+def adaCancelsAppointment(self):
+    self.date = datetime.date(year=2013, month=01, day=04)
+    self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
+    self.customer = CustomerFactory(name='Ada Lovelace',
+                                    postcode='1102AB',
+                                    number=42,
+                                    address='Bijlmerdreef',
+                                    town='Amsterdam',
+                                    phone='06-12345678')
+    self.appointment = AppointmentFactory(calendar=self.calendar,
+                                          created=datetime.date(year=2012, month=12, day=20),
+                                          customer=self.customer,
+                                          employee=self.user_steven,
+                                          stuff='Gehele nalatenschap',
+                                          weight=4,
+                                          status=2,
+                                          notes='Lift aanwezig')
+
 
 class CarFactory(factory.Factory):
     FACTORY_FOR = Car

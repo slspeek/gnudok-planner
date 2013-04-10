@@ -7,7 +7,7 @@ from django_webtest import WebTest
 import logging
 from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 import datetime
-from .__init__ import createTestUsers, createRegion, adaMakesAppointment
+from .__init__ import createTestUsers, createRegion, adaMakesAppointment, adaCancelsAppointment
 from django.core.urlresolvers import reverse
 from planner.main.viewers_views import appointment_detail, calendar_search_view
 from django.test.testcases import TestCase
@@ -90,7 +90,41 @@ class Search(WebTest):
         results_page = search_form.submit()
         assert "Lovelace" in results_page
         
+@attr('functional', 'wsearch', 'cancelled')
+class SearchCancelled(WebTest):
+    
+    def setUp(self):
+        super(SearchCancelled, self).setUp()
+        createRegion(self)
+        createTestUsers(self)
+        adaCancelsAppointment(self)
+         
+    def login_viewer(self):
+        login = self.app.get(reverse('Search', args=[], kwargs={ 'date_iso':'20130102'})).follow()
+        login_form = login.form
+        login_form['username'] = 'alien'
+        login_form['password'] = 'jansteven'
+        redirect = login_form.submit()
+        search = redirect.follow()
+        return search
+
+    def testSearchOnNameDoesNotShow(self):
+        """ Search on name"""
+        search = self.login_viewer()
+        search_form = search.form
+        search_form['name'] = 'lac'
+        results_page = search_form.submit()
+        assert not "Lovelace" in results_page
         
+    def testSearchOnNameInCancelled(self):
+        """ Search on name"""
+        search = self.login_viewer()
+        search_form = search.form
+        search_form['name'] = 'lac'
+        search_form['include_cancelled'] = True
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
+             
         
 @attr('functional', 'webtest')
 class AppointmentDetail(WebTest):

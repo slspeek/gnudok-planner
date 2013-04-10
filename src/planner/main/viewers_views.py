@@ -167,12 +167,14 @@ def search(search_form, date_iso=''):
     if not date_iso:
         date_iso = today()
     include_past = search_form.cleaned_data['include_past']
-    if not include_past:
-        date = get_date_from_iso(date_iso)
-        logging.error(date_iso)
-        results = Appointment.actives.filter(calendar__date__gt=date)
+    include_cancelled = search_form.cleaned_data['include_cancelled']
+    if include_cancelled:
+        results = Appointment.objects
     else:
         results = Appointment.actives
+    if not include_past:
+        date = get_date_from_iso(date_iso)
+        results = results.filter(calendar__date__gt=date)
     name = search_form.cleaned_data['name']
     if name:
         results = results.filter(customer__name__icontains=name)

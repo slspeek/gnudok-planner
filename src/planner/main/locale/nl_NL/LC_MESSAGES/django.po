@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-18 16:04+0100\n"
+"POT-Creation-Date: 2013-04-10 15:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,12 @@ msgstr "spullen"
 msgid "include past"
 msgstr "zoek ook in het verleden"
 
-#: forms.py:62 models.py:166
+#: forms.py:26
+#
+msgid "include cancelled"
+msgstr "zoek ook in geannuleerde afspraken"
+
+#: forms.py:63 models.py:166
 msgid "employee"
 msgstr "werknemer"
 
@@ -184,7 +189,7 @@ msgstr "Kies een datum"
 msgid "Choose a region and timeslot"
 msgstr "Kies een lijst"
 
-#: viewers_views.py:220
+#: viewers_views.py:222
 msgid "Customer search"
 msgstr "Afspraak zoeken"
 
@@ -200,7 +205,12 @@ msgstr "Vervolg afspraak"
 msgid "Edit or move appointment"
 msgstr "Afspraak verplaatsen of aanpassen"
 
-#: views.py:114 templates/appointment_manipulation.html:94
+#: views.py:106
+#, fuzzy
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: views.py:119 templates/appointment_manipulation.html:94
 msgid "Unrestricted"
 msgstr "Ongelimiteerd"
 
