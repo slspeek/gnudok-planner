@@ -17,6 +17,10 @@ class GetRegionFromPostalcodeTest(TestCase):
         self.interval = Interval(begin='1000ab',
                                  end='1001sd',
                                  region=self.region)
+        self.interval2 = Interval(begin='1000ab',
+                                 end='1000ab',
+                                 region=self.region)
+        self.interval2.save()
         self.interval.save()
         self.interval_east = Interval(begin='1001aa',
                                  end='1001sd',
@@ -31,6 +35,11 @@ class GetRegionFromPostalcodeTest(TestCase):
         regions = get_regions_for_postcalcode(code)
         assert expected_string in str(regions) 
 
+    def testNoDoubleRegions(self):
+        """ No doubles """
+        regions = get_regions_for_postcalcode('1000ab')
+        assert 1 == len(regions)
+        
 
     def testInTwoAreas(self):
         regions = get_regions_for_postcalcode("1001CC")
