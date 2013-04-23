@@ -17,7 +17,7 @@ class Source(models.Model):
         db_table = u'source'
 
     def __str__(self):
-        return "Source:%n" % id
+        return "Source: %d" % self.id
 
 class Country(models.Model):
     """ Models a country for the postal-lookups """
