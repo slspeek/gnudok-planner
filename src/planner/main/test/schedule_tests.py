@@ -5,7 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-from planner.main.schedule import _get_rules, get_free_count, get_free_entries
+from planner.main.schedule import _get_rules, get_free_count, get_free_entries, APPOINTMENTS_PER_HALF_DAY
 from django.test.testcases import TestCase
 from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
@@ -45,7 +45,7 @@ class TestNoAppointmentsOnCalendar(TestCase):
     def test_get_free_count(self):
         date = datetime.date(2012, 10, 29)
         result = get_free_count(date, self.rule)
-        self.assertEqual(4, result, "Expected 4 free places")
+        self.assertEqual(APPOINTMENTS_PER_HALF_DAY, result, "Expected %s free places" % APPOINTMENTS_PER_HALF_DAY)
         
     def test_settings(self):
         import planner.settings as s
@@ -66,7 +66,7 @@ class TestAppointmentCalendarPresent(TestCase):
 
     def test_get_free_count(self):
         result = get_free_count(self.date, self.rule)
-        self.assertEqual(3, result, "Expected 3 free places left")
+        self.assertEqual(APPOINTMENTS_PER_HALF_DAY - 1, result, "Expected 3 free places left")
 
 @attr('functional', 'cancelled')
 class TestCancelledAppointmentsDoNotCount(TestCase):
@@ -85,7 +85,7 @@ class TestCancelledAppointmentsDoNotCount(TestCase):
 
     def test_get_free_count(self):
         result = get_free_count(self.date, self.rule)
-        self.assertEqual(4, result, "Expected 4 free places left, cancelled should not count")
+        self.assertEqual(APPOINTMENTS_PER_HALF_DAY, result, "Expected 4 free places left, cancelled should not count")
 
 
 @attr('functional', 'getfreeentries')

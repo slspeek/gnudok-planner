@@ -9,6 +9,8 @@ from .models import Calendar
 from .models import TimeSlot, Car, Rule
 import logging
 
+APPOINTMENTS_PER_HALF_DAY = 4
+
 
 def get_region(calendar):
     """ Return the region for given calendar object, just for the heading """ 
@@ -33,12 +35,12 @@ def get_free_count(date, rule):
     query = query.filter(car=rule.car)
     calendar_entries = query.all()
     if not calendar_entries:
-        return 4
+        return APPOINTMENTS_PER_HALF_DAY
     else:
         entry = calendar_entries[0]
         appointment_list = entry.active_appointments().all()
         total_weight = get_total_weight(appointment_list)
-        left = 4 - total_weight
+        left = APPOINTMENTS_PER_HALF_DAY - total_weight
         return left
 
 
