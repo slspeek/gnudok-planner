@@ -1,0 +1,22 @@
+syntax: glob
+*.pyc
+src/*.pyc
+src/planner/static
+src/*.dot
+generated/*
+src/html
+eggs
+src/planner.egg-info
+develop-eggs
+parts
+bin
+src/planner.egg-info
+.installed.cfg
+reports/*
+PyLint.html
+build/*
+cover/*
+.coverage
+.project
+.pydevproject
+.pydevproject.bak

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+{% load i18n %}
+{% block extra_head %}
+{{ form.media }}
+<script>
+	$(function() {
+		$("#id_employee").focus();
+	}); 
+</script>
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<form id="employee" name="employee" action="" method="post">
+	{% csrf_token %}
+	{{ form|as_bootstrap }}
+	<p>
+		<button class="btn btn-primary" type="submit">
+			{% trans "Next" %}
+		</button>
+	</p>
+</form>
+{% endblock %}
