@@ -65,7 +65,12 @@ class City(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'city'
-
+        
+    def __str__(self):
+        names = map (lambda x: x.name, self.cityname_set.all())
+        return str(names)
+        
+        
 class Cityname(models.Model):
     """ Name of the city """
     id = models.IntegerField(primary_key=True)
@@ -79,7 +84,9 @@ class Cityname(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'cityname'
-
+    
+    def __str__(self):
+        return self.name
 
 class Postcode(models.Model):
     """ The postal code """
