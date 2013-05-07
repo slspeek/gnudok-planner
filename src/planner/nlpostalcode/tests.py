@@ -7,7 +7,9 @@ Replace this with more appropriate tests for your application.
 from __future__ import absolute_import
 from django.test import TestCase
 from django.test.client import Client
+from nose.plugins.attrib import attr
 from .models import Source, Country, Province, City, Cityname, Postcode, Street
+from .views import  get_streets
 import datetime
 import factory
 
@@ -112,4 +114,28 @@ class PostcodeBuilder(object):
     def create_street(self, postcode, name, two_letters):
         street = StreetFactory(postcode=postcode, chars=two_letters, street=name)
         return street
+    
+@attr('update')    
+class UpdateTest(TestCase):
+    
+    def setUp(self):
+        """ sets up a Django test client """
+        self.client = Client()
+     
+        builder = PostcodeBuilder()
+        self.postcode = builder.create_amsterdam_postcode_number(1056)
+        self.street = builder.create_street(self.postcode, "Pieter van der Doesstraat", 've')
+        self.street = builder.create_street(self.postcode, "Pieter van der Doesstraat 2", 'vx')
+        assert len(Street.objects.all()) == 2
+        streets  = Street.objects.filter(postcode__fourpp=1056).filter(chars='ve')
+        assert len(streets.all()) == 1
+        
+        
+    def test_get_streets(self):
+        street = get_streets(1056, 've')
+        assert len(street.all()) == 1
+        s = street[0]
+        assert "Pieter van der Doesstraat" == s.street
+        
+             
         

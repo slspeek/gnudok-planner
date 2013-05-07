@@ -72,7 +72,9 @@ class City(models.Model):
         official_citynames = filter(lambda x: (x.official == 1),names)
         if official_citynames:
             return smart_str(official_citynames[0].name)
-        return "No offical name given"    
+        if names:
+            return smart_str(names[0].name)
+        return "No given name"   
         
     
     class Meta:
