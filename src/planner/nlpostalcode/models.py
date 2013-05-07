@@ -1,6 +1,7 @@
 """ postal database  from Dutch
     http://www.d-centralize.nl/static/kvdb/mysql_sql.txt.gz """
 from django.db import models
+from django.utils.encoding import smart_str, smart_unicode
 
 class Source(models.Model):
     """ The wiki source that was for the postalcode information """
@@ -47,6 +48,9 @@ class Province(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'province'
+        
+    def __str__(self):
+        return self.name
 
 
 class City(models.Model):
@@ -62,15 +66,22 @@ class City(models.Model):
     lat = models.DecimalField(null=True, max_digits=12, decimal_places=8, blank=True)
     lng = models.DecimalField(null=True, max_digits=12, decimal_places=8, blank=True)
     areacode = models.CharField(max_length=30, blank=True)
+    
+    def get_official_name(self):
+        names = self.cityname_set.all()
+        official_citynames = filter(lambda x: (x.official == 1),names)
+        if official_citynames:
+            return smart_str(official_citynames[0].name)
+        return "No offical name given"    
+        
+    
     class Meta:
         """ Pins the database table"""
         db_table = u'city'
         
     def __str__(self):
-        names = map (lambda x: x.name, self.cityname_set.all())
-        return str(names)
-        
-        
+        return '%s' % self.get_official_name()
+    
 class Cityname(models.Model):
     """ Name of the city """
     id = models.IntegerField(primary_key=True)
@@ -103,6 +114,8 @@ class Postcode(models.Model):
         """ Pins the database table"""
         db_table = u'postcode'
 
+    def __str__(self):
+        return "%s %s" % (self.fourpp, self.city.get_official_name())
 
 class Street(models.Model):
     """ Street of the postalcode """
@@ -113,7 +126,7 @@ class Street(models.Model):
     source = models.ForeignKey(Source)
     chars = models.CharField(max_length=6, blank=True)
     street = models.CharField(max_length=765, blank=True)
-    even = models.IntegerField(unique=True)
+    even = models.IntegerField(null=True, blank=True)
     low = models.IntegerField(null=True, blank=True)
     high = models.IntegerField(null=True, blank=True)
     lowcapped = models.IntegerField(null=True, blank=True)
@@ -127,4 +140,12 @@ class Street(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'street'
-
+        
+    def __str__(self):
+        return "%s %s-%s %s %s %s" % (smart_str(self.street),
+                                       self.low,
+                                        self.high,
+                                         self.postcode.fourpp,
+                                         self.chars,
+                                         self.postcode.city.get_official_name(),
+                                          )
