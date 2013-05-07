@@ -10,7 +10,7 @@ setup(
     packages = find_packages('src'),
     package_dir = {'': 'src'},
     install_requires = ['setuptools',
-                        'factory_boy',
+                        'factory_boy==1.2.0',
                         'docutils',
                         'django-bootstrap-toolkit',
                         'django==1.4.2',
