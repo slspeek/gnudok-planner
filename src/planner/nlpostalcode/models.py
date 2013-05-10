@@ -115,6 +115,8 @@ class Postcode(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'postcode'
+        
+        ordering = ['fourpp']
 
     def __str__(self):
         return "%s %s" % (self.fourpp, self.city.get_official_name())

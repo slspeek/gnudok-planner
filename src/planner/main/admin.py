@@ -9,6 +9,7 @@ from django.contrib import admin
 
 
 class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'postcode', 'address', 'town',)
     search_fields = ['name']
 
 
