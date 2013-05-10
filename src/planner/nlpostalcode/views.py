@@ -13,7 +13,7 @@ def get_info_on_postalcode(request, postalcode):
     chars = postalcode[4:6]    
     streets  = get_streets(fourpp, chars)
     street = streets[0]
-    town = street.postcode.city.cityname_set.all()[0]
+    town = street.postcode.city.get_official_name()
     address = street.street
     data = {'address': address, 'town': town}
     json = simplejson.dumps(data)

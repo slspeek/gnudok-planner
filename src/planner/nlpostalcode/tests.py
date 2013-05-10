@@ -93,7 +93,7 @@ class SimpleTest(TestCase):
         streets  = Street.objects.filter(postcode__fourpp=1056).filter(chars='ve')
         assert len(streets.all()) == 1
         
-        
+            
     def test_postcode_lookup(self):
         response = self.client.get("/pc/get/1056ve")
         assert "Pieter van der Doesstraat" in response.content
@@ -121,18 +121,19 @@ class UpdateTest(TestCase):
     def setUp(self):
         """ sets up a Django test client """
         self.client = Client()
-     
+        Street.objects.all().delete()
         builder = PostcodeBuilder()
-        self.postcode = builder.create_amsterdam_postcode_number(1056)
+        self.postcode = builder.create_amsterdam_postcode_number(1057)
         self.street = builder.create_street(self.postcode, "Pieter van der Doesstraat", 've')
         self.street = builder.create_street(self.postcode, "Pieter van der Doesstraat 2", 'vx')
         assert len(Street.objects.all()) == 2
-        streets  = Street.objects.filter(postcode__fourpp=1056).filter(chars='ve')
+        streets  = Street.objects.filter(postcode__fourpp=1057).filter(chars='ve')
         assert len(streets.all()) == 1
         
-        
+       
+     
     def test_get_streets(self):
-        street = get_streets(1056, 've')
+        street = get_streets(1057, 've')
         assert len(street.all()) == 1
         s = street[0]
         assert "Pieter van der Doesstraat" == s.street

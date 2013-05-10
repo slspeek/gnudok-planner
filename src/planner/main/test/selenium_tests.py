@@ -187,6 +187,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
+    
         
     def test_create_one_appointment(self):
         """ Makes one appointment """
@@ -390,8 +391,9 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         createTestPostcodes()
         createTestUsers(self)
         
+        
     def test_create_one_appointment_in_east(self):
-        """ Makes one appointment """
+        """ Makes one appointment in east"""
         self.login('steven', 'jansteven')
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
