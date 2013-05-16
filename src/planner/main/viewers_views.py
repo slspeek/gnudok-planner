@@ -6,11 +6,19 @@ import datetime
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Car
+from .models import Appointment, Calendar, Car, Customer
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region, get_total_weight
 import logging
 
+
+@group_required('Viewers')
+def wrong_postcode(request):
+    all_customers = Customer.objects.order_by('postcode').all()
+    customers = filter(lambda x: x.postcode.islower(), all_customers)
+    return render_to_response("main/wrong_postcode.html",
+                              {"customers": customers,
+                                })
 
 @group_required('Viewers')
 def appointment_detail(request, pk):

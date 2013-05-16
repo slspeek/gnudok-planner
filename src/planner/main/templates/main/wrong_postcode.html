@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Customers with obscure postcodes" %}</h2>
+<hr/>
+
+<div class="container">
+	 <table class="table">
+               <tr>
+                		<th>{% trans "Address" %}</th>
+                        <th>{% trans "Postal code" %}</th>
+                        <th>{% trans "City" %}</th>
+                        
+                </tr>
+                {% for object in customers %}
+                <tr>
+                	    <td>{{ object.get_address_display }}</td>
+                        <td>{{ object.postcode }}</td>
+                        <td>{{ object.town }}</td>
+                        <!-- <td><a href="{% url AppointmentView object.pk  %}"><i class="icon-eye-open"></i></a></td> -->
+                </tr>
+                {% endfor %}
+        </table>
+</div>
+
+{% endblock %}
