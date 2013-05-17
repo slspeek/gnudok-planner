@@ -15,7 +15,7 @@ import logging
 @group_required('Viewers')
 def wrong_postcode(request):
     all_customers = Customer.objects.order_by('postcode').all()
-    customers = filter(lambda x: x.postcode.islower(), all_customers)
+    customers = filter(lambda x: not x.postcode.isupper(), all_customers)
     return render_to_response("main/wrong_postcode.html",
                               {"customers": customers,
                                 })
