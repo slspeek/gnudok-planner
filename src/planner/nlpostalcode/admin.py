@@ -1,6 +1,6 @@
 from __future__ import absolute_import
-from .models import Country, Province, City, Cityname, Postcode, \
-Street
+from .models import Country, Province, City, \
+Cityname, Postcode, Street, Source
 from django.contrib import admin
 
 class CitynameAdmin(admin.ModelAdmin):
@@ -36,9 +36,13 @@ class StreetAdmin(admin.ModelAdmin):
     ordering = ('street',)
     search_fields = ['^street', '=chars',]
     
+class SourceAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Province, ProvinceAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(Cityname, CitynameAdmin)
 admin.site.register(Postcode, PostcodeAdmin)
 admin.site.register(Street, StreetAdmin)
+admin.site.register(Source, SourceAdmin)

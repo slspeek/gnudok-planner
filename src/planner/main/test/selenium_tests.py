@@ -12,7 +12,7 @@ from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, C
 from .__init__ import CustomerFactory, AppointmentFactory
 import os
 from nose.plugins.attrib import attr
-from .__init__ import createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
+from .__init__ import createRootUser, createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
 from planner.main.models import Customer, Calendar
 from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
 from planner.main.viewers_views import calendar_search_view
@@ -413,3 +413,50 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Bed, boeken en servies")
         self.assertBobyContains("24 januari")
+
+###################################################################
+###################################################################
+@attr('selenium', 'zouhair')
+class PostcodeAdmin(DjangoSeleniumTest):
+    """ Hello selenium """
+    
+    def setUp(self):
+        super(DjangoSeleniumTest, self).setUp()
+        createRootUser(self)
+        
+        
+    def test_logon_as_root_in_admin(self):
+        self.driver.get(self.live_server_url + "/admin/")
+        self.driver.find_element_by_id("id_username").clear()
+        self.driver.find_element_by_id("id_username").send_keys("root")
+        self.driver.find_element_by_id("id_password").clear()
+        self.driver.find_element_by_id("id_password").send_keys("root")
+        self.driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        #self.driver.find_element_by_link_text("Afmelden").click()
+        self.driver.find_element_by_link_text("Nlpostalcode").click()
+        for link in ["Citynames", "Citys", "Countrys", "Postcodes", "Provinces", "Streets", "Sources"]:
+            self.driver.find_element_by_link_text(link)
+
+        driver = self.driver
+        driver.get(self.live_server_url + "/admin/nlpostalcode/source/")
+        driver.find_element_by_link_text("Nlpostalcode").click()
+        driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[6]").click()
+        driver.find_element_by_id("id_id").clear()
+        driver.find_element_by_id("id_id").send_keys("1")
+        driver.find_element_by_link_text("Vandaag").click()
+        driver.find_element_by_link_text("Nu").click()
+        driver.find_element_by_css_selector("div.form-row.field-updated > div > p.datetime > span.datetimeshortcuts > a").click()
+        driver.find_element_by_xpath("(//a[contains(text(),'Nu')])[2]").click()
+        driver.find_element_by_id("id_active").clear()
+        driver.find_element_by_id("id_active").send_keys("1")
+        driver.find_element_by_id("id_name").clear()
+        driver.find_element_by_id("id_name").send_keys("Angelique")
+        driver.find_element_by_id("id_source").clear()
+        driver.find_element_by_id("id_source").send_keys("1")
+        driver.find_element_by_id("id_ip").clear()
+        driver.find_element_by_id("id_ip").send_keys("123.123.123.123")
+        driver.find_element_by_name("_save").click()
+        # Warning: assertTextPresent may require manual changes
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"^[\s\S]*Angelique[\s\S]*$")
+
+

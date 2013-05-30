@@ -42,6 +42,10 @@ def createRegionEast(self):
 PASSWORD = 'pbkdf2_sha256$10000$Hk9LhgRtiFgH$x' \
            'BWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4='
 
+def createRootUser(self): 
+    self.root_user = User.objects.create_superuser('root', 'root@gnu.org', 'root')
+    self.root_user.save()
+    
 def createTestUsers(self):
     #User.objects.all().delete()
     self.group_callcenter = GroupF(name='Callcenter')
