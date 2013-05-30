@@ -433,13 +433,13 @@ class PostcodeAdmin(DjangoSeleniumTest):
         self.driver.find_element_by_id("id_password").send_keys("root")
         self.driver.find_element_by_css_selector("input[type=\"submit\"]").click()
         #self.driver.find_element_by_link_text("Afmelden").click()
+        self.sleep()
         self.driver.find_element_by_link_text("Nlpostalcode").click()
+        self.sleep()
         for link in ["Citynames", "Citys", "Countrys", "Postcodes", "Provinces", "Streets", "Sources"]:
             self.driver.find_element_by_link_text(link)
 
         driver = self.driver
-        driver.get(self.live_server_url + "/admin/nlpostalcode/source/")
-        driver.find_element_by_link_text("Nlpostalcode").click()
         driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[6]").click()
         driver.find_element_by_id("id_id").clear()
         driver.find_element_by_id("id_id").send_keys("1")
@@ -456,7 +456,23 @@ class PostcodeAdmin(DjangoSeleniumTest):
         driver.find_element_by_id("id_ip").clear()
         driver.find_element_by_id("id_ip").send_keys("123.123.123.123")
         driver.find_element_by_name("_save").click()
-        # Warning: assertTextPresent may require manual changes
         self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"^[\s\S]*Angelique[\s\S]*$")
 
+        driver.get(self.live_server_url + "/admin/nlpostalcode/")
+        driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[3]").click()
+        driver.find_element_by_id("id_id").clear()
+        driver.find_element_by_id("id_id").send_keys("1")
+        driver.find_element_by_link_text("Vandaag").click()
+        driver.find_element_by_link_text("Nu").click()
+        driver.find_element_by_css_selector("div.form-row.field-updated > div > p.datetime > span.datetimeshortcuts > a").click()
+        driver.find_element_by_xpath("(//a[contains(text(),'Nu')])[2]").click()
+        driver.find_element_by_id("id_active").clear()
+        driver.find_element_by_id("id_active").send_keys("1")
+        driver.find_element_by_id("id_name").clear()
+        driver.find_element_by_id("id_name").send_keys("North Korea")
+        select_source_elem = driver.find_element_by_id("id_source")
+        select_source_elem.send_keys("Source: 1")
+        driver.find_element_by_name("_save").click()
+        self.sleep()
+        self.assertRegexpMatches(driver.find_element_by_css_selector("BODY").text, r"^[\s\S]*North Korea[\s\S]*$")
 
