@@ -182,7 +182,7 @@ def search(search_form, date_iso=''):
         results = Appointment.actives
     if not include_past:
         date = get_date_from_iso(date_iso)
-        results = results.filter(calendar__date__gt=date)
+        results = results.filter(calendar__date__gte=date)
     name = search_form.cleaned_data['name']
     if name:
         results = results.filter(customer__name__icontains=name)

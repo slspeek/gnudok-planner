@@ -23,7 +23,7 @@ class Search(WebTest):
         adaMakesAppointment(self)
          
     def login_viewer(self):
-        login = self.app.get(reverse('Search', args=[], kwargs={ 'date_iso':'20130102'})).follow()
+        login = self.app.get(reverse('Search', args=[], kwargs={ 'date_iso':'20130104'})).follow()
         login_form = login.form
         login_form['username'] = 'alien'
         login_form['password'] = 'jansteven'
