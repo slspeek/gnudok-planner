@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from .models import Appointment, Calendar, Customer
-from .forms import CustomerForm, BigAppointmentForm, HiddenForm
+from .forms import CustomerForm, AppointmentForm, HiddenForm
 from .schedule import get_free_entries_new, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
 import logging
@@ -58,7 +58,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         calendar_id = appointment.calendar.pk
     if request.method == 'GET':
         hidden_form = HiddenForm()
-        appointment_form = BigAppointmentForm(instance=appointment)
+        appointment_form = AppointmentForm(instance=appointment)
         customer_form = CustomerForm(instance=appointment.customer)
     else:  # POST
         hidden_form = HiddenForm(request.POST)
@@ -69,7 +69,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                 appointment.customer = Customer.objects.get(pk=customer_id)
         else:
             logging.error("Customer unknown")
-        appointment_form = BigAppointmentForm(request.POST,
+        appointment_form = AppointmentForm(request.POST,
                                               instance=appointment)
         customer_form = CustomerForm(request.POST,
                                      instance=appointment.customer)

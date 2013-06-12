@@ -33,12 +33,6 @@ class DatePickForm(forms.Form):
 class AppointmentForm(ModelForm):
     class Meta:
         model = Appointment
-        fields = ("stuff", "notes")
-
-
-class BigAppointmentForm(ModelForm):
-    class Meta:
-        model = Appointment
         fields = ("weight", "stuff", "notes")
 
 
