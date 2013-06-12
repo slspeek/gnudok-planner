@@ -31,6 +31,7 @@
 		<th>{% trans "Postal code" %}</th>
 		<th>{% trans "City" %}</th>
 		<th>{% trans "Phone" %}</th>
+		<th>{% trans "Kind" %}</th>
 		<th>{% trans "Stuff" %}</th>
 		<th>{% trans "Notes" %}</th>
 		<th>{% trans "Weight" %}</th>
@@ -44,6 +45,7 @@
 		<td>{{ app.customer.postcode }}</td>
 		<td>{{ app.customer.town }}</td>
 		<td>{{ app.customer.phone }}</td>
+		<td>{{ app.get_kind_display }}</td>
 		<td>{{ app.stuff }}</td>
 		<td>{{ app.notes }}</td>
 		<td>{{ app.get_weight_display }}</td>

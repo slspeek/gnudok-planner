@@ -9,7 +9,6 @@
 	<table class="table">
 		<tr>
 			<th>{% trans "Date and time" %}</th><th> {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
-			
 		</tr>
 		<tr>
 			<th>{% trans "Region" %}</th><th>{{ region.name }}</th>
@@ -17,7 +16,6 @@
 		<tr>
 			<th>{% trans "Car" %}</th><th>{{ object.calendar.car }}</th>
 		</tr>
-		
 		<tr>
 			<th>{% trans "Name" %}</th><td>{{ object.customer.name }}</td>
 		</tr>
@@ -32,6 +30,9 @@
 		</tr>
 		<tr>
 			<th>{% trans "City" %}</th><td>{{ object.customer.town }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Kind" %}</th><td>{{object.get_kind_display }}</td>
 		</tr>
 		<tr>
 			<th>{% trans "Weight" %}</th><td>{{ object.get_weight_display }}</td>

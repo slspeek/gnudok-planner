@@ -18,6 +18,7 @@
                         <th>{% trans "Postal code" %}</th>
                         <th>{% trans "City" %}</th>
                         <th>{% trans "Phone" %}</th>
+                        <th>{% trans "Kind" %}</th>
                         <th>{% trans "Stuff" %}</th>
                         <th>{% trans "Notes" %}</th>
                         <th>{% trans "Made by" %}</th>
@@ -34,6 +35,7 @@
                         <td>{{ object.customer.postcode }}</td>
                         <td>{{ object.customer.town }}</td>
                         <td>{{ object.customer.phone }}</td>
+                        <td>{{ app.get_kind_display }}</td>
                         <td>{{ object.stuff }}</td>
                         <td>{{ object.notes }}</td>
                         <td>{{ object.employee.get_full_name }}</td>
