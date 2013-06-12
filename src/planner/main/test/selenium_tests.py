@@ -427,6 +427,7 @@ class PostcodeAdmin(DjangoSeleniumTest):
         
     def test_logon_as_root_in_admin(self):
         self.driver.get(self.live_server_url + "/admin/")
+        self.sleep();
         self.driver.find_element_by_id("id_username").clear()
         self.driver.find_element_by_id("id_username").send_keys("root")
         self.driver.find_element_by_id("id_password").clear()
@@ -441,6 +442,7 @@ class PostcodeAdmin(DjangoSeleniumTest):
 
         driver = self.driver
         driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[6]").click()
+        self.sleep();
         driver.find_element_by_id("id_id").clear()
         driver.find_element_by_id("id_id").send_keys("1")
         driver.find_element_by_link_text("Vandaag").click()
@@ -460,6 +462,7 @@ class PostcodeAdmin(DjangoSeleniumTest):
 
         driver.get(self.live_server_url + "/admin/nlpostalcode/")
         driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[3]").click()
+        self.sleep();
         driver.find_element_by_id("id_id").clear()
         driver.find_element_by_id("id_id").send_keys("1")
         driver.find_element_by_link_text("Vandaag").click()
