@@ -154,7 +154,7 @@ class ActiveManager(models.Manager):
 
     def get_query_set(self):
         query_set = super(ActiveManager, self).get_query_set()
-        return query_set.filter(status=self.model.NORMAL).order_by('kind', 'customer__postcode')
+        return query_set.filter(status=self.model.NORMAL)
 
 
 class Appointment(models.Model):
