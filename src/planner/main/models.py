@@ -154,7 +154,7 @@ class ActiveManager(models.Manager):
 
     def get_query_set(self):
         query_set = super(ActiveManager, self).get_query_set()
-        return query_set.filter(status=self.model.NORMAL)
+        return query_set.filter(status=self.model.NORMAL).order_by('kind', 'customer__postcode')
 
 
 class Appointment(models.Model):
@@ -184,7 +184,7 @@ class Appointment(models.Model):
                                    default=lambda: datetime.datetime.now())
 
     def __str__(self):
-        return self.customer.name + ", " + self.stuff
+        return self.get_kind_display() + ", " + self.customer.name + ", " + self.stuff
 
     class Meta:
-        ordering = ['customer__postcode']
+        ordering = ['kind', 'customer__postcode']

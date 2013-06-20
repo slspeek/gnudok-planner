@@ -75,6 +75,16 @@ def adaMakesAppointment(self):
                                           stuff='Virtual Machines',
                                           notes='Lift aanwezig')
 
+def adaBooksDelivery(self):
+    self.date = datetime.date(year=2013, month=01, day=04)
+    self.appointment = AppointmentFactory(calendar=self.calendar,
+                                          created=datetime.date(year=2012, month=12, day=20),
+                                          customer=self.customer,
+                                          employee=self.user_steven,
+                                          kind=1,
+                                          stuff='Bank',
+                                          notes='Lift aanwezig')
+
 
 def adaMakesBigAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
