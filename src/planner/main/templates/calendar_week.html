@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Week for" %} {{ car }} {{ from|date:"l j M" }} {% trans "to" %} {{ to|date:"l j M o" }} </h2>
+<hr/>
+<table class="table table-condensed table-bordered">
+	<tr>
+		<th>{% trans "Date" %}</th>
+		<th>{% trans "Time" %}</th>
+		<th>{% trans "Region" %}</th>
+		<th>{% trans "Free slots" %}</th>
+		<th colspan="5"></th>
+	</tr>
+	{% for calendar in object_list %}
+	<tr class="info">
+		<td><a href="{% url planner.main.viewers_views.render_appointment_list calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
+		<td>{{ calendar.timeslot.get_begin_display }} - {{ calendar.timeslot.get_end_display }} </td>
+		<td>{{calendar.region.name}}</td>
+		<td>{{calendar.free}}</td>
+		<td colspan="6"></td>
+	</tr>
+	{% if calendar.appointments %}
+	<tr class="muted">
+		<th colspan="2">{% trans "Name" %}</th>
+		<th colspan="2">{% trans "Address" %}</th>
+		<th>{% trans "Postalcode" %}</th>
+		<th>{% trans "Town" %}</th>
+		<th>{% trans "Kind" %}</th>
+		<th>{% trans "Weight" %}</th>
+		<th>{% trans "Stuff" %}</th>
+		<th>{% trans "View" %}</th>
+		
+	</tr>
+	{% endif %}
+	{% for appointment in calendar.appointments %}
+		<tr>
+			<td colspan="2">{{ appointment.customer.name }}</td>
+			<td colspan="2">{{ appointment.customer.get_address_display }}</td>
+			<td>{{ appointment.customer.postcode }}</td>
+			<td>{{ appointment.customer.town }}</td>
+			<td>{{ app.get_kind_display }}</td>
+			<td>{{ appointment.weight }}</td>
+			<td>{{ appointment.stuff|truncatechars:9 }}</td>
+			<td><a href="{% url AppointmentView appointment.pk  %}"><i class="icon-eye-open"></i></a></td>
+		</tr>
+	{% endfor %}
+	{% endfor %}
+</table>
+<a class="btn" href="{% url WeekView car.pk prev date_iso %}">{% trans "Previous" %}</a>
+<a class="btn" href="{% url WeekView car.pk next date_iso %}">{% trans "Next" %}</a>
+
+{% endblock %}

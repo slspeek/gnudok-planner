@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Do you want to cancel appointment" %}</h2>
+<hr/>
+<div class="container">
+	<table class="table">
+		<tr>
+			<th colspan="6">{% trans "Appointment to check in at" %} {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
+		</tr>
+		<tr>
+			<th>{% trans "Name" %}</th>
+			<th>{% trans "Address" %}</th>
+			<th>{% trans "Postal code" %}</th>
+			<th>{% trans "City" %}</th>
+			<th>{% trans "Phone" %}</th>
+			<th>{% trans "Stuff" %}</th>
+		</tr>
+		<tr>
+			<td>{{ object.customer.name }}</td>
+			<td>{{ object.customer.get_address_display }}</td>
+			<td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
+			<td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
+		</tr>
+	</table>
+	<form action="" method="post">
+		{% csrf_token %}
+		<button class="btn" type="submit">{% trans "Yes" %}</button>
+		<a class="btn" href="{% url Overview '' %}">{% trans "No" %}</a>
+	</form>
+	
+</div>
+{% endblock %}

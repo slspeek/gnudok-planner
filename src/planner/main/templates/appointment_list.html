@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extra_head %}
+<style media="print">
+.control {
+    display: none;
+    }
+</style>
+
+
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Pick up" %} {{ car.name }} {% trans " in " %} {{ region.name }}<br> {{ date|date:"l j E o" }} {{ timeslot.get_begin_display }} - {{ timeslot.get_end_display }}</h2>
+<hr/>
+<table class="table table-bordered" width="100%">
+	<col width="15%" />
+	<col width="20%" />
+	<col width="5%" />
+	<col width="10%" />
+	<col width="10%" />
+	<col width="20%" />
+	<col width="15%" />
+	<col width="5%" />
+	<col width="5%" />
+	
+	<tr>
+		<th>{% trans "Name" %}</th>
+		<th>{% trans "Address" %}</th>
+		<th>{% trans "Postal code" %}</th>
+		<th>{% trans "City" %}</th>
+		<th>{% trans "Phone" %}</th>
+		<th>{% trans "Kind" %}</th>
+		<th>{% trans "Stuff" %}</th>
+		<th>{% trans "Notes" %}</th>
+		<th>{% trans "Weight" %}</th>
+		<th class="control">{% trans "View" %}</th>
+	</tr>
+	
+	{% for app in app_list %}
+	<tr>
+		<td>{{ app.customer.name }}</td>
+		<td>{{ app.customer.get_address_display }}</td>
+		<td>{{ app.customer.postcode }}</td>
+		<td>{{ app.customer.town }}</td>
+		<td>{{ app.customer.phone }}</td>
+		<td>{{ app.get_kind_display }}</td>
+		<td>{{ app.stuff }}</td>
+		<td>{{ app.notes }}</td>
+		<td>{{ app.get_weight_display }}</td>
+		<td class="control"><a href="{% url AppointmentView app.pk  %}"><i class="icon-eye-open"></i></a></td>
+	</tr>
+	{% endfor %}
+
+</table>
+{% endblock %}

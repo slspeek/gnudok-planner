@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+{% block extra_head %}
+{{ customerForm.media }}
+{{ appointmentForm.media }}
+<script src="{{ STATIC_URL }}appointment_manipulation.js"  ></script>
+
+<script>
+	"use strict";
+	
+	var on_click = function(calendar_id) {
+		return function(e) {
+			if(e.ctrlKey) {
+				 window.open('/main/list/appointments/' + calendar_id);
+			 }
+		};
+			 
+	}
+	var set_data = function(data) {
+	call_returned_available_dates();
+	$('#region_label').text(data.region);
+	$('#id_free_space').empty();
+	for (var i = 0, len = data.dates.length; i < len; i++) {
+	var date = data.dates[i];
+	var calendar_id = date[0];
+	var option;
+	if ({{ calendar_id }} == calendar_id) {
+		option = '<option id="' + calendar_id + '" selected="selected" value="' + calendar_id + '">' +  date[1] + '</option>';
+	} else {
+		option = '<option id="' + calendar_id + '" value="' + calendar_id + '">' +  date[1] + '</option>';
+	}
+	$('#id_free_space').append(option);
+	$('#' + calendar_id).click(on_click(calendar_id));
+	
+	}
+	
+	};
+	var clear_data = function(error) {
+		var unresticted = $('#id_unrestricted').prop('checked');
+		call_returned_available_dates();
+		if (unresticted === false) {
+			$('#id_free_space').empty();
+		}
+	};
+	var get_updates = function() {
+		var postcode = get_normalized_postcode();
+		var unresticted = $('#id_unrestricted').prop('checked');
+		var weight = $('#id_weight')[0].value;
+		var url;
+		if (unresticted === true) {
+			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
+		} else {
+			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
+		}
+		if (postcode.length === 6) {
+			callout_available_dates();
+			$.getJSON(url, set_data).error(clear_data);
+		}
+	};
+	var get_updates_unrestricted = function() {
+		var postcode = get_normalized_postcode();
+		var unresticted = $('#id_unrestricted').prop('checked');
+		var weight = $('#id_weight')[0].value;
+		var url;
+		if (unresticted === true) {
+			var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
+			callout_available_dates();
+			$.getJSON(url, set_data).error(clear_data);
+		}
+	};
+
+</script>
+{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+
+<form id="appointment" name="appointment" action="" method="post" class="appointment">
+
+	{% csrf_token %}
+	<div style="display: inline;" >
+		<div class="span3">
+			{{ customerForm|as_bootstrap }}
+
+		</div>
+		<div class="span4">
+			{{ appointmentForm|as_bootstrap }}
+			{{ hiddenForm }}
+		</div>
+		<div class="span4">
+			<div class="control-group">
+				<label>{% trans "Unrestricted" %}</label>
+				<input id="id_unrestricted" type="checkbox"/>
+				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
+				<div class="controls">
+					<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
+				</div>
+				<span>{% trans "Control click an item to see details" %}</span>
+			</div>
+			<button class="btn btn-primary" type="submit">
+				{% trans "Save" %}
+			</button>
+		</div>
+	</div>
+	<div id="status" class="info">
+
+	</div>
+
+</form>
+{% endblock %}

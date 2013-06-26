@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<table class="table">
+<tr>
+	<th>{% trans "Date" %}</th><th>{% trans "Car" %}</th><th>{% trans "Timeslot" %}</th>
+</tr>
+{% for calendar in calendar_list %}
+	<tr>
+		<td>{{ calendar.date }}</td>
+		<td>
+			<a href="{% url planner.main.viewers_views.render_appointment_list calendar.pk %}">
+				{{ calendar.car }}
+			</a>
+		</td>
+		<td>{{ calendar.timeslot }}</td>
+	</tr>
+{% endfor %} 
+
+</table>
+
+{% endblock %}
