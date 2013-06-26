@@ -7,11 +7,31 @@ from django_webtest import WebTest
 import logging
 from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 import datetime
-from .__init__ import createTestUsers, createRegion, adaMakesAppointment, adaCancelsAppointment
+from .__init__ import createTestUsers, createRegion, adaMakesAppointment, adaCancelsAppointment, adaBooksDelivery
 from django.core.urlresolvers import reverse
 from planner.main.viewers_views import appointment_detail, calendar_search_view
 from django.test.testcases import TestCase
-from planner.main.models import Appointment
+from planner.main.models import Appointment, Calendar
+import logging
+
+@attr('functional', 'kind')
+class OrderOnKind(WebTest):
+    
+    def setUp(self):
+        super(OrderOnKind, self).setUp()
+        createRegion(self)
+        createTestUsers(self)
+        adaMakesAppointment(self)
+        adaBooksDelivery(self)
+         
+    def testOrder(self):
+        appList = self.calendar.active_appointments().all()
+        assert len(appList) == 2
+        delivery = appList[0]
+        pickup = appList[1]
+        self.assertEqual(delivery.kind, 1)
+        self.assertEqual(pickup.kind, 2)
+        
 
 @attr('functional', 'webtest', 'wsearch')
 class Search(WebTest):

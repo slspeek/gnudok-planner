@@ -33,6 +33,9 @@ class Country(models.Model):
     class Meta:
         """ Pins the database table"""
         db_table = u'country'
+    
+    def __unicode__(self):
+        return u"%s" % self.name
 
 class Province(models.Model):
     """ County of the postalcode """

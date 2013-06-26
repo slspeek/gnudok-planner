@@ -184,7 +184,7 @@ class Appointment(models.Model):
                                    default=lambda: datetime.datetime.now())
 
     def __str__(self):
-        return self.customer.name + ", " + self.stuff
+        return self.get_kind_display() + ", " + self.customer.name + ", " + self.stuff
 
     class Meta:
-        ordering = ['customer__postcode']
+        ordering = ['kind', 'customer__postcode']
