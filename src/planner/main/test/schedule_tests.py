@@ -114,12 +114,10 @@ class TestGetFreeEntriesWithHeavyWeight(TestCase):
         TestCase.setUp(self)
         self.rule = RuleFactory()
         self.date = datetime.date(2012, 10, 29)
-        self.appointment = AppointmentFactory.create(calendar__car=self.rule.car,weight=4,
-                                                     calendar__timeslot=self.rule.timeslot)
 
     def test_get_free_entries(self):
         result = get_free_entries(self.date, 21, self.rule.region, 1)
-        self.assertEqual(2, len(result))
+        self.assertEqual(3, len(result))
 
     def test_get_free_entries_two_weeks(self):
         result = get_free_entries(self.date, 14, self.rule.region, 1)

@@ -9,6 +9,7 @@ from django.template.context import RequestContext
 from .models import Appointment, Calendar, Car, Customer
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region, get_total_weight
+from planner.main.schedule import APPOINTMENTS_PER_HALF_DAY
 import logging
 
 
@@ -112,7 +113,7 @@ def weekview(request, car_id=0, offset=0, date_iso=""):
     calendars = queryset.filter(date__range=[begin_date, end_date]).all()
     for cal in calendars:
         app_list = cal.active_appointments().all()
-        free_count = 4 - get_total_weight(app_list)
+        free_count = APPOINTMENTS_PER_HALF_DAY - get_total_weight(app_list)
         cal.free = free_count
         cal.region = get_region(cal)
         cal.appointments = cal.active_appointments().all()
