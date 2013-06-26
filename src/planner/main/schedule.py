@@ -9,7 +9,8 @@ from .models import Calendar
 from .models import TimeSlot, Car, Rule
 import logging
 
-APPOINTMENTS_PER_HALF_DAY = 4
+# Very important, change made at june 26 2013
+APPOINTMENTS_PER_HALF_DAY = 6
 
 
 def get_region(calendar):
