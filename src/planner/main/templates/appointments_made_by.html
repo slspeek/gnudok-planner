@@ -19,6 +19,7 @@
 			<th>{% trans "Phone" %}</th>
 			<th>{% trans "Stuff" %}</th>
 			<th>{% trans "Weight" %}</th>
+			<th>{% trans "Kind" %}</th>
 			<th>{% trans "View" %}</th>
 		</tr>
 		{% for object in appointment_list %}
@@ -30,8 +31,10 @@
 			<td>{{ object.customer.get_address_display }}</td>
 			<td>{{ object.customer.postcode }}</td>
 			<td>{{ object.customer.town }}</td>
-			<td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
-			<td>{{object.get_weight_display }}</td>
+			<td>{{ object.customer.phone }}</td>
+			<td>{{ object.stuff }}</td>
+			<td>{{ object.get_weight_display }}</td>
+			<td>{{ object.get_kind_display }}</td>
 			<td><a href="{% url AppointmentView object.pk  %}"><i class="icon-eye-open"></i></a></td>
 		</tr>
 		{% endfor %}

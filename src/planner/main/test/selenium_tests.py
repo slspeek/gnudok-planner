@@ -149,7 +149,7 @@ class TestPreCommitHook(DjangoSeleniumTest):
                                               notes='Lift aanwezig')
         self.clickPrimairyButton()
         self.sleep()
-        self.assertBobyContains("No more space left")
+        self.assertBobyContains("Geen ruimte meer over")
               
   
 VR_11JAN = "11 Jan : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"

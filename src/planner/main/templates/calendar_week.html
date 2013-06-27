@@ -40,7 +40,7 @@
 			<td colspan="2">{{ appointment.customer.get_address_display }}</td>
 			<td>{{ appointment.customer.postcode }}</td>
 			<td>{{ appointment.customer.town }}</td>
-			<td>{{ app.get_kind_display }}</td>
+			<td>{{ appointment.get_kind_display }}</td>
 			<td>{{ appointment.weight }}</td>
 			<td>{{ appointment.stuff|truncatechars:9 }}</td>
 			<td><a href="{% url AppointmentView appointment.pk  %}"><i class="icon-eye-open"></i></a></td>

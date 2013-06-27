@@ -33,7 +33,6 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
         weight = get_total_weight(existing_apps) - old_weight
         logging.error(weight)
         aw = int(appointment_form.cleaned_data['weight'])
-        logging.error(aw)
         return weight + aw <= APPOINTMENTS_PER_HALF_DAY
     else:
         return False
@@ -89,7 +88,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                     return redirect('AppointmentView', appointment.id)
             else:
                 appointment_form._errors['weight'] = \
-                    ErrorList([u"No more space left"])
+                    ErrorList([_("No more space left")])
 
     return render_to_response('appointment_manipulation.html',
                               {"appointmentForm": appointment_form,
