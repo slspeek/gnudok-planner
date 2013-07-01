@@ -68,9 +68,6 @@ def get_rules(date, regions):
                 result.append(rule)
     return result
  
-def get_free_entries(fromDate, daysAhead, region, min_weight):
-    return get_free_entries_new(fromDate, daysAhead, [region], min_weight)
-
 def get_free_entries_new(fromDate, daysAhead, regions, min_weight):
     result = []
     for offset in range(0, 60):

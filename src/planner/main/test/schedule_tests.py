@@ -5,7 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-from planner.main.schedule import _get_rules, get_free_count, get_free_entries, APPOINTMENTS_PER_HALF_DAY
+from planner.main.schedule import _get_rules, get_free_count, get_free_entries_new, APPOINTMENTS_PER_HALF_DAY
 from django.test.testcases import TestCase
 from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
@@ -99,11 +99,11 @@ class TestGetFreeEntries(TestCase):
                                                      calendar__timeslot=self.rule.timeslot)
 
     def test_get_free_entries(self):
-        result = get_free_entries(self.date, 21, self.rule.region, 1)
+        result = get_free_entries_new(self.date, 21, [self.rule.region], 1)
         self.assertEqual(3, len(result))
 
-    def test_get_free_entries_two_weeks(self):
-        result = get_free_entries(self.date, 14, self.rule.region, 1)
+    def test_get_free_entries_new_two_weeks(self):
+        result = get_free_entries_new(self.date, 14, [self.rule.region], 1)
         self.assertEqual(2, len(result))
         
         
@@ -116,10 +116,10 @@ class TestGetFreeEntriesWithHeavyWeight(TestCase):
         self.date = datetime.date(2012, 10, 29)
 
     def test_get_free_entries(self):
-        result = get_free_entries(self.date, 21, self.rule.region, 1)
+        result = get_free_entries_new(self.date, 21, [self.rule.region], 1)
         self.assertEqual(3, len(result))
 
     def test_get_free_entries_two_weeks(self):
-        result = get_free_entries(self.date, 14, self.rule.region, 1)
+        result = get_free_entries_new(self.date, 14, [self.rule.region], 1)
         self.assertEqual(2, len(result))
 

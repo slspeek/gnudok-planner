@@ -49,6 +49,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
            
     def sleep(self):
         amount = float(os.environ.get("TEST_PAUSE", failobj=2))
+        logging.error("Sleeping for %d seconds" % amount)
         time.sleep(amount)
 
     def set_text_field(self, field_id, value):
@@ -96,7 +97,7 @@ class SearchTest(DjangoSeleniumTest):
         driver = self.driver
         self.login("alien", "jansteven")
         self.go_to_view(calendar_search_view, kwargs={'date_iso':'20130102'})
-       
+        self.sleep()    
         self.sleep()        
         self.set_text_field('id_name', "lovelac")
         driver.find_element_by_css_selector("button.btn").click()
@@ -119,7 +120,7 @@ class TestPreCommitHook(DjangoSeleniumTest):
         """ Create two appointments at the same time """
         self.login('steven', 'jansteven')
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
-
+        self.sleep()
         self.set_text_field('id_postcode', '1102AB')
         self.set_text_field('id_name', 'Ada Lovelace')
         self.set_text_field('id_number', "25")
@@ -171,6 +172,7 @@ class ViewersTestCase(DjangoSeleniumTest):
         driver = self.driver
         self.login("alien", "jansteven")
         self.go_to_view('WeekView', args=[1, 0, 20130101])
+        self.sleep()
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
         self.sleep()
         self.assertBobyContains("Ada Lovelace")

@@ -112,7 +112,8 @@ def get_available_dates(request,
                         weight,
                         date_iso,
                         calendar_id,
-                        unrestricted=False):
+                        unrestricted=False,
+                        car_id=-1):
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s" % (postalcode, weight))
     if unrestricted:
