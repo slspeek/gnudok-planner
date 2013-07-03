@@ -67,8 +67,18 @@ def get_rules(date, regions):
             for rule in rules:
                 result.append(rule)
     return result
+
+
+def add_extra_calendar(entries, calendar):
+    found = False
+    for entry in entries:
+        if entry[0] == calendar.pk:
+            found = True
+    if not found:
+        entries = [(calendar.pk, str(calendar))] + entries
+    return entries
  
-def get_free_entries_new(fromDate, daysAhead, regions, min_weight):
+def get_free_entries(fromDate, daysAhead, regions, min_weight):
     result = []
     for offset in range(0, 60):
         date = fromDate + datetime.timedelta(days=offset)
@@ -87,14 +97,8 @@ def get_free_entries_with_extra_calendar(fromDate,
                                          regions,
                                          min_weight,
                                          calendar):
-    result = get_free_entries_new(fromDate, daysAhead, regions, min_weight)
-    found = False
-    for entry in result:
-        if entry[0] == calendar.pk:
-            found = True
-    if not found:
-        result = [(calendar.pk, str(calendar))] + result
-    return result
+    entries = get_free_entries(fromDate, daysAhead, regions, min_weight)
+    return add_extra_calendar(entries, calendar)
 
 
 def entry(date, rule):

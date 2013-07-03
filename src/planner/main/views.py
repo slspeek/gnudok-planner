@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from .models import Appointment, Calendar, Customer
 from .forms import CustomerForm, AppointmentForm, HiddenForm
-from .schedule import get_free_entries_new, get_free_entries_with_extra_calendar
+from .schedule import get_free_entries, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
 import logging
 from django.utils import simplejson
@@ -123,7 +123,7 @@ def get_available_dates(request,
         regions = get_regions_for_postcalcode(postalcode)
         region_code = get_region_description(regions)
     if calendar_id == "-1":
-        available_dates = get_free_entries_new(get_date_from_iso(date_iso),
+        available_dates = get_free_entries(get_date_from_iso(date_iso),
                                            28, regions, int(weight))
     else:
         calendar = Calendar.objects.get(pk=int(calendar_id))
