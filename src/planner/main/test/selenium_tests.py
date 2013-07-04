@@ -547,6 +547,7 @@ class PostcodeAdmin(DjangoSeleniumTest):
         #Postcode
         driver.get(self.live_server_url + "/admin/nlpostalcode/")
         driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[4]").click()
+        self.sleep()
         driver.find_element_by_id("id_id").clear()
         driver.find_element_by_id("id_id").send_keys("1")
         driver.find_element_by_link_text("Vandaag").click()
@@ -567,6 +568,7 @@ class PostcodeAdmin(DjangoSeleniumTest):
         #Street
         driver.get(self.live_server_url + "/admin/nlpostalcode/")
         driver.find_element_by_xpath("(//a[contains(text(),'Toevoegen')])[7]").click()
+        self.sleep()
         driver.find_element_by_id("id_id").clear()
         driver.find_element_by_id("id_id").send_keys("1")
         driver.find_element_by_link_text("Vandaag").click()

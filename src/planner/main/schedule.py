@@ -12,6 +12,8 @@ import logging
 # Very important, change made at june 26 2013
 APPOINTMENTS_PER_HALF_DAY = 6
 
+DELIVERY_PER_HALF_DAY = 2
+
 
 def get_region(calendar):
     """ Return the region for given calendar object, just for the heading """ 
@@ -59,17 +61,15 @@ def get_rules(date, regions):
     result = []
     if regions == None:
         rules = _get_rules(date, None)
-        for rule in rules:
-             result.append(rule)
+        result.extend(rules)
     else:
         for region in regions:
             rules = _get_rules(date, region)
-            for rule in rules:
-                result.append(rule)
+            result.extend(rules)
     return result
 
 
-def add_extra_calendar(entries, calendar):
+def _add_extra_calendar(entries, calendar):
     found = False
     for entry in entries:
         if entry[0] == calendar.pk:
@@ -86,7 +86,7 @@ def get_free_entries(fromDate, daysAhead, regions, min_weight):
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:
-                result.append(entry(date, rule))
+                result.append(_entry(date, rule))
         if len(result) >= 2 and offset >= daysAhead - 1:
             break
     return result
@@ -98,10 +98,10 @@ def get_free_entries_with_extra_calendar(fromDate,
                                          min_weight,
                                          calendar):
     entries = get_free_entries(fromDate, daysAhead, regions, min_weight)
-    return add_extra_calendar(entries, calendar)
+    return _add_extra_calendar(entries, calendar)
 
 
-def entry(date, rule):
+def _entry(date, rule):
     timeslot_id = rule.timeslot.pk
     car_id = rule.car.pk
     calendar = get_or_create_calendar(timeslot_id, car_id, date)
