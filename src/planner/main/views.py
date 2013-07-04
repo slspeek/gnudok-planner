@@ -16,6 +16,7 @@ from planner.main.schedule import get_total_weight
 from django.forms.util import ErrorList
 from planner.main.schedule import APPOINTMENTS_PER_HALF_DAY
 
+STANDARD_DAYS_AHEAD = 28
 
 def space_available(calendar_id_string, appointment_form, appointment_id):
     """ Assumes appointment_form's  is_valid was called and returned True"""
@@ -107,6 +108,35 @@ def get_region_description(regions):
         return _("Unknown")
 
 @group_required('Callcenter')
+def get_candidate_dates(
+                        request,
+                        date_iso,
+                        weight,
+                        postalcode,
+                        car_id,
+                        kind,
+                        calendar_id_to_allways_include                   
+                        ):
+    date = get_date_from_iso(date_iso)
+    weight = int(weight)
+    if not postalcode == "-1":
+        # bound to regions
+        pass
+    else:
+        if car_id == "-1":
+            #unrestricted case
+            pass
+        else:
+            #one specific car
+            pass
+    if calendar_id == "-1":
+        #new case
+        pass
+    else:
+        #edit case
+        calendar = Calendar.objects.get(pk=int(calendar_id_to_allways_include))
+        
+@group_required('Callcenter')
 def get_available_dates(request,
                         postalcode,
                         weight,
@@ -124,12 +154,12 @@ def get_available_dates(request,
         region_code = get_region_description(regions)
     if calendar_id == "-1":
         available_dates = get_free_entries(get_date_from_iso(date_iso),
-                                           28, regions, int(weight))
+                                           STANDARD_DAYS_AHEAD, regions, int(weight))
     else:
         calendar = Calendar.objects.get(pk=int(calendar_id))
         date = get_date_from_iso(date_iso)
         available_dates = get_free_entries_with_extra_calendar(date,
-                                                               28,
+                                                               STANDARD_DAYS_AHEAD,
                                                                regions,
                                                                int(weight),
                                                                calendar)
