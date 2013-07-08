@@ -5,7 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-from .models import Calendar
+from .models import Calendar, Appointment
 from .models import TimeSlot, Car, Rule
 import logging
 
@@ -14,6 +14,13 @@ APPOINTMENTS_PER_HALF_DAY = 6
 
 DELIVERY_PER_HALF_DAY = 2
 
+
+def get_limit(kind): 
+    if kind == 2: # Pick up
+        return APPOINTMENTS_PER_HALF_DAY
+    else:
+        return DELIVERY_PER_HALF_DAY
+        
 
 def get_region(calendar):
     """ Return the region for given calendar object, just for the heading """ 

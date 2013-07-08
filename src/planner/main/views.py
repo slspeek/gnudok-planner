@@ -129,7 +129,7 @@ def get_candidate_dates(
         else:
             #one specific car
             pass
-    if calendar_id == "-1":
+    if calendar_id_to_allways_include == "-1":
         #new case
         pass
     else:
@@ -163,10 +163,7 @@ def get_available_dates(request,
                                                                regions,
                                                                int(weight),
                                                                calendar)
-    dates = []
-    for a_date in available_dates:
-        dates.append((a_date[0], a_date[1]))
-    data = {'region': region_code, 'dates': dates}
+    data = {'region': region_code, 'dates': available_dates}
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype='application/json')
 
