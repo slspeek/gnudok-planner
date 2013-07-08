@@ -8,12 +8,13 @@ from .viewers_views import display_date_form,\
     appointment_detail, appointments_by_date, \
     appointments_made_by, choose_an_employee, wrong_postcode
 from .views import appointment_manipulation
-from .views import get_available_dates, get_customer
+from .views import get_available_dates, get_customer, get_candidate_dates
     
 
 urlpatterns = patterns('',
     
     (r'^get_available_dates/(?P<postalcode>\w*)/(?P<weight>\d+)/(?P<date_iso>\d{0,8})/(?P<calendar_id>[-]?\d+)/(?P<unrestricted>\w*)', get_available_dates),
+    (r'^get_candidate_dates/(?P<date_iso>\d{0,8})/(?P<weight>\d+)/(?P<postalcode>\w*)/(?P<car_id>[-]?\d+)/(?P<kind>\w*)', get_candidate_dates),
     (r'^get_customer/(?P<postalcode>\w+)/(?P<number>\w+)/(?P<addition>\w*)', get_customer),
     url(r'^app/detail/(?P<pk>\d+)$', appointment_detail, name='AppointmentView'),
     url(r'^edit/(?P<appointment_id>\w+)/(?P<customer_id>\w+)/(?P<date_iso>\d{0,8})', appointment_manipulation, name='AppointmentEditExtra'),
