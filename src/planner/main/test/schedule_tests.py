@@ -27,13 +27,13 @@ class GetRules(TestCase):
         self.other_date = datetime.date(2012, 10, 30)
 
     def testRules(self):
-        assert _get_rules(self.date, self.region)
+        assert _get_rules(self.date, self.region, None)
     
     def testNoRules(self):
-        assert not _get_rules(self.other_date, self.region)
+        assert not _get_rules(self.other_date, self.region, None)
     
     def testUnrestrictedRules(self):
-        assert _get_rules(self.date, None)
+        assert _get_rules(self.date, None, None)
         
 @attr('functional')
 class TestNoAppointmentsOnCalendar(TestCase):
@@ -99,11 +99,11 @@ class TestGetFreeEntries(TestCase):
                                                      calendar__timeslot=self.rule.timeslot)
 
     def test_get_free_entries(self):
-        result = get_free_entries(self.date, 21, [self.rule.region], 1)
+        result = get_free_entries(self.date, 21, [self.rule.region], 1, 2, None)
         self.assertEqual(3, len(result))
 
     def test_get_free_entries_two_weeks(self):
-        result = get_free_entries(self.date, 14, [self.rule.region], 1)
+        result = get_free_entries(self.date, 14, [self.rule.region], 1, 2, None)
         self.assertEqual(2, len(result))
         
         
@@ -116,10 +116,11 @@ class TestGetFreeEntriesWithHeavyWeight(TestCase):
         self.date = datetime.date(2012, 10, 29)
 
     def test_get_free_entries(self):
-        result = get_free_entries(self.date, 21, [self.rule.region], 1)
+        result = get_free_entries(self.date, 21, [self.rule.region], 1, 2, None)
         self.assertEqual(3, len(result))
 
     def test_get_free_entries_two_weeks(self):
-        result = get_free_entries(self.date, 14, [self.rule.region], 1)
+        result = get_free_entries(self.date, 14, [self.rule.region], 1, 2, None)
         self.assertEqual(2, len(result))
+
 

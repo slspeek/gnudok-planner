@@ -119,22 +119,44 @@ def get_candidate_dates(
                         ):
     date = get_date_from_iso(date_iso)
     weight = int(weight)
+    
     if not postalcode == "-1":
-        # bound to regions
-        pass
+        # normal pick-up case
+        regions = get_regions_for_postcalcode(postalcode)
+        region_code = get_region_description(regions)
     else:
         if car_id == "-1":
-            #unrestricted case
-            pass
+            regions = None
+            region_code = _("Unrestricted")
         else:
-            #one specific car
             pass
+        
+        
     if calendar_id_to_allways_include == "-1":
         #new case
-        pass
+        available_dates = get_free_entries(date,
+                                           STANDARD_DAYS_AHEAD,
+                                           regions,
+                                           weight,
+                                           kind,
+                                           car_id) 
     else:
         #edit case
         calendar = Calendar.objects.get(pk=int(calendar_id_to_allways_include))
+        available_dates = get_free_entries_with_extra_calendar(date,
+                                           STANDARD_DAYS_AHEAD,
+                                           regions,
+                                           weight,
+                                           kind,
+                                           car_id,
+                                           calendar)
+        
+    data = {'region': region_code, 'dates': available_dates}
+    json = simplejson.dumps(data)
+    return HttpResponse(json, mimetype='application/json')
+        
+        
+        
         
 @group_required('Callcenter')
 def get_available_dates(request,
@@ -154,14 +176,14 @@ def get_available_dates(request,
         region_code = get_region_description(regions)
     if calendar_id == "-1":
         available_dates = get_free_entries(get_date_from_iso(date_iso),
-                                           STANDARD_DAYS_AHEAD, regions, int(weight))
+                                           STANDARD_DAYS_AHEAD, regions, int(weight), 2, None)
     else:
         calendar = Calendar.objects.get(pk=int(calendar_id))
         date = get_date_from_iso(date_iso)
         available_dates = get_free_entries_with_extra_calendar(date,
                                                                STANDARD_DAYS_AHEAD,
                                                                regions,
-                                                               int(weight),
+                                                               int(weight), 2, None,
                                                                calendar)
     data = {'region': region_code, 'dates': available_dates}
     json = simplejson.dumps(data)

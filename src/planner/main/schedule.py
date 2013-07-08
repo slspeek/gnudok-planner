@@ -54,7 +54,7 @@ def get_free_count(date, rule):
         return left
 
 
-def _get_rules(date, region):
+def _get_rules(date, region, car_id):
     """ Returns a list of rules for the given region on the given date. """
     week_day = date.weekday() + 1
     if region:
@@ -62,16 +62,18 @@ def _get_rules(date, region):
                                     timeslot__day_of_week=week_day)
     else:
         rules = Rule.objects.filter(timeslot__day_of_week=week_day)
+        if car_id:
+            rules = rules.filter(car__pk=car_id)
     return rules
 
-def get_rules(date, regions):
+def get_rules(date, regions, car_id):
     result = []
     if regions == None:
-        rules = _get_rules(date, None)
+        rules = _get_rules(date, None, car_id)
         result.extend(rules)
     else:
         for region in regions:
-            rules = _get_rules(date, region)
+            rules = _get_rules(date, region, car_id)
             result.extend(rules)
     return result
 
@@ -85,11 +87,11 @@ def _add_extra_calendar(entries, calendar):
         entries = [(calendar.pk, str(calendar))] + entries
     return entries
  
-def get_free_entries(fromDate, daysAhead, regions, min_weight):
+def get_free_entries(fromDate, daysAhead, regions, min_weight, kind, car_id):
     result = []
     for offset in range(0, 60):
         date = fromDate + datetime.timedelta(days=offset)
-        rules = get_rules(date, regions)
+        rules = get_rules(date, regions, car_id)
         for rule in rules:
             free_count = get_free_count(date, rule)
             if free_count >= min_weight:
@@ -103,8 +105,9 @@ def get_free_entries_with_extra_calendar(fromDate,
                                          daysAhead,
                                          regions,
                                          min_weight,
+                                         kind, car_id,
                                          calendar):
-    entries = get_free_entries(fromDate, daysAhead, regions, min_weight)
+    entries = get_free_entries(fromDate, daysAhead, regions, min_weight, kind, car_id)
     return _add_extra_calendar(entries, calendar)
 
 

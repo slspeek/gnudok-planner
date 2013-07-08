@@ -100,12 +100,12 @@ class TestRulesForRegion(TestCase):
 
     def test_one_filled(self):
         self.date = datetime.date(2012, 10, 29)
-        result = _get_rules(self.date, self.region)
+        result = _get_rules(self.date, self.region, None)
         self.assertEqual(1, len(result))
 
     def test_empty(self):
         self.date = datetime.date(2012, 10, 25)
-        result = _get_rules(self.date, self.region)
+        result = _get_rules(self.date, self.region, None)
         self.assertEqual(0, len(result))
 
 
