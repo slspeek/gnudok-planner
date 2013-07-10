@@ -59,17 +59,7 @@
 			$.getJSON(url, set_data).error(clear_data);
 		}
 	};
-	var get_updates_unrestricted = function() {
-		var postcode = get_normalized_postcode();
-		var unresticted = $('#id_unrestricted').prop('checked');
-		var weight = $('#id_weight')[0].value;
-		var url;
-		if (unresticted === true) {
-			var url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
-			callout_available_dates();
-			$.getJSON(url, set_data).error(clear_data);
-		}
-	};
+	
 
 </script>
 {% endblock %}
