@@ -45,21 +45,41 @@
 		}
 	};
 	var get_updates = function() {
+		var postcodeToSend;
 		var postcode = get_normalized_postcode();
-		var unresticted = $('#id_unrestricted').prop('checked');
-		var weight = $('#id_weight')[0].value;
-		var url;
-		if (unresticted === true) {
-			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}/UNRESTRICTED/';
+		var unrestricted = $('#id_unrestricted').prop('checked');
+		if (unrestricted) {
+			postcodeToSend = "-1";
 		} else {
-			url = '/main/get_available_dates/' + postcode + '/' + weight + '/{{ date_iso }}/{{ calendar_id }}//';
+			postcodeToSend = postcode;
 		}
+			
+		var weight = $('#id_weight')[0].value;
+		var kind = $('#id_kind')[0].value;
+		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/-1/' + kind + '/{{ calendar_id }}';
 		if (postcode.length === 6) {
 			callout_available_dates();
 			$.getJSON(url, set_data).error(clear_data);
 		}
 	};
-	
+	var get_updates_unrestricted = function() {
+		var postcodeToSend;
+        var postcode = get_normalized_postcode();
+        var unrestricted = $('#id_unrestricted').prop('checked');
+        if (unrestricted) {
+			postcodeToSend = "-1";
+		} else {
+			postcodeToSend = postcode;
+		}
+		var weight = $('#id_weight')[0].value;
+		var kind = $('#id_kind')[0].value;
+		        var url;
+                if (unrestricted === true) {
+                		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/-1/' + kind + '/{{ calendar_id }}';
+                        callout_available_dates();
+                        $.getJSON(url, set_data).error(clear_data);
+                }
+        };
 
 </script>
 {% endblock %}

@@ -114,7 +114,7 @@ def get_candidate_dates(
                         postalcode,
                         car_id,
                         kind,
-                        calendar_id_to_allways_include                   
+                        calendar_id                   
                         ):
     date = get_date_from_iso(date_iso)
     weight = int(weight)
@@ -131,7 +131,7 @@ def get_candidate_dates(
             pass
         
         
-    if calendar_id_to_allways_include == "-1":
+    if calendar_id == "-1":
         #new case
         available_dates = get_free_entries(date,
                                            STANDARD_DAYS_AHEAD,
@@ -141,7 +141,7 @@ def get_candidate_dates(
                                            car_id) 
     else:
         #edit case
-        calendar = Calendar.objects.get(pk=int(calendar_id_to_allways_include))
+        calendar = Calendar.objects.get(pk=int(calendar_id))
         available_dates = get_free_entries_with_extra_calendar(date,
                                            STANDARD_DAYS_AHEAD,
                                            regions,
