@@ -164,13 +164,15 @@ class Appointment(models.Model):
     calendar = models.ForeignKey(Calendar, verbose_name=_('calendar'))
     customer = models.ForeignKey(Customer, verbose_name=_('customer'))
     employee = models.ForeignKey(User, verbose_name=_('employee'))
-    KIND_CHOICES = ((1, _("Delivery")),
-                    (2, _("Pick up")),)
+    KIND_DELIVERY = 1
+    KIND_PICKUP = 2
+    KIND_CHOICES = ((KIND_DELIVERY, _("Delivery")),
+                    (KIND_PICKUP, _("Pick up")),)
     kind = models.IntegerField(_('kind'), choices=KIND_CHOICES, default=2)
     NORMAL = 1
     CANCELLED = 2
-    STATUS_CHOICES = ((1, _("Normal")),
-                      (2, _("Cancelled")),)
+    STATUS_CHOICES = ((NORMAL, _("Normal")),
+                      (CANCELLED, _("Cancelled")),)
     status = models.IntegerField(_('status'),
                                  choices=STATUS_CHOICES, default=NORMAL)
     CHOICES = ((1, _("Normal")),

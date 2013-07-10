@@ -24,15 +24,14 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
         calendar_id = int(calendar_id_string)
         calendar = Calendar.objects.get(pk=calendar_id)
         existing_apps = calendar.active_appointments()
-        logging.error(existing_apps)
-        logging.error(appointment_form.cleaned_data)
+        kind = appointment_form.cleaned_data['kind']
         old_weight = 0
         if not appointment_id == 'create':
             app = Appointment.actives.get(pk=int(appointment_id))
             old_weight = app.weight
-        logging.error(old_weight)
-        weight = get_total_weight(existing_apps) - old_weight
-        logging.error(weight)
+        
+        weight = get_total_weight(existing_apps, kind) - old_weight
+        
         aw = int(appointment_form.cleaned_data['weight'])
         return weight + aw <= APPOINTMENTS_PER_HALF_DAY
     else:

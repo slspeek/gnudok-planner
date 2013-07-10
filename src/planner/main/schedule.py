@@ -10,13 +10,13 @@ from .models import TimeSlot, Car, Rule
 import logging
 
 # Very important, change made at june 26 2013
-APPOINTMENTS_PER_HALF_DAY = 6
+APPOINTMENTS_PER_HALF_DAY = 4
 
 DELIVERY_PER_HALF_DAY = 2
 
 
 def get_limit(kind): 
-    if kind == 2: # Pick up
+    if kind == Appointment.KIND_PICKUP: 
         return APPOINTMENTS_PER_HALF_DAY
     else:
         return DELIVERY_PER_HALF_DAY
@@ -30,27 +30,28 @@ def get_region(calendar):
     return rule.region
 
 
-def get_total_weight(appointment_list):
-    """ Returns the total weigth of the appointments is the given list """
+def get_total_weight(appointment_list, kind=Appointment.KIND_DELIVERY):
+    """ Returns the total weigth of the appointments in the given list of given kind """
     weight = 0
-    for app in appointment_list:
+    apps_of_given_kind = filter(lambda x: x.kind == kind, appointment_list)
+    for app in apps_of_given_kind:
         weight += app.weight
     return weight
 
 
-def get_free_count(date, rule):
+def get_free_count(date, rule, kind=Appointment.KIND_DELIVERY):
     """ Given a date, timeslot and region return the number of free slots """
     query = Calendar.objects.filter(date=date)
     query = query.filter(timeslot=rule.timeslot)
     query = query.filter(car=rule.car)
     calendar_entries = query.all()
     if not calendar_entries:
-        return APPOINTMENTS_PER_HALF_DAY
+        return get_limit(kind)
     else:
         entry = calendar_entries[0]
         appointment_list = entry.active_appointments().all()
-        total_weight = get_total_weight(appointment_list)
-        left = APPOINTMENTS_PER_HALF_DAY - total_weight
+        total_weight = get_total_weight(appointment_list, kind)
+        left = get_limit(kind) - total_weight
         return left
 
 
@@ -89,15 +90,13 @@ def _add_extra_calendar(entries, calendar):
  
 def get_free_entries(fromDate, daysAhead, regions, min_weight, kind, car_id):
     result = []
-    for offset in range(0, 60):
+    for offset in range(0, daysAhead):
         date = fromDate + datetime.timedelta(days=offset)
         rules = get_rules(date, regions, car_id)
         for rule in rules:
-            free_count = get_free_count(date, rule)
+            free_count = get_free_count(date, rule, kind)
             if free_count >= min_weight:
                 result.append(_entry(date, rule))
-        if len(result) >= 2 and offset >= daysAhead - 1:
-            break
     return result
 
 
