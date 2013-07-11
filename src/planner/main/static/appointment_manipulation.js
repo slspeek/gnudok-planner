@@ -69,7 +69,7 @@ $(function() {
 			});
 		}
 	});
-	$('#id_unrestricted').change(function(e) {
+	var get_updates_conditional = function() {
 		var unresticted = $('#id_unrestricted').prop('checked');
 		if (unresticted === false) {
 			clear_data();
@@ -77,6 +77,16 @@ $(function() {
 		} else {
 			get_updates_unrestricted();			
 		}
+	}
+	$('#id_unrestricted').change(function(e) {
+		get_updates_conditional();
+	});
+	$('#id_kind').change(function(e) {
+		var kind = $('#id_kind')[0].value
+		if (kind === "1") {
+			$('#id_unrestricted').prop('checked', true);
+		} 
+		get_updates_conditional();
 	});
 	$("#id_postcode").keyup(function(e) {
 		get_updates();
