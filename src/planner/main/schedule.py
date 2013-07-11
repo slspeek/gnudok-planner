@@ -30,7 +30,7 @@ def get_region(calendar):
     return rule.region
 
 
-def get_total_weight(appointment_list, kind=Appointment.KIND_DELIVERY):
+def get_total_weight(appointment_list, kind):
     """ Returns the total weigth of the appointments in the given list of given kind """
     weight = 0
     apps_of_given_kind = filter(lambda x: x.kind == kind, appointment_list)
@@ -39,7 +39,7 @@ def get_total_weight(appointment_list, kind=Appointment.KIND_DELIVERY):
     return weight
 
 
-def get_free_count(date, rule, kind=Appointment.KIND_DELIVERY):
+def get_free_count(date, rule, kind):
     """ Given a date, timeslot and region return the number of free slots """
     query = Calendar.objects.filter(date=date)
     query = query.filter(timeslot=rule.timeslot)

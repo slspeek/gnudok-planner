@@ -118,6 +118,7 @@ def get_candidate_dates(
                         ):
     date = get_date_from_iso(date_iso)
     weight = int(weight)
+    kind = int(kind)
     
     if not postalcode == "-1":
         # normal pick-up case
@@ -125,6 +126,7 @@ def get_candidate_dates(
         region_code = get_region_description(regions)
     else:
         if car_id == "-1":
+            car_id = None
             regions = None
             region_code = _("Unrestricted")
         else:
