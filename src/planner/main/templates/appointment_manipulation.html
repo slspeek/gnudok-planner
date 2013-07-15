@@ -48,15 +48,17 @@
 		var postcodeToSend;
 		var postcode = get_normalized_postcode();
 		var unrestricted = $('#id_unrestricted').prop('checked');
+		var car_id = "-1";
 		if (unrestricted) {
 			postcodeToSend = "-1";
+			car_id = get_car_id();
 		} else {
 			postcodeToSend = postcode;
 		}
 			
 		var weight = $('#id_weight')[0].value;
 		var kind = $('#id_kind')[0].value;
-		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/-1/' + kind + '/{{ calendar_id }}';
+		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
 		if (postcode.length === 6) {
 			callout_available_dates();
 			$.getJSON(url, set_data).error(clear_data);
@@ -66,8 +68,10 @@
 		var postcodeToSend;
         var postcode = get_normalized_postcode();
         var unrestricted = $('#id_unrestricted').prop('checked');
+        var car_id = "-1";
         if (unrestricted) {
 			postcodeToSend = "-1";
+			car_id = get_car_id();
 		} else {
 			postcodeToSend = postcode;
 		}
@@ -75,7 +79,7 @@
 		var kind = $('#id_kind')[0].value;
 		        var url;
                 if (unrestricted === true) {
-                		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/-1/' + kind + '/{{ calendar_id }}';
+                		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
                         callout_available_dates();
                         $.getJSON(url, set_data).error(clear_data);
                 }
@@ -99,10 +103,12 @@
 			{{ appointmentForm|as_bootstrap }}
 			{{ hiddenForm }}
 		</div>
+		
 		<div class="span4">
 			<div class="control-group">
 				<label>{% trans "Unrestricted" %}</label>
 				<input id="id_unrestricted" type="checkbox"/>
+				{{ carForm|as_bootstrap }}
 				<h4>{% trans "Available dates for region:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
 				<div class="controls">
 					<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>

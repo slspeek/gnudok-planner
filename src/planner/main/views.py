@@ -4,8 +4,8 @@ from .__init__ import group_required, get_date_from_iso, tomorrow
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Customer
-from .forms import CustomerForm, AppointmentForm, HiddenForm
+from .models import Appointment, Calendar, Customer, Car
+from .forms import CustomerForm, AppointmentForm, HiddenForm, CarForm
 from .schedule import get_free_entries, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
 import logging
@@ -43,6 +43,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     """ creates or edits an appointment and customer """
     if not date_iso:
         date_iso = tomorrow()
+    
     if appointment_id == 'create':
         appointment = Appointment()
         calendar_id = "-1"
@@ -57,6 +58,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         appointment = Appointment.objects.get(pk=int(appointment_id))
         calendar_id = appointment.calendar.pk
     if request.method == 'GET':
+        carForm = CarForm()
         hidden_form = HiddenForm()
         appointment_form = AppointmentForm(instance=appointment)
         customer_form = CustomerForm(instance=appointment.customer)
@@ -97,6 +99,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                "hiddenForm": hidden_form,
                                "date_iso": date_iso,
                                "calendar_id": calendar_id,
+                               "carForm": carForm
                                },
                               context_instance=RequestContext(request))
 
@@ -119,18 +122,23 @@ def get_candidate_dates(
     date = get_date_from_iso(date_iso)
     weight = int(weight)
     kind = int(kind)
+    car_id = int(car_id)
+    
     
     if not postalcode == "-1":
         # normal pick-up case
         regions = get_regions_for_postcalcode(postalcode)
         region_code = get_region_description(regions)
     else:
-        if car_id == "-1":
+        regions = None
+        if car_id == -1:
             car_id = None
-            regions = None
+            
             region_code = _("Unrestricted")
         else:
-            pass
+            region_code = _("Car selected")
+            car = Car.objects.get(pk=car_id)
+            region_code += " %s" % car.name
         
         
     if calendar_id == "-1":

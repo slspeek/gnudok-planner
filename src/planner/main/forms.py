@@ -8,7 +8,7 @@ from django import forms
 from bootstrap_toolkit.widgets import BootstrapDateInput
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
-from .models import Appointment, Customer, Region
+from .models import Appointment, Customer, Region, Car
 from django.forms.forms import Form
 from django.utils.translation import ugettext_lazy as _
 
@@ -56,3 +56,11 @@ class EmployeeChooseForm(Form):
         .filter(is_active=True)\
         .order_by('first_name')
     employee = EmployeeModelChoiceField(label=_('employee'), queryset=queryset)
+    
+class CarModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name
+
+class CarForm(Form):
+    queryset = Car.objects.all()
+    car = CarModelChoiceField(label=_('car'), queryset=queryset)

@@ -31,6 +31,19 @@ var set_customer_data = function(data) {
 
 };
 
+var get_car_id = function() {
+	var id = $('#id_car').val();
+	if (id === "") {
+		id = "-1";
+	}
+	return id;
+}
+
+var get_car_name = function() {
+	var name = $('#id_car option:selected').text();
+	return name;
+}
+
 var reset_customer_id = function() {
 	call_returned_known_customers();
 	$('#id_found_customer_id').val('');
@@ -54,6 +67,7 @@ var get_normalized_postcode = function() {
 	
 };
 $(function() {
+	$('#id_car').hide();
 	$("#id_postcode").keyup(function(e) {
 		var postcode = get_normalized_postcode();
 		if (postcode.length === 6) {
@@ -85,7 +99,13 @@ $(function() {
 		var kind = $('#id_kind')[0].value
 		if (kind === "1") {
 			$('#id_unrestricted').prop('checked', true);
-		} 
+			$('#id_car').show();
+		} else {
+			$('#id_car').hide();
+		}
+		get_updates_conditional();
+	});
+	$('#id_car').change(function(e) {
 		get_updates_conditional();
 	});
 	$("#id_postcode").keyup(function(e) {
