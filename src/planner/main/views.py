@@ -75,6 +75,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                               instance=appointment)
         customer_form = CustomerForm(request.POST,
                                      instance=appointment.customer)
+        carForm = CarForm(request.POST)
         free_space = request.POST.get('free_space', '')
         app_valid = appointment_form.is_valid()
         if app_valid:
