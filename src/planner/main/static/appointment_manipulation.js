@@ -101,6 +101,7 @@ $(function() {
 			$('#id_unrestricted').prop('checked', true);
 			$('#id_car').show();
 		} else {
+			$('#id_car').val('');
 			$('#id_car').hide();
 		}
 		get_updates_conditional();
