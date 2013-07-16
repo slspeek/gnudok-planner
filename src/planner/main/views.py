@@ -137,9 +137,8 @@ def get_candidate_dates(
             
             region_code = _("Unrestricted")
         else:
-            region_code = _("Car selected")
             car = Car.objects.get(pk=car_id)
-            region_code += " %s" % car.name
+            region_code = " %s" % car.name
         
         
     if calendar_id == "-1":

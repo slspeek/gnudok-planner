@@ -63,4 +63,4 @@ class CarModelChoiceField(forms.ModelChoiceField):
 
 class CarForm(Form):
     queryset = Car.objects.all()
-    car = CarModelChoiceField(label=_('car'), queryset=queryset)
+    car = CarModelChoiceField(label=_('Car'), queryset=queryset)
