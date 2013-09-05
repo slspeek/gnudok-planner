@@ -7,7 +7,7 @@ class PostcodeAdmin(DjangoSeleniumTest):
     """ Hello selenium """
     
     def setUp(self):
-        super(DjangoSeleniumTest, self).setUp()
+        super(PostcodeAdmin, self).setUp()
         createRootUser(self)
         
         

@@ -30,7 +30,7 @@ ZUID_OOST = "Zuid-Oost: Zuid-Oost"
 class SearchTest(DjangoSeleniumTest):
 
     def setUp(self):
-        super(DjangoSeleniumTest, self).setUp()
+        super(SearchTest, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
@@ -55,7 +55,7 @@ class SearchTest(DjangoSeleniumTest):
 @attr('hook') 
 class TestPreCommitHook(DjangoSeleniumTest):
     def setUp(self):
-        super(DjangoSeleniumTest, self).setUp()
+        super(TestPreCommitHook, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
@@ -104,7 +104,7 @@ class ViewersTestCase(DjangoSeleniumTest):
     """ Planner selenium test """
 
     def setUp(self):
-        super(DjangoSeleniumTest, self).setUp()
+        super(ViewersTestCase, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
@@ -129,7 +129,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
     """ Appointment create and edit test """
     
     def setUp(self):
-        super(DjangoSeleniumTest, self).setUp()
+        super(AppointmentEditExtra, self).setUp()
         createRegion(self)
         createTestPostcodes()
         createTestUsers(self)
@@ -331,7 +331,7 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
     """ Appointment create appointment with a multiple region postcode """
     
     def setUp(self):
-        super(DjangoSeleniumTest, self).setUp()
+        super(AppointmentEditMultipleRegions, self).setUp()
         createRegion(self)
         createRegionEast(self)
         createTestPostcodes()
