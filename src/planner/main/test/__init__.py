@@ -74,6 +74,7 @@ def adaMakesAppointment(self):
                                           employee=self.user_steven,
                                           stuff='Virtual Machines',
                                           notes='Lift aanwezig')
+    self.customer_id_ada = self.customer.id
 
 def adaBooksDelivery(self):
     self.date = datetime.date(year=2013, month=01, day=04)

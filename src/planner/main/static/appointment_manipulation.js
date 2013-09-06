@@ -22,13 +22,13 @@ var call_returned_postcode = function() {
 
 var set_customer_data = function(data) {
 	call_returned_known_customers();
+  window.customer_answers.push(data.id);
 	$('#id_town').val(data.town);
 	$('#id_address').val(data.address);
 	$('#id_phone').val(data.phone);
 	$('#id_name').val(data.name);
 	$('#id_email').val(data.email);
 	$('#id_found_customer_id').val(data.id);
-
 };
 
 var get_car_id = function() {
@@ -42,6 +42,7 @@ var get_car_id = function() {
 var reset_customer_id = function() {
 	call_returned_known_customers();
 	$('#id_found_customer_id').val('');
+  window.customer_answers.push("RESET");
 };
 
 
@@ -63,6 +64,7 @@ var get_normalized_postcode = function() {
 };
 $(function() {
 	$('#car_choice').hide();
+  window.customer_answers = [];
 	$("#id_postcode").keyup(function(e) {
 		var postcode = get_normalized_postcode();
 		if (postcode.length === 6) {
