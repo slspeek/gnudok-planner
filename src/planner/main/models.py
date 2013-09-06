@@ -72,7 +72,7 @@ class Customer(models.Model):
     email = models.EmailField(_('email'), max_length=120, blank=True)
 
     def __str__(self):
-        return self.name
+        return "%s %s" % (self.name, self.get_address_display())
 
     def get_address_display(self):
         if self.additions:

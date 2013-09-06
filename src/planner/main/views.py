@@ -67,10 +67,12 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
         if hidden_form.is_valid():
             customer_id = hidden_form.cleaned_data['found_customer_id']
             if customer_id:
-                logging.error("Customer known")
                 appointment.customer = Customer.objects.get(pk=customer_id)
+                logging.error("Customer known: %s" % appointment.customer)
+            else:
+                logging.error("Customer unknown")
         else:
-            logging.error("Customer unknown")
+            raise NameError("Hiddenform should never be invalid")
         appointment_form = AppointmentForm(request.POST,
                                               instance=appointment)
         customer_form = CustomerForm(request.POST,

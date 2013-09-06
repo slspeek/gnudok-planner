@@ -4,15 +4,11 @@ Test for the function that saves the Customer, Appointment and Calendar objects.
 from __future__ import absolute_import
 from nose.plugins.attrib import attr
 from django_webtest import WebTest
-import logging
-from planner.main.test.tests import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 import datetime
 from .__init__ import createTestUsers, createRegion, adaMakesAppointment, adaCancelsAppointment, adaBooksDelivery
 from django.core.urlresolvers import reverse
-from planner.main.viewers_views import appointment_detail, calendar_search_view
-from django.test.testcases import TestCase
-from planner.main.models import Appointment, Calendar
-import logging
+from planner.main.viewers_views import appointment_detail
+from planner.main.models import Appointment
 
 @attr('functional', 'kind')
 class OrderOnKind(WebTest):

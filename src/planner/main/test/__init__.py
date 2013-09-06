@@ -58,16 +58,18 @@ def createTestUsers(self):
     self.user_alien.groups = [self.group_viewers]
     self.user_alien.save()
 
+def createAda():
+    return CustomerFactory(name='Ada Lovelace',
+                           postcode='1102AB',
+                           number=42,
+                           address='Bijlmerdreef',
+                           town='Amsterdam',
+                           phone='06-12345678')
 
 def adaMakesAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = CustomerFactory(name='Ada Lovelace',
-                                    postcode='1102AB',
-                                    number=42,
-                                    address='Bijlmerdreef',
-                                    town='Amsterdam',
-                                    phone='06-12345678')
+    self.customer = createAda()
     self.appointment = AppointmentFactory(calendar=self.calendar,
                                           created=datetime.date(year=2012, month=12, day=20),
                                           customer=self.customer,
@@ -90,12 +92,7 @@ def adaBooksDelivery(self):
 def adaMakesBigAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = CustomerFactory(name='Ada Lovelace',
-                                    postcode='1102AB',
-                                    number=42,
-                                    address='Bijlmerdreef',
-                                    town='Amsterdam',
-                                    phone='06-12345678')
+    self.customer = createAda()
     self.appointment = AppointmentFactory(calendar=self.calendar,
                                           created=datetime.date(year=2012, month=12, day=20),
                                           customer=self.customer,
@@ -107,12 +104,7 @@ def adaMakesBigAppointment(self):
 def adaCancelsAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = CustomerFactory(name='Ada Lovelace',
-                                    postcode='1102AB',
-                                    number=42,
-                                    address='Bijlmerdreef',
-                                    town='Amsterdam',
-                                    phone='06-12345678')
+    self.customer = createAda()
     self.appointment = AppointmentFactory(calendar=self.calendar,
                                           created=datetime.date(year=2012, month=12, day=20),
                                           customer=self.customer,

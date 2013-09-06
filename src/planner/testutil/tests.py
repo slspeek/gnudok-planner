@@ -22,6 +22,10 @@ class DjangoSeleniumTest(LiveServerTestCase):
         super(DjangoSeleniumTest, cls).tearDownClass()
 
     def tearDown(self):
+        super(DjangoSeleniumTest, self).tearDown()
+           
+        
+    def setUp(self):
         Source.objects.all().delete()
         Country.objects.all().delete()
         Province.objects.all().delete()
@@ -29,8 +33,8 @@ class DjangoSeleniumTest(LiveServerTestCase):
         City.objects.all().delete()
         Street.objects.all().delete()
         Postcode.objects.all().delete()
-        super(DjangoSeleniumTest, self).tearDown()
-           
+        super(DjangoSeleniumTest, self). setUp()
+
     def sleep(self):
         amount = float(os.environ.get("TEST_PAUSE", failobj=2))
         time.sleep(amount)
@@ -64,4 +68,5 @@ class DjangoSeleniumTest(LiveServerTestCase):
     
     def go_to_view(self, view, args=None, kwargs=None):
         self.driver.get(self.live_server_url + reverse(view, args=args, kwargs=kwargs))
+        self.sleep()
  

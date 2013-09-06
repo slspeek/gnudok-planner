@@ -109,6 +109,7 @@ class ViewersTestCase(DjangoSeleniumTest):
         """ Makes one appointment and verifies it be viewing the list as Viewer."""
         driver = self.driver
         self.login("alien", "jansteven")
+
         self.go_to_view('WeekView', args=[1, 0, 20130101])
         self.sleep()
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
@@ -206,7 +207,8 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Aantekeningen")
         self.assertBobyContains("4 januari")
-    
+
+    @attr('follow_up')
     def test_create_follow_up(self):
         """ Create follow up """
         adaMakesAppointment(self)
@@ -216,7 +218,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
 
         self.set_text_field('id_stuff', "Oude wiskunde boeken")
         self.set_text_field('id_notes', "Er een programmeertaal naar haar genoemd")
-        #self.sleep()
+        self.sleep()
         #self.sleep()
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
@@ -253,9 +255,13 @@ class AppointmentEditExtra(DjangoSeleniumTest):
     @attr('at_first')
     def test_existing_cutomer_at_first(self):
         """ Look like an exiting customer, and then change again to new customer """
+        logging.error(Customer.objects.all())
         adaMakesAppointment(self)
+        logging.error(Appointment.objects.all())
         self.appointment.delete()
         assert Customer.objects.all().exists()
+        logging.error(Customer.objects.all())
+        logging.error(Appointment.objects.all())
         self.assertEquals(1, len(Customer.objects.all()))
         self.login('steven', 'jansteven')
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
@@ -263,9 +269,6 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.set_text_field('id_postcode', '1102AB')
         self.set_text_field('id_number', "42")
         #self.set_text_field('id_additions', "")
-        self.sleep()
-        self.sleep()
-        self.sleep()
         self.sleep()
         logging.error(self.driver.execute_script("return customer_answers"));
         emailEl = self.driver.find_element_by_xpath("//*[@id='id_email']")
@@ -286,8 +289,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
-        self.assertEquals(2, len(Customer.objects.all()))
+        logging.error(Appointment.objects.all())
         logging.error(Customer.objects.all())
+        self.assertEquals(2, len(Customer.objects.all()))
      
     @attr('no_stuff') 
     def test_create_one_appointment_without_stuff(self):
