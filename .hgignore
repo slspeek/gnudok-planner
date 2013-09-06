@@ -1,4 +1,7 @@
 syntax: glob
+*.swp
+*~
+*.sql.bzip2
 *.pyc
 src/*.pyc
 src/planner/static

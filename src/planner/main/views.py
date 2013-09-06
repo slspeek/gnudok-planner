@@ -203,14 +203,19 @@ def get_available_dates(request,
 def get_customer(request, postalcode, number, addition):
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s %s" % (postalcode, number, addition))
-    customer = Customer.objects.get(postcode=postalcode.capitalize(),
-                                    number=number, additions=addition)
-    data = {'name': customer.name,
-            'address': customer.address,
-            'town': customer.town,
-            'phone': customer.phone,
-            'id': customer.id,
-            'email': customer.email}
+    customer_list = Customer.objects.filter(postcode=postalcode.capitalize(),
+                                    number=number, additions=addition).all()
+    if customer_list:
+        customer = customer_list[0]
+        data = {'name': customer.name,
+                'found' : True,
+                'address': customer.address,
+                'town': customer.town,
+                'phone': customer.phone,
+                'id': customer.id,
+                'email': customer.email}
+    else:
+        data = {'found': False }
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype='application/json')
 

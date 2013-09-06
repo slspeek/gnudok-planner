@@ -1,6 +1,5 @@
 from planner.main.models import Customer, Calendar
 from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
-from planner.main.viewers_views import calendar_search_view
 from django.test import LiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
@@ -16,19 +15,13 @@ class DjangoSeleniumTest(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        #cls.driver = WebDriver()
+        cls.driver = WebDriver()
         super(DjangoSeleniumTest, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
+        cls.driver.quit()
         super(DjangoSeleniumTest, cls).tearDownClass()
-        #cls.driver.quit()
-     
-    def setUp(self):
-        super(DjangoSeleniumTest,self).setUp()
-        logging.error("setUp")
-        self.driver = webdriver.Firefox()
-        
 
     def tearDown(self):
         Source.objects.all().delete()
@@ -38,7 +31,6 @@ class DjangoSeleniumTest(LiveServerTestCase):
         City.objects.all().delete()
         Street.objects.all().delete()
         Postcode.objects.all().delete()
-        self.driver.quit()
         super(DjangoSeleniumTest, self).tearDown()
            
     def sleep(self):

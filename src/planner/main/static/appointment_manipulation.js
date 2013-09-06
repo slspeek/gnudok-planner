@@ -1,3 +1,5 @@
+/* global  $:false, window:false,  clear_data:false, get_updates:false, get_updates_unrestricted:false */
+
 "use strict";
 
 var callout_available_dates = function() {
@@ -22,13 +24,17 @@ var call_returned_postcode = function() {
 
 var set_customer_data = function(data) {
 	call_returned_known_customers();
-  window.customer_answers.push(data.id);
-	$('#id_town').val(data.town);
-	$('#id_address').val(data.address);
-	$('#id_phone').val(data.phone);
-	$('#id_name').val(data.name);
-	$('#id_email').val(data.email);
-	$('#id_found_customer_id').val(data.id);
+  if (data.found === true) {
+    $('#id_town').val(data.town);
+    $('#id_address').val(data.address);
+    $('#id_phone').val(data.phone);
+    $('#id_name').val(data.name);
+    $('#id_email').val(data.email);
+    $('#id_found_customer_id').val(data.id);
+    window.customer_answers.push(data.id);
+  } else {
+    reset_customer_id();
+  } 
 };
 
 var get_car_id = function() {
@@ -37,10 +43,9 @@ var get_car_id = function() {
 		id = "-1";
 	}
 	return id;
-}
+};
 
 var reset_customer_id = function() {
-	call_returned_known_customers();
 	$('#id_found_customer_id').val('');
   window.customer_answers.push("RESET");
 };
@@ -55,7 +60,7 @@ var find_customer = function() {
 		callout_known_customers();
 		$.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, set_customer_data).error(reset_customer_id);
 	}
-}
+};
 
 var get_normalized_postcode = function() {
 	var postcode = $('#id_postcode')[0].value;
@@ -71,9 +76,11 @@ $(function() {
 			callout_postcode();
 			$.getJSON('/pc/get/' + postcode, function(data) {
 				call_returned_postcode();
-				$('#id_town').val(data.town);
-				$('#id_address').val(data.address);
-				$('#id_postcode').val(postcode.toUpperCase());
+        if (data.found === true) {
+            $('#id_town').val(data.town);
+            $('#id_address').val(data.address);
+            $('#id_postcode').val(postcode.toUpperCase());
+        }
 			}).error( 
 			function(error) {
 				call_returned_postcode();
@@ -88,12 +95,12 @@ $(function() {
 		} else {
 			get_updates_unrestricted();			
 		}
-	}
+	};
 	$('#id_unrestricted').change(function(e) {
 		get_updates_conditional();
 	});
 	$('#id_kind').change(function(e) {
-		var kind = $('#id_kind')[0].value
+		var kind = $('#id_kind')[0].value;
 		if (kind === "1") {
 			$('#id_unrestricted').prop('checked', true);
 			$('#car_choice').show();

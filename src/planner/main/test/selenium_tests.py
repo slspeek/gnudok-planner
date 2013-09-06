@@ -1,20 +1,14 @@
 from __future__ import absolute_import
-from django.test import LiveServerTestCase
-
-from selenium.webdriver.support.ui import Select
-from django.core.urlresolvers import reverse
 
 
-import time
+
 import logging
 import datetime
-from .__init__ import RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, CalendarFactory
 from .__init__ import CustomerFactory, AppointmentFactory
 
 from nose.plugins.attrib import attr
-from .__init__ import createRootUser, createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
-from planner.main.models import Customer, Calendar
-from planner.nlpostalcode.models import Source, Country, Province, City, Cityname, Postcode, Street
+from .__init__ import createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
+from planner.main.models import Customer, Calendar, Appointment
 from planner.main.viewers_views import calendar_search_view
 from planner.testutil.tests import DjangoSeleniumTest
 
@@ -137,6 +131,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         
     def test_create_one_appointment(self):
         """ Makes one appointment """
+        self.assertEquals(0, len(Appointment.objects.all()))
         self.login('steven', 'jansteven')
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
@@ -156,6 +151,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Bed, boeken en servies")
         self.assertBobyContains("4 januari")
+        self.assertEquals(1, len(Appointment.objects.all()))
             
     def test_edit_appointment(self):
         """ Edit appointments stuff"""
@@ -249,6 +245,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.set_text_field('id_stuff', "Oude wiskunde boeken")
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
+        self.sleep()
         self.assertBobyContains("Ada Lovelace")
         self.assertBobyContains("Oude wiskunde boeken")
         self.assertBobyContains("11 januari")
