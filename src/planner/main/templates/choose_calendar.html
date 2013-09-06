@@ -13,7 +13,7 @@
 	<tr>
 		<td>{{ calendar.date }}</td>
 		<td>
-			<a href="{% url planner.main.viewers_views.render_appointment_list calendar.pk %}">
+			<a href="{% url "planner.main.viewers_views.render_appointment_list" calendar.pk %}">
 				{{ calendar.car }}
 			</a>
 		</td>

@@ -52,9 +52,9 @@
 
 	</table>
 	<p>
-		<a class="btn" href="{% url CancelAppointment object.id %}"><i class="icon-remove"></i></a>
-		<a class="btn" href="{% url AppointmentEditExtra object.pk object.customer.pk '' %}"><i class="icon-edit"></i></a>
-		<a class="btn" href="{% url AppointmentEditExtra 'create' object.customer.pk '' %}">
+		<a class="btn" href="{% url "CancelAppointment" object.id %}"><i class="icon-remove"></i></a>
+		<a class="btn" href="{% url "AppointmentEditExtra" object.pk object.customer.pk '' %}"><i class="icon-edit"></i></a>
+		<a class="btn" href="{% url "AppointmentEditExtra" 'create' object.customer.pk '' %}">
 			{% trans "Follow up" %}
 		</a>
 		

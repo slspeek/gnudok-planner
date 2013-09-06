@@ -29,8 +29,8 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['planner.nlpostalcode.nlpostcode_router.NlpostcodeRouter',
-                    'planner.main.main_router.MainRouter']
+DATABASE_ROUTERS = ['planner.nlpostcode_router.NlpostcodeRouter',
+                    'planner.main_router.MainRouter']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

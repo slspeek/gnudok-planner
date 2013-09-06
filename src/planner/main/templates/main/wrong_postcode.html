@@ -19,7 +19,7 @@
                 	    <td>{{ object.get_address_display }}</td>
                         <td>{{ object.postcode }}</td>
                         <td>{{ object.town }}</td>
-                        <!-- <td><a href="{% url AppointmentView object.pk  %}"><i class="icon-eye-open"></i></a></td> -->
+                        <!-- <td><a href="{% url "AppointmentView" object.pk  %}"><i class="icon-eye-open"></i></a></td> -->
                 </tr>
                 {% endfor %}
         </table>

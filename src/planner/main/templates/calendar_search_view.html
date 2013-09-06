@@ -48,7 +48,7 @@
                         <td>{{ object.customer.get_address_display }}</td>
                         <td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
                         <td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
-                        <td><a href="{% url AppointmentView object.pk  %}"><i class="icon-eye-open"></i></a></td>
+                        <td><a href="{% url "AppointmentView" object.pk  %}"><i class="icon-eye-open"></i></a></td>
                 </tr>
                 {% endfor %}
         </table>

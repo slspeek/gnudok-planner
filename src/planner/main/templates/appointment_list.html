@@ -49,7 +49,7 @@
 		<td>{{ app.stuff }}</td>
 		<td>{{ app.notes }}</td>
 		<td>{{ app.get_weight_display }}</td>
-		<td class="control"><a href="{% url AppointmentView app.pk  %}"><i class="icon-eye-open"></i></a></td>
+		<td class="control"><a href="{% url "AppointmentView" app.pk  %}"><i class="icon-eye-open"></i></a></td>
 	</tr>
 	{% endfor %}
 

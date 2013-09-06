@@ -18,7 +18,7 @@
 		<tr>
 			
 			{% for car in car_list %}
-			<td><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></td>
+			<td><a href="{% url "WeekView" car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></td>
 			{% endfor %}
 		</tr>
 
@@ -28,7 +28,7 @@
 		<tr>
 			
 			{% for car in car_list %}
-			<td><b><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></b></td>
+			<td><b><a href="{% url "WeekView" car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></b></td>
 			{% endfor %}
 		</tr>
 
@@ -38,7 +38,7 @@
 		<tr>
 			
 			{% for car in car_list %}
-			<td><a href="{% url WeekView car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></td>
+			<td><a href="{% url "WeekView" car.pk offset date_iso %}">{{ begin|date:"D j N o" }} - {{ end|date:"D j N o" }}</a></td>
 			{% endfor %}
 		</tr>
 

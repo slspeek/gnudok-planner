@@ -3,12 +3,10 @@ from planner.nlpostalcode.models import Source, Country, Province, City, Citynam
 from django.test import LiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
-from selenium import webdriver
 from django.core.urlresolvers import reverse
 import os
 import time
 
-import logging
 
 class DjangoSeleniumTest(LiveServerTestCase):
     """ Base class for the django selenium testing """

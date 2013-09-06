@@ -15,7 +15,7 @@
 	</tr>
 	{% for calendar in object_list %}
 	<tr class="info">
-		<td><a href="{% url planner.main.viewers_views.render_appointment_list calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
+		<td><a href="{% url "planner.main.viewers_views.render_appointment_list" calendar.pk %}">{{ calendar.date|date:"l j b" }}</a></td>
 		<td>{{ calendar.timeslot.get_begin_display }} - {{ calendar.timeslot.get_end_display }} </td>
 		<td>{{calendar.region.name}}</td>
 		<td>{{calendar.free}}</td>
@@ -43,12 +43,12 @@
 			<td>{{ appointment.get_kind_display }}</td>
 			<td>{{ appointment.weight }}</td>
 			<td>{{ appointment.stuff|truncatechars:9 }}</td>
-			<td><a href="{% url AppointmentView appointment.pk  %}"><i class="icon-eye-open"></i></a></td>
+			<td><a href="{% url "AppointmentView" appointment.pk  %}"><i class="icon-eye-open"></i></a></td>
 		</tr>
 	{% endfor %}
 	{% endfor %}
 </table>
-<a class="btn" href="{% url WeekView car.pk prev date_iso %}">{% trans "Previous" %}</a>
-<a class="btn" href="{% url WeekView car.pk next date_iso %}">{% trans "Next" %}</a>
+<a class="btn" href="{% url "WeekView" car.pk prev date_iso %}">{% trans "Previous" %}</a>
+<a class="btn" href="{% url "WeekView" car.pk next date_iso %}">{% trans "Next" %}</a>
 
 {% endblock %}
