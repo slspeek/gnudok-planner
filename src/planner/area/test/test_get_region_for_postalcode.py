@@ -2,9 +2,11 @@ from __future__ import absolute_import
 from unittest import TestCase
 from planner.main.test.__init__ import RegionFactory
 from nose.plugins.attrib import attr
-from planner.area.models import Interval, Region
+from planner.main.models import Region
+from planner.area.models import Interval
 from planner.area.views import get_regions_for_postcalcode
 
+import logging
 
 @attr('functional', 'postalcode')
 class GetRegionFromPostalcodeTest(TestCase):
@@ -32,7 +34,9 @@ class GetRegionFromPostalcodeTest(TestCase):
            
         
     def doPostcodeTest(self, code, expected_string):
+        logging.info("All regions: %s " % Region.objects.all())
         regions = get_regions_for_postcalcode(code)
+        logging.info("Regions: %s " % regions)
         assert expected_string in str(regions) 
 
     def testNoDoubleRegions(self):

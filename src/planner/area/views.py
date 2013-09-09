@@ -1,11 +1,10 @@
 from __future__ import absolute_import
-from .models import Interval
-from django.http import HttpResponse
-
+from planner.main.models import Region
+import logging
 
 def get_regions_for_postcalcode(postalcode):
-    matching_intervals = Interval.objects.filter(begin__lte=postalcode,
-                                                 end__gte=postalcode)
-    regions = map(lambda x: x.region, matching_intervals)
-    return  list(set(regions))
+    postalcode = str(postalcode)
+    regions = Region.objects.filter(interval__begin__lte=postalcode, interval__end__gte=postalcode)
+    #logging.info("SQL: %s" % regions.query.__str__())
+    return  set(regions)
     
