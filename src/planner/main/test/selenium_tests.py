@@ -154,12 +154,14 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("4 januari")
         self.assertEquals(1, len(Appointment.objects.all()))
             
+    @attr('edit_app')
     def test_edit_appointment(self):
         """ Edit appointments stuff"""
         adaMakesAppointment(self)
         self.login('steven', 'jansteven')
         
         self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+        self.sleep()
 
         self.set_text_field('id_stuff', "Aantekeningen")
         self.set_text_field('id_notes', "Eerste programmeur")

@@ -12,12 +12,15 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangoplanner',
-        'USER': 'djangoplanner',
-        'PASSWORD': 'djangoplanner',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'planner',
+        'USER': 'planner',
+        'PASSWORD': 'planner',
         'HOST': '',
         'PORT': '',
+        'OPTIONS': {
+            'autocommit': True,
+        },
     },
     'nlpostcode':  {
         'ENGINE': 'django.db.backends.mysql',

@@ -8,7 +8,7 @@ from planner.main.schedule import _get_rules, get_or_create_calendar
 from planner.main.views import get_date_from_iso
 import datetime
 from django.contrib.auth.models import User
-from django.test.testcases import TestCase
+from django.test.testcases import TestCase, TransactionTestCase
 from nose.plugins.attrib import attr
 from django.test.client import Client
 import logging
@@ -116,13 +116,14 @@ class TestIsoDate(TestCase):
         self.assertEqual(datetime.date(2012, 10, 2), get_date_from_iso('20121002'))
 
 
-@attr('functional')
-class CalendarNoDoublesTest(TestCase):
+@attr('functional', 'nodoubles')
+class CalendarNoDoublesTest(TransactionTestCase):
     
     def test_no_doubles(self):
         rule = RuleFactory()
         def create_calendar():
-            CalendarFactory.create(timeslot=rule.timeslot, car=rule.car)
+            logging.info("Just before creating calendar ");
+            c = CalendarFactory.create(timeslot=rule.timeslot, car=rule.car)
+            logging.info("Creating calendar %s" % str(c));
         create_calendar()
-        self.assertRaises(Exception, create_calendar)
-        assert len(Calendar.objects.all()) == 1
+

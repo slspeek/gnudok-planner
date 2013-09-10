@@ -17,6 +17,7 @@ setup(
                         'django',
                         'django-nose',
                         'django-webtest',
+                        'psycopg2',
                         'WebTest', 
                         'django_jenkins',
                         'selenium',
