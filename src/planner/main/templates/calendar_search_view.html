@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap_toolkit %}
+{% block extra_head %}
+{{ search_form.media }}
+
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+<form id="calendar_search" name="calendar_search" action="" method="post">
+	{% csrf_token %}
+
+	{{ search_form|as_bootstrap }}
+
+	<button class="btn btn-success" type="submit">
+		{% trans "Search" %}
+	</button>
+
+</form>
+<div class="container">
+	{% if searched %}
+	 <table class="table">
+                <tr>
+                        <th colspan="7"> {{ result_count }} {% trans "appointments found" %}</th>
+                </tr>
+                <tr>
+                		<th>{% trans "Auto" %}</th>
+                		<th>{% trans "Timeslot" %}</th>
+                		<th>{% trans "Date" %}</th>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Address" %}</th>
+                        <th>{% trans "Postal code" %}</th>
+                        <th>{% trans "City" %}</th>
+                        <th>{% trans "Phone" %}</th>
+                        <th>{% trans "Stuff" %}</th>
+                        <th>{% trans "View" %}</th>
+                </tr>
+                {% for object in search_results %}
+                <tr>
+                	<td>{{ object.calendar.car }}</td>
+                	<td>{{ object.calendar.timeslot }}</td>
+                	<td>{{ object.calendar.date }}</td>
+                        <td>{{ object.customer.name }}</td>
+                        <td>{{ object.customer.get_address_display }}</td>
+                        <td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
+                        <td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
+                        <td><a href="{% url "AppointmentView" object.pk  %}"><i class="icon-eye-open"></i></a></td>
+                </tr>
+                {% endfor %}
+        </table>
+        {% endif %}
+	
+	
+</div>
+
+{% endblock %}

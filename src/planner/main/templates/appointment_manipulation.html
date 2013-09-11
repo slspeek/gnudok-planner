@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+{% block extra_head %}
+{{ customerForm.media }}
+{{ appointmentForm.media }}
+<script src="{{ STATIC_URL }}appointment_manipulation.js"  ></script>
+
+<script>
+	"use strict";
+	
+	var on_click = function(calendar_id) {
+		return function(e) {
+			if(e.ctrlKey) {
+				 window.open('/main/list/appointments/' + calendar_id);
+			 }
+		};
+			 
+	}
+	var set_data = function(data) {
+	call_returned_available_dates();
+	$('#region_label').text(data.region);
+	$('#id_free_space').empty();
+	for (var i = 0, len = data.dates.length; i < len; i++) {
+	var date = data.dates[i];
+	var calendar_id = date[0];
+	var option;
+	if ({{ calendar_id }} == calendar_id) {
+		option = '<option id="' + calendar_id + '" selected="selected" value="' + calendar_id + '">' +  date[1] + '</option>';
+	} else {
+		option = '<option id="' + calendar_id + '" value="' + calendar_id + '">' +  date[1] + '</option>';
+	}
+	$('#id_free_space').append(option);
+	$('#' + calendar_id).click(on_click(calendar_id));
+	
+	}
+	
+	};
+	var clear_data = function(error) {
+		var unresticted = $('#id_unrestricted').prop('checked');
+		call_returned_available_dates();
+		if (unresticted === false) {
+			$('#id_free_space').empty();
+		}
+	};
+	var get_updates = function() {
+		var postcodeToSend;
+		var postcode = get_normalized_postcode();
+		var unrestricted = $('#id_unrestricted').prop('checked');
+		var car_id = "-1";
+		if (unrestricted) {
+			postcodeToSend = "-1";
+			car_id = get_car_id();
+		} else {
+			postcodeToSend = postcode;
+		}
+			
+		var weight = $('#id_weight')[0].value;
+		var kind = $('#id_kind')[0].value;
+		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
+		if (postcode.length === 6) {
+			callout_available_dates();
+			$.getJSON(url, set_data).error(clear_data);
+		}
+	};
+	var get_updates_unrestricted = function() {
+		var postcodeToSend;
+        var postcode = get_normalized_postcode();
+        var unrestricted = $('#id_unrestricted').prop('checked');
+        var car_id = "-1";
+        if (unrestricted) {
+			postcodeToSend = "-1";
+			car_id = get_car_id();
+		} else {
+			postcodeToSend = postcode;
+		}
+		var weight = $('#id_weight')[0].value;
+		var kind = $('#id_kind')[0].value;
+		        var url;
+                if (unrestricted === true) {
+                		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
+                        callout_available_dates();
+                        $.getJSON(url, set_data).error(clear_data);
+                }
+        };
+
+</script>
+{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+<hr/>
+
+<form id="appointment" name="appointment" action="" method="post" class="appointment">
+
+	{% csrf_token %}
+	<div style="display: inline;" >
+		<div class="span3">
+			{{ customerForm|as_bootstrap }}
+
+		</div>
+		<div class="span4">
+			{{ appointmentForm|as_bootstrap }}
+			{{ hiddenForm }}
+		</div>
+		
+		<div class="span4">
+			<div class="control-group">
+				<label>{% trans "Unrestricted" %}</label>
+				<input id="id_unrestricted" type="checkbox"/>
+				<span id="car_choice">{{ carForm|as_bootstrap }}</span>
+				<h4>{% trans "Available dates:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
+				<div class="controls">
+					<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
+				</div>
+				<span>{% trans "Control click an item to see details" %}</span>
+			</div>
+			<button class="btn btn-primary" type="submit">
+				{% trans "Save" %}
+			</button>
+		</div>
+	</div>
+	<div id="status" class="info">
+
+	</div>
+
+</form>
+{% endblock %}

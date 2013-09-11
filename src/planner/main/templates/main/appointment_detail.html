@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Viewing saved appointment" %}</h2>
+<hr/>
+<div class="container">
+	<table class="table">
+		<tr>
+			<th>{% trans "Date and time" %}</th><th> {{ object.calendar.date }}, {{ object.calendar.timeslot }}</th>
+		</tr>
+		<tr>
+			<th>{% trans "Region" %}</th><th>{{ region.name }}</th>
+		</tr>
+		<tr>
+			<th>{% trans "Car" %}</th><th>{{ object.calendar.car }}</th>
+		</tr>
+		<tr>
+			<th>{% trans "Name" %}</th><td>{{ object.customer.name }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Address" %}</th><td>{{ object.customer.get_address_display }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Postal code" %}</th><td>{{ object.customer.postcode }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Phone" %}</th><td>{{ object.customer.phone }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "City" %}</th><td>{{ object.customer.town }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Kind" %}</th><td>{{object.get_kind_display }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Weight" %}</th><td>{{ object.get_weight_display }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Stuff" %}</th><td>{{ object.stuff }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Notes" %}</th><td>{{ object.notes }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Made by" %}</th><td>{{ object.employee.get_full_name }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Created at" %}</th><td>{{ object.created }}</td>
+		</tr>
+
+	</table>
+	<p>
+		<a class="btn" href="{% url "CancelAppointment" object.id %}"><i class="icon-remove"></i></a>
+		<a class="btn" href="{% url "AppointmentEditExtra" object.pk object.customer.pk '' %}"><i class="icon-edit"></i></a>
+		<a class="btn" href="{% url "AppointmentEditExtra" 'create' object.customer.pk '' %}">
+			{% trans "Follow up" %}
+		</a>
+		
+	</p>
+</div>
+{% endblock %}
