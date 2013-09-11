@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from .models import Appointment
 from django.conf.urls import patterns, url
 from .views import cancel_appointment
 from .viewers_views import display_date_form,\
@@ -12,7 +11,6 @@ from .views import get_available_dates, get_customer, get_candidate_dates
     
 
 urlpatterns = patterns('',
-    
     (r'^get_available_dates/(?P<postalcode>\w*)/(?P<weight>\d+)/(?P<date_iso>\d{0,8})/(?P<calendar_id>[-]?\d+)/(?P<unrestricted>\w*)', get_available_dates),
     (r'^get_candidate_dates/(?P<date_iso>\d{0,8})/(?P<weight>\d+)/(?P<postalcode>[-]?\w+)/(?P<car_id>[-]?\d+)/(?P<kind>\w*)/(?P<calendar_id>[-]?\d+)', get_candidate_dates),
     (r'^get_customer/(?P<postalcode>\w+)/(?P<number>\w+)/(?P<addition>\w*)', get_customer),

@@ -70,8 +70,6 @@ class TestPreCommitHook(DjangoSeleniumTest):
         self.sleep()
         self.sleep()
         self.set_select_field('id_free_space', VRIJDAG_04JAN)
-        #self.clickPrimairyButton()
-         #Appointment has been saved
         self.date = datetime.date(year=2013, month=01, day=04)
         self.calendar = Calendar.objects.get(date=self.date, car=self.car, timeslot=self.timeslot)
         self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
@@ -105,12 +103,15 @@ class ViewersTestCase(DjangoSeleniumTest):
         adaMakesAppointment(self)
         
   
+    @attr('pghard', 'xhard')
     def test_view_one_appointment(self):
         """ Makes one appointment and verifies it be viewing the list as Viewer."""
         driver = self.driver
         self.login("alien", "jansteven")
 
-        self.go_to_view('WeekView', args=[1, 0, 20130101])
+        
+        self.go_to_view('WeekView', args=[self.car.pk, 0,  20130101])
+        self.sleep()
         self.sleep()
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
         self.sleep()
@@ -154,13 +155,15 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("4 januari")
         self.assertEquals(1, len(Appointment.objects.all()))
             
-    @attr('edit_app')
+    @attr('pghard', 'edit_app')
     def test_edit_appointment(self):
         """ Edit appointments stuff"""
         adaMakesAppointment(self)
         self.login('steven', 'jansteven')
         
-        self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+        customer_id = self.customer_id_ada
+        appointment_id = self.appointment.pk
+        self.go_to_view('AppointmentEditExtra', args=[appointment_id, customer_id, 20130101, ])
         self.sleep()
 
         self.set_text_field('id_stuff', "Aantekeningen")
@@ -173,7 +176,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Aantekeningen")
         self.assertBobyContains("4 januari")
     
-    @attr('past')
+    @attr('past', 'pghard')
     def test_edit_appointment_from_the_past(self):
         """ Edit appointments stuff from the past"""
         adaMakesAppointment(self)
@@ -181,7 +184,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.appointment.calendar.save()
         self.login('steven', 'jansteven')
         
-        self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+        customer_id = self.customer_id_ada
+        appointment_id = self.appointment.pk
+        self.go_to_view('AppointmentEditExtra', args=[appointment_id, customer_id, 20130101, ])
 
         self.set_text_field('id_stuff', "Aantekeningen")
         self.set_text_field('id_notes', "Eerste programmeur")
@@ -193,12 +198,15 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.assertBobyContains("Aantekeningen")
         self.assertBobyContains("12 december")
         
+    @attr('pghard')
     def test_edit_appointment_in_full_timeslot(self):
         """ Edit appointments stuff, in full timeslot"""
         adaMakesBigAppointment(self)
         self.login('steven', 'jansteven')
         
-        self.go_to_view('AppointmentEditExtra', args=[1, 1, 20130101, ])
+        customer_id = self.customer.id
+        appointment_id = self.appointment.pk
+        self.go_to_view('AppointmentEditExtra', args=[appointment_id, customer_id, 20130101, ])
 
         self.set_text_field('id_stuff', "Aantekeningen")
         self.set_text_field('id_notes', "Eerste programmeur")
@@ -216,7 +224,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         adaMakesAppointment(self)
         self.login('steven', 'jansteven')
         
-        self.go_to_view('AppointmentEditExtra', args=['create', 1, 20130101, ])
+        self.go_to_view('AppointmentEditExtra', args=['create', self.customer_id_ada, 20130101, ])
 
         self.set_text_field('id_stuff', "Oude wiskunde boeken")
         self.set_text_field('id_notes', "Er een programmeertaal naar haar genoemd")
