@@ -1,4 +1,4 @@
 #!/bin/bash
 . ~/venv/bin/activate
-~/venv/gnudok-planner/bin/django runserver --insecure 0.0.0.0:8000
+~/venv/gnudok-planner/bin/django runfcgi host=127.0.0.1 port=8080
 
