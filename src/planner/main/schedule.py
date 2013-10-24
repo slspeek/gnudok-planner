@@ -7,7 +7,6 @@ from __future__ import absolute_import
 import datetime
 from .models import Calendar, Appointment
 from .models import TimeSlot, Car, Rule
-import logging
 
 # Very important, change made at june 26 2013
 APPOINTMENTS_PER_HALF_DAY = 4

@@ -384,3 +384,36 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         self.assertBobyContains("24 januari")
 
         
+@attr('selenium', 'nospace')
+class AppointmentEditMultipleRegions(DjangoSeleniumTest):
+    """ Forget the date and get a sound message """
+    
+    def setUp(self):
+        super(AppointmentEditMultipleRegions, self).setUp()
+        createRegion(self)
+        createRegionEast(self)
+        createTestPostcodes()
+        createTestUsers(self)
+        
+        
+    def test_create_one_appointment_in_east(self):
+        """ Makes one appointment in east"""
+        self.login('steven', 'jansteven')
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_number', "144")
+        self.set_text_field('id_additions', "sous")
+        self.set_text_field('id_phone', '020-7123456')
+        self.set_text_field('id_stuff', "Bed, boeken en servies")
+        self.set_text_field('id_notes', "Lift aanwezig")
+        self.sleep()
+        #self.set_select_field('id_free_space', DO_24JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBobyContains(" Lovelace")
+        self.assertBobyContains("Bed, boeken en servies")
+        self.assertBobyContains("24 januari")
+

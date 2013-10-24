@@ -41,6 +41,7 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
 @group_required('Callcenter')
 def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     """ creates or edits an appointment and customer """
+    free_space_errors = []
     if not date_iso:
         date_iso = tomorrow()
     
@@ -79,21 +80,24 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                      instance=appointment.customer)
         carForm = CarForm(request.POST)
         free_space = request.POST.get('free_space', '')
-        app_valid = appointment_form.is_valid()
-        if app_valid:
-            if space_available(free_space, appointment_form, appointment_id):
-                if customer_form.is_valid():
-                    calendar_id = int(free_space)
-                    appointment.calendar = Calendar.objects.get(pk=calendar_id)
-                    appointment.employee = request.user
-                    logging.error(appointment.calendar)
-                    customer = customer_form.save()
-                    appointment.customer = customer
-                    appointment = appointment_form.save()
-                    return redirect('AppointmentView', appointment.id)
-            else:
+        if free_space:
+          app_valid = appointment_form.is_valid()
+          if app_valid:
+              if space_available(free_space, appointment_form, appointment_id):
+                  if customer_form.is_valid():
+                      calendar_id = int(free_space)
+                      appointment.calendar = Calendar.objects.get(pk=calendar_id)
+                      appointment.employee = request.user
+                      logging.error(appointment.calendar)
+                      customer = customer_form.save()
+                      appointment.customer = customer
+                      appointment = appointment_form.save()
+                      return redirect('AppointmentView', appointment.id)
+              else:
                 appointment_form._errors['weight'] = \
-                    ErrorList([_("No more space left")])
+                      ErrorList([_("No more space left")])
+        else:
+          free_space_errors = [_('Please select a date')]
 
     return render_to_response('appointment_manipulation.html',
                               {"appointmentForm": appointment_form,
@@ -102,7 +106,8 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                "hiddenForm": hidden_form,
                                "date_iso": date_iso,
                                "calendar_id": calendar_id,
-                               "carForm": carForm
+                               "carForm": carForm,
+                               "free_space_errors": free_space_errors
                                },
                               context_instance=RequestContext(request))
 

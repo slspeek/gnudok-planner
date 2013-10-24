@@ -105,14 +105,21 @@
 		</div>
 		
 		<div class="span4">
-			<div class="control-group">
+      {% if free_space_errors %}
+      <div class="control-group error">
+      {% else %}
+      <div class="control-group">
+      {% endif %}
+			<div class="control-group required">
 				<label>{% trans "Unrestricted" %}</label>
 				<input id="id_unrestricted" type="checkbox"/>
 				<span id="car_choice">{{ carForm|as_bootstrap }}</span>
 				<h4>{% trans "Available dates:" %} <label id="region_label">{% trans "unknown" %}</label></h4>
-				<div class="controls">
 					<select id="id_free_space" name="free_space" size="20" style="width: 100%;"></select>
 				</div>
+        {% for err in free_space_errors %}
+        <p class='help-block'>{{ err }}</p>
+        {% endfor %}
 				<span>{% trans "Control click an item to see details" %}</span>
 			</div>
 			<button class="btn btn-primary" type="submit">
