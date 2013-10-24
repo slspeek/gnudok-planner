@@ -385,11 +385,11 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
 
         
 @attr('selenium', 'nospace')
-class AppointmentEditMultipleRegions(DjangoSeleniumTest):
-    """ Forget the date and get a sound message """
+class AppointmentShowsError(DjangoSeleniumTest):
+    """ Check to error message when not selecting a date """
     
     def setUp(self):
-        super(AppointmentEditMultipleRegions, self).setUp()
+        super(AppointmentShowsError, self).setUp()
         createRegion(self)
         createRegionEast(self)
         createTestPostcodes()
@@ -397,7 +397,7 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         
         
     def test_create_one_appointment_in_east(self):
-        """ Makes one appointment in east"""
+        """ Check to error message when not selecting a date """
         self.login('steven', 'jansteven')
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
@@ -413,7 +413,5 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains(" Lovelace")
-        self.assertBobyContains("Bed, boeken en servies")
-        self.assertBobyContains("24 januari")
+        self.assertBobyContains("Please select a date")
 
