@@ -9,7 +9,6 @@ from django.template.context import RequestContext
 from .models import Appointment, Calendar, Car, Customer
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region, get_total_weight, get_limit
-import logging
 
 
 @group_required('Viewers')
@@ -202,7 +201,11 @@ def search(search_form, date_iso=''):
     stuff = search_form.cleaned_data['stuff']
     if stuff:
         results = results.filter(stuff__icontains=stuff)
-    if not name and (not postcode) and not date and not street and not stuff:
+    phone = search_form.cleaned_data['phone']
+    if phone:
+        results = results.filter(customer__phone__icontains=phone)
+    # Is this needed?
+    if not name and (not postcode) and not date and not street and not stuff and not phone:
         results = results.all()
     return results
 

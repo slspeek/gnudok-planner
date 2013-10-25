@@ -105,6 +105,14 @@ class Search(WebTest):
         search_form['include_past'] = True
         results_page = search_form.submit()
         assert "Lovelace" in results_page
+
+    def testSearchOnPhoneNumber(self):
+        """ Search on phonenumber """
+        search = self.login_viewer()
+        search_form = search.form
+        search_form['phone'] = '06-12345678'
+        results_page = search_form.submit()
+        assert "Lovelace" in results_page
         
 @attr('functional', 'wsearch', 'cancelled')
 class SearchCancelled(WebTest):

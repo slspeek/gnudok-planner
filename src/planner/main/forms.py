@@ -8,14 +8,15 @@ from django import forms
 from bootstrap_toolkit.widgets import BootstrapDateInput
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
-from .models import Appointment, Customer, Region, Car
+from .models import Appointment, Customer, Car
 from django.forms.forms import Form
 from django.utils.translation import ugettext_lazy as _
 
 
 class CalendarSearchForm(forms.Form):
-    name = forms.CharField(label=_('name'), required=False)
     postcode = forms.CharField(label=_('postalcode'), required=False)
+    name = forms.CharField(label=_('name'), required=False)
+    phone = forms.CharField(label=_('phone'), required=False)
     street = forms.CharField(label=_('street'), required=False)
     town = forms.CharField(label=_('town'), required=False)
     date = forms.DateField(label=_('date'),

@@ -413,5 +413,5 @@ class AppointmentShowsError(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Please select a date")
+        self.assertBobyContains("Kies alstublieft een datum")
 

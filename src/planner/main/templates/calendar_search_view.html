@@ -37,6 +37,7 @@
                         <th>{% trans "City" %}</th>
                         <th>{% trans "Phone" %}</th>
                         <th>{% trans "Stuff" %}</th>
+                        <th>{% trans "Status" %}</th>
                         <th>{% trans "View" %}</th>
                 </tr>
                 {% for object in search_results %}
@@ -46,8 +47,11 @@
                 	<td>{{ object.calendar.date }}</td>
                         <td>{{ object.customer.name }}</td>
                         <td>{{ object.customer.get_address_display }}</td>
-                        <td>{{ object.customer.postcode }}</td><td>{{ object.customer.town }}</td>
-                        <td>{{ object.customer.phone }}</td><td>{{ object.stuff }}</td>
+                        <td>{{ object.customer.postcode }}</td>
+                        <td>{{ object.customer.town }}</td>
+                        <td>{{ object.customer.phone }}</td>
+                        <td>{{ object.stuff }}</td>
+                        <td>{{ object.get_status_display }}</td>
                         <td><a href="{% url "AppointmentView" object.pk  %}"><i class="icon-eye-open"></i></a></td>
                 </tr>
                 {% endfor %}
