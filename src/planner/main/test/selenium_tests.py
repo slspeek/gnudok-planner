@@ -7,7 +7,7 @@ import datetime
 from .__init__ import CustomerFactory, AppointmentFactory
 
 from nose.plugins.attrib import attr
-from .__init__ import createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
+from .__init__ import ADA_LOVELACE, createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
 from planner.main.models import Customer, Calendar, Appointment
 from planner.main.viewers_views import calendar_search_view
 from planner.testutil.tests import DjangoSeleniumTest
@@ -37,13 +37,13 @@ class SearchTest(DjangoSeleniumTest):
         self.go_to_view(calendar_search_view, kwargs={'date_iso':'20130102'})
         self.sleep()    
         self.sleep()        
-        self.set_text_field('id_name', "lovelac")
+        self.set_text_field('id_name', "elac")
         driver.find_element_by_css_selector("button.btn").click()
         self.sleep()
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Virtual Machines")
-        self.assertBobyContains("4 januari")    
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Virtual Machines")
+        self.assertBodyContains("4 januari")    
     
             
 @attr('hook') 
@@ -60,7 +60,7 @@ class TestPreCommitHook(DjangoSeleniumTest):
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
         self.sleep()
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_name', ADA_LOVELACE)
         self.set_text_field('id_number', "25")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -72,7 +72,7 @@ class TestPreCommitHook(DjangoSeleniumTest):
         self.set_select_field('id_free_space', VRIJDAG_04JAN)
         self.date = datetime.date(year=2013, month=01, day=04)
         self.calendar = Calendar.objects.get(date=self.date, car=self.car, timeslot=self.timeslot)
-        self.customer = CustomerFactory(name='Ada Lovelace', postcode='1102AB',
+        self.customer = CustomerFactory(name=ADA_LOVELACE, postcode='1102AB',
                                         number=42,
                                         address='Bijlmerdreef',
                                         town='Amsterdam',
@@ -86,7 +86,7 @@ class TestPreCommitHook(DjangoSeleniumTest):
                                               notes='Lift aanwezig')
         self.clickPrimairyButton()
         self.sleep()
-        self.assertBobyContains("Geen ruimte meer over")
+        self.assertBodyContains("Geen ruimte meer over")
               
   
 VR_11JAN = "11 Jan : Vrijdag : 9:00 - 12:30 - Auto Zeeburg"
@@ -115,10 +115,10 @@ class ViewersTestCase(DjangoSeleniumTest):
         self.sleep()
         driver.find_element_by_link_text("Vrijdag 4 jan").click()
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Virtual Machines")
-        self.assertBobyContains("Lift aanwezig")
-        self.assertBobyContains("4 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Virtual Machines")
+        self.assertBodyContains("Lift aanwezig")
+        self.assertBodyContains("4 januari")
             
 @attr('selenium', 'new_edit')
 class AppointmentEditExtra(DjangoSeleniumTest):
@@ -138,7 +138,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_name', ADA_LOVELACE)
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -150,9 +150,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Bed, boeken en servies")
-        self.assertBobyContains("4 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Bed, boeken en servies")
+        self.assertBodyContains("4 januari")
         self.assertEquals(1, len(Appointment.objects.all()))
             
     @attr('pghard', 'edit_app')
@@ -172,9 +172,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Aantekeningen")
-        self.assertBobyContains("4 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Aantekeningen")
+        self.assertBodyContains("4 januari")
     
     @attr('past', 'pghard')
     def test_edit_appointment_from_the_past(self):
@@ -194,9 +194,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Aantekeningen")
-        self.assertBobyContains("12 december")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Aantekeningen")
+        self.assertBodyContains("12 december")
         
     @attr('pghard')
     def test_edit_appointment_in_full_timeslot(self):
@@ -214,9 +214,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Aantekeningen")
-        self.assertBobyContains("4 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Aantekeningen")
+        self.assertBodyContains("4 januari")
 
     @attr('follow_up')
     def test_create_follow_up(self):
@@ -234,9 +234,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Oude wiskunde boeken")
-        self.assertBobyContains("11 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Oude wiskunde boeken")
+        self.assertBodyContains("11 januari")
 
     @attr('right_now')
     def test_existing_cutomer(self):
@@ -258,9 +258,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Oude wiskunde boeken")
-        self.assertBobyContains("11 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Oude wiskunde boeken")
+        self.assertBodyContains("11 januari")
 
     @attr('at_first')
     def test_existing_cutomer_at_first(self):
@@ -296,9 +296,9 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         #self.sleep()
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Oude wiskunde boeken")
-        self.assertBobyContains("11 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Oude wiskunde boeken")
+        self.assertBodyContains("11 januari")
         logging.error(Appointment.objects.all())
         logging.error(Customer.objects.all())
         self.assertEquals(2, len(Customer.objects.all()))
@@ -310,7 +310,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
         
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_name', ADA_LOVELACE)
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -323,7 +323,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         # Appointment has been saved
         self.sleep()
         
-        self.assertBobyContains("Dit veld is verplicht")
+        self.assertBodyContains("Dit veld is verplicht")
            
     @attr('unres')
     def test_unrestricted(self):
@@ -338,16 +338,16 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.set_text_field('id_number', "42")
         self.set_text_field('id_address', "Town street")
         self.set_text_field('id_town', "London")
-        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_name', ADA_LOVELACE)
         self.set_text_field('id_stuff', "Oude wiskunde boeken")
         self.set_text_field('id_phone', '020-7123456')
         self.sleep()
         self.set_select_field('id_free_space', VR_11JAN)
         self.clickPrimairyButton()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Oude wiskunde boeken")
-        self.assertBobyContains("11 januari")
-        self.assertBobyContains("London")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Oude wiskunde boeken")
+        self.assertBodyContains("11 januari")
+        self.assertBodyContains("London")
         
 @attr('selenium', 'multiple')
 class AppointmentEditMultipleRegions(DjangoSeleniumTest):
@@ -367,7 +367,7 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_name', ADA_LOVELACE)
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -379,9 +379,9 @@ class AppointmentEditMultipleRegions(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Ada Lovelace")
-        self.assertBobyContains("Bed, boeken en servies")
-        self.assertBobyContains("24 januari")
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Bed, boeken en servies")
+        self.assertBodyContains("24 januari")
 
         
 @attr('selenium', 'nospace')
@@ -402,7 +402,7 @@ class AppointmentShowsError(DjangoSeleniumTest):
         self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
 
         self.set_text_field('id_postcode', '1102AB')
-        self.set_text_field('id_name', 'Ada Lovelace')
+        self.set_text_field('id_name', ADA_LOVELACE)
         self.set_text_field('id_number', "144")
         self.set_text_field('id_additions', "sous")
         self.set_text_field('id_phone', '020-7123456')
@@ -413,5 +413,5 @@ class AppointmentShowsError(DjangoSeleniumTest):
         self.clickPrimairyButton()
         # Appointment has been saved
         self.sleep()
-        self.assertBobyContains("Kies alstublieft een datum")
+        self.assertBodyContains("Kies alstublieft een datum")
 

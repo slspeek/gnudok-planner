@@ -8,5 +8,5 @@ class Interval(models.Model):
     end = models.CharField(_('end'), max_length=8)
     region = models.ForeignKey(Region, verbose_name=_('region'))
 
-    def __str__(self):
+    def __unicode__(self):
         return "(%s - %s) in %s" % (self.begin, self.end, self.region.name)

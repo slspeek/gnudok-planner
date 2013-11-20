@@ -1,12 +1,13 @@
-from planner.main.models import Car, TimeSlot, Region,\
-    Rule, Customer, Appointment, Calendar
+# -*- coding: utf-8 -*-
 import factory
+from planner.main.models import Car, TimeSlot, Region, Rule, Customer, Appointment, Calendar
 import datetime
 from django_factory_boy.auth import UserF, GroupF
 from planner.nlpostalcode.tests import PostcodeBuilder
 from planner.area.test import IntervalFactory
 from django.contrib.auth.models import User
 
+ADA_LOVELACE=u'Adå Lŏvelace'
 
 def createTestPostcodes():
     builder = PostcodeBuilder()
@@ -58,18 +59,19 @@ def createTestUsers(self):
     self.user_alien.groups = [self.group_viewers]
     self.user_alien.save()
 
-def createAda():
-    return CustomerFactory(name='Ada Lovelace',
+def createAda(self):
+    self.customer = CustomerFactory(name=ADA_LOVELACE,
                            postcode='1102AB',
                            number=42,
                            address='Bijlmerdreef',
                            town='Amsterdam',
                            phone='06-12345678')
+    return self.customer
 
 def adaMakesAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = createAda()
+    self.customer = createAda(self)
     self.appointment = AppointmentFactory(calendar=self.calendar,
                                           created=datetime.date(year=2012, month=12, day=20),
                                           customer=self.customer,
@@ -92,7 +94,7 @@ def adaBooksDelivery(self):
 def adaMakesBigAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = createAda()
+    self.customer = createAda(self)
     self.appointment = AppointmentFactory(calendar=self.calendar,
                                           created=datetime.date(year=2012, month=12, day=20),
                                           customer=self.customer,
@@ -104,7 +106,7 @@ def adaMakesBigAppointment(self):
 def adaCancelsAppointment(self):
     self.date = datetime.date(year=2013, month=01, day=04)
     self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
-    self.customer = createAda()
+    self.customer = createAda(self)
     self.appointment = AppointmentFactory(calendar=self.calendar,
                                           created=datetime.date(year=2012, month=12, day=20),
                                           customer=self.customer,

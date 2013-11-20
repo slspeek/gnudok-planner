@@ -46,7 +46,7 @@ class DjangoSeleniumTest(LiveServerTestCase):
     def set_select_field(self, field_id, value):
         Select(self.driver.find_element_by_id(field_id)).select_by_visible_text(value)
     
-    def assertBobyContains(self, text):
+    def assertBodyContains(self, text):
         self.assertRegexpMatches(self.driver.find_element_by_css_selector("BODY").text, text)
     
     def clickPrimairyButton(self):

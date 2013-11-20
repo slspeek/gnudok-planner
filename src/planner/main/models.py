@@ -6,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import CharField
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
-from django.utils.encoding import smart_unicode
 import re
 from django import forms
 from .__init__ import float_to_time
@@ -30,7 +29,7 @@ class NLPhoneNumberField(forms.CharField):
         if value in EMPTY_VALUES:
             return u''
 
-        phone_nr = re.sub('[\-\s\(\)]', '', smart_unicode(value))
+        phone_nr = re.sub('[\-\s\(\)]', '', value)
 
         if len(phone_nr) == 10 and numeric_re.search(phone_nr):
             return value
@@ -71,14 +70,14 @@ class Customer(models.Model):
     phone = PhoneNumberField()
     email = models.EmailField(_('email'), max_length=120, blank=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return "%s %s" % (self.name, self.get_address_display())
 
     def get_address_display(self):
         if self.additions:
-            return u'%s %s - %s' % (self.address, self.number, self.additions)
+            return '%s %s - %s' % (self.address, self.number, self.additions)
         else:
-            return u'%s %s' % (self.address, self.number)
+            return '%s %s' % (self.address, self.number)
 
     class Meta:
         unique_together = (("postcode", "number", "additions"),)
@@ -100,8 +99,8 @@ class TimeSlot(models.Model):
     def get_end_display(self):
         return float_to_time(self.end)
 
-    def __str__(self):
-        return u"%s :  %s - %s" % (self.get_day_of_week_display(),
+    def __unicode__(self):
+        return "%s :  %s - %s" % (self.get_day_of_week_display(),
                                    float_to_time(self.begin),
                                    float_to_time(self.end))
 
@@ -110,15 +109,15 @@ class Region(models.Model):
     name = models.CharField(_('name'), max_length=120, unique=True)
     description = models.TextField(_('description'))
 
-    def __str__(self):
+    def __unicode__(self):
         return "%s: %s" % (self.name, self.description)
 
 
 class Car(models.Model):
     name = models.CharField(_('name'), max_length=20)
 
-    def __str__(self):
-        return self.name
+    def __unicode__(self):
+        return "%s" % self.name
 
 
 class Rule(models.Model):
@@ -127,9 +126,9 @@ class Rule(models.Model):
     region = models.ForeignKey(Region, verbose_name=_('region'))
     active = models.BooleanField(default=True, verbose_name=_('active'))
 
-    def __str__(self):
-        return u"(%s, %s, %s)" % \
-            (str(self.car), str(self.timeslot), str(self.region))
+    def __unicode__(self):
+        return "(%s, %s, %s)" % \
+            (self.car, self.timeslot, self.region)
 
 
 class Calendar(models.Model):
@@ -140,9 +139,9 @@ class Calendar(models.Model):
     def active_appointments(self):
         return Appointment.actives.filter(calendar=self)
 
-    def __str__(self):
-        return u"%s: %s - %s" %\
-            (self.date.strftime('%d %b '), str(self.timeslot), str(self.car))
+    def __unicode__(self):
+        return ("%s: %s - %s" %\
+            (self.date.strftime('%d %b '), self.timeslot, self.car))
 
     class Meta:
         unique_together = (("date", "car", "timeslot"),)
@@ -185,8 +184,8 @@ class Appointment(models.Model):
     created = models.DateTimeField(_("created"),
                                    default=lambda: datetime.datetime.now())
 
-    def __str__(self):
-        return self.get_kind_display() + ", " + self.customer.name + ", " + self.stuff
+    def __unicode__(self):
+        return "%s, %s, %s" % (self.get_kind_display(), self.customer.name, self.stuff)
 
     class Meta:
         ordering = ['kind', 'customer__postcode']

@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from nose.plugins.attrib import attr
 from django_webtest import WebTest
 import datetime
-from .__init__ import createTestUsers, createRegion, adaMakesAppointment, adaCancelsAppointment, adaBooksDelivery
+from .__init__ import ADA_LOVELACE, createTestUsers, createRegion, adaMakesAppointment, adaCancelsAppointment, adaBooksDelivery
 from django.core.urlresolvers import reverse
 from planner.main.viewers_views import appointment_detail
 from planner.main.models import Appointment
@@ -53,7 +53,7 @@ class Search(WebTest):
         search_form = search.form
         search_form['name'] = 'lac'
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
         
     def testSearchOnPostcode(self):
         """ Search on ill-entered postcode"""
@@ -61,7 +61,7 @@ class Search(WebTest):
         search_form = search.form
         search_form['postcode'] = '1102 a B'
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
         
     def testSearchOnStuff(self):
         """ Search on stuff"""
@@ -69,7 +69,7 @@ class Search(WebTest):
         search_form = search.form
         search_form['stuff'] = 'machine'
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
     
     def testSearchOnTown(self):
         """ Search on town"""
@@ -77,7 +77,7 @@ class Search(WebTest):
         search_form = search.form
         search_form['town'] = 'dam'
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
         
     def testSearchHidesPast(self):
         """ Search hides the past"""
@@ -104,7 +104,7 @@ class Search(WebTest):
         search_form['town'] = 'dam'
         search_form['include_past'] = True
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
 
     def testSearchOnPhoneNumber(self):
         """ Search on phonenumber """
@@ -112,7 +112,7 @@ class Search(WebTest):
         search_form = search.form
         search_form['phone'] = '06-12345678'
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
         
 @attr('functional', 'wsearch', 'cancelled')
 class SearchCancelled(WebTest):
@@ -138,7 +138,7 @@ class SearchCancelled(WebTest):
         search_form = search.form
         search_form['name'] = 'lac'
         results_page = search_form.submit()
-        assert not "Lovelace" in results_page
+        assert not ADA_LOVELACE in results_page
         
     def testSearchOnNameInCancelled(self):
         """ Search on name"""
@@ -147,7 +147,7 @@ class SearchCancelled(WebTest):
         search_form['name'] = 'lac'
         search_form['include_cancelled'] = True
         results_page = search_form.submit()
-        assert "Lovelace" in results_page
+        assert ADA_LOVELACE in results_page
              
         
 @attr('functional', 'webtest')
@@ -167,7 +167,7 @@ class AppointmentDetail(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert "Ada Lovelace" in details
+        assert ADA_LOVELACE in details
         assert "Lift aanwezig" in details
         assert "Virtual Machines" in details
       
@@ -191,7 +191,7 @@ class AppointmentsByDate(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert "Ada Lovelace" in details
+        assert ADA_LOVELACE in details
         assert "Lift aanwezig" in details
         assert "Virtual Machines" in details
          
@@ -203,7 +203,7 @@ class AppointmentsByDate(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert "Ada Lovelace" in details
+        assert ADA_LOVELACE in details
         assert "Lift aanwezig" in details
         assert "Virtual Machines" in details
 
@@ -218,7 +218,7 @@ class AppointmentsByDate(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert not "Ada Lovelace" in details
+        assert not ADA_LOVELACE in details
         assert not "Virtual Machines" in details
         
           
@@ -239,7 +239,7 @@ class AppointmentsByEmployee(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert "Ada Lovelace" in details
+        assert ADA_LOVELACE in details
         assert "Virtual Machines" in details
 
     def testCancelledInvisible(self):
@@ -253,7 +253,7 @@ class AppointmentsByEmployee(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert not "Ada Lovelace" in details
+        assert not ADA_LOVELACE in details
         assert not "Virtual Machines" in details
     
     @attr('special')
@@ -269,7 +269,7 @@ class AppointmentsByEmployee(WebTest):
         print choose_an_employee, form.fields.values()
         form['employee'] = u'1000'
         details = form.submit().follow()
-        assert "Ada Lovelace" in details
+        assert ADA_LOVELACE in details
         assert "Virtual Machines" in details
         
 @attr('functional', 'weekview')
@@ -289,7 +289,7 @@ class Weekview(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert "Ada Lovelace" in details
+        assert ADA_LOVELACE in details
         
 
     def testCancelledInvisible(self):
@@ -303,7 +303,7 @@ class Weekview(WebTest):
         login_form['password'] = 'jansteven'
         redirect = login_form.submit()
         details = redirect.follow()
-        assert not "Ada Lovelace" in details
+        assert not ADA_LOVELACE in details
         
     
         

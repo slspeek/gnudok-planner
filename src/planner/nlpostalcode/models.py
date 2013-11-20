@@ -1,7 +1,6 @@
 """ postal database  from Dutch
     http://www.d-centralize.nl/static/kvdb/mysql_sql.txt.gz """
 from django.db import models
-from django.utils.encoding import smart_str, smart_unicode
 
 class Source(models.Model):
     """ The wiki source that was for the postalcode information """
@@ -17,7 +16,7 @@ class Source(models.Model):
         """ Pins the database table"""
         db_table = u'source'
 
-    def __str__(self):
+    def __unicode__(self):
         return "Source: %d" % self.id
 
 class Country(models.Model):
@@ -52,7 +51,7 @@ class Province(models.Model):
         """ Pins the database table"""
         db_table = u'province'
         
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -74,9 +73,9 @@ class City(models.Model):
         names = self.cityname_set.all()
         official_citynames = filter(lambda x: (x.official == 1),names)
         if official_citynames:
-            return smart_str(official_citynames[0].name)
+            return official_citynames[0].name
         if names:
-            return smart_str(names[0].name)
+            return names[0].name
         return "No given name"   
         
     
@@ -84,7 +83,7 @@ class City(models.Model):
         """ Pins the database table"""
         db_table = u'city'
         
-    def __str__(self):
+    def __unicode__(self):
         return '%s' % self.get_official_name()
     
 class Cityname(models.Model):
@@ -101,7 +100,7 @@ class Cityname(models.Model):
         """ Pins the database table"""
         db_table = u'cityname'
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class Postcode(models.Model):
@@ -121,7 +120,7 @@ class Postcode(models.Model):
         
         ordering = ['fourpp']
 
-    def __str__(self):
+    def __unicode__(self):
         return "%s %s" % (self.fourpp, self.city.get_official_name())
 
 class Street(models.Model):
@@ -148,8 +147,8 @@ class Street(models.Model):
         """ Pins the database table"""
         db_table = u'street'
         
-    def __str__(self):
-        return "%s %s-%s %s %s %s" % (smart_str(self.street),
+    def __unicode__(self):
+        return "%s %s-%s %s %s %s" % (self.street,
                                        self.low,
                                         self.high,
                                          self.postcode.fourpp,
