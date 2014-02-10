@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from .models import Appointment, Calendar, Car, Customer
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
-from .schedule import get_region, get_total_weight, get_limit
+from .schedule import get_region_name, get_total_weight, get_limit
 
 
 @group_required('Viewers')
@@ -22,10 +22,10 @@ def wrong_postcode(request):
 @group_required('Viewers')
 def appointment_detail(request, pk):
     appointment = Appointment.objects.get(pk=int(pk))
-    region = get_region(appointment.calendar)
+    region_name = get_region_name(appointment.calendar)
     return render_to_response("main/appointment_detail.html",
                               {"object": appointment,
-                               "region": region, })
+                               "region_name": region_name, })
 
 
 @group_required('Viewers')
@@ -113,7 +113,7 @@ def weekview(request, car_id=0, offset=0, date_iso=""):
         app_list = cal.active_appointments().all()
         free_count = get_limit(Appointment.KIND_PICKUP) - get_total_weight(app_list, Appointment.KIND_PICKUP)
         cal.free = free_count
-        cal.region = get_region(cal)
+        cal.region_name = get_region_name(cal)
         cal.appointments = cal.active_appointments().all()
 
     car = Car.objects.get(pk=int(car_id))
@@ -161,7 +161,7 @@ def render_appointment_list(request, calendar_id):
                               {"title": title,
                                'car': calendar.car,
                                'date': calendar.date,
-                               'region': get_region(calendar),
+                               'region_name': get_region_name(calendar),
                                'timeslot': calendar.timeslot,
                                'app_list': calendar.active_appointments().all()
                                })

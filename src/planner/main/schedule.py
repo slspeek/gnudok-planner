@@ -21,12 +21,16 @@ def get_limit(kind):
         return DELIVERY_PER_HALF_DAY
         
 
-def get_region(calendar):
+def get_region_name(calendar):
     """ Return the region for given calendar object, just for the heading """ 
+    name = ""
     car = calendar.car
     timeslot = calendar.timeslot
-    rule = Rule.objects.filter(timeslot=timeslot, car=car).all()[0]
-    return rule.region
+    query = Rule.objects.filter(timeslot=timeslot, car=car).all()
+    if len(query) > 0:
+        rule = query[0]
+        name = rule.region.name
+    return name
 
 
 def get_total_weight(appointment_list, kind):
