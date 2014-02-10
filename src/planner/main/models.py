@@ -88,7 +88,8 @@ class TimeSlot(models.Model):
                (2, _("Tuesday")),
                (3, _("Wednesday")),
                (4, _("Thursday")),
-               (5, _("Friday")))
+               (5, _("Friday")),
+               (6, _("Saturday")))
     day_of_week = models.IntegerField(choices=CHOICES)
     begin = models.FloatField()
     end = models.FloatField()
