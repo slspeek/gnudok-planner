@@ -33,11 +33,16 @@ class IntervalInline(admin.TabularInline):
 class RegionAdmin(admin.ModelAdmin):
     inlines = [IntervalInline, ]
 
+class TimeSlotAdmin(admin.ModelAdmin):
+    list_filter = ('day_of_week',)
+
+class RuleAdmin(admin.ModelAdmin):
+    list_filter = ('timeslot','car',)
 
 admin.site.register(Customer, CustomerAdmin)
-admin.site.register(TimeSlot)
+admin.site.register(TimeSlot, TimeSlotAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Region, RegionAdmin)
-admin.site.register(Rule)
+admin.site.register(Rule, RuleAdmin)
 admin.site.register(Car)
