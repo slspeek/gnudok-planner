@@ -15,15 +15,16 @@ class GetRegionFromPostalcodeTest(TestCase):
         Region.objects.all().delete()
         
         self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost')
-        self.region_east = RegionFactory(name='Oost', description='Oost')
         self.interval = Interval(begin='1000ab',
                                  end='1001sd',
                                  region=self.region)
+        self.interval.save()
         self.interval2 = Interval(begin='1000ab',
                                  end='1000ab',
                                  region=self.region)
         self.interval2.save()
-        self.interval.save()
+
+        self.region_east = RegionFactory(name='Oost', description='Oost')
         self.interval_east = Interval(begin='1001aa',
                                  end='1001sd',
                                  region=self.region_east)
@@ -43,7 +44,6 @@ class GetRegionFromPostalcodeTest(TestCase):
         """ No doubles """
         regions = get_regions_for_postcalcode('1000ab')
         assert 1 == len(regions)
-        
 
     def testInTwoAreas(self):
         regions = get_regions_for_postcalcode("1001CC")
@@ -74,3 +74,43 @@ class GetRegionFromPostalcodeTest(TestCase):
     def testZuidOost5(self):
         """ tests a known postalcode in Zuid-Oost small case 2"""
         self.doPostcodeTest("1000ac", 'Zuid-Oost')
+
+@attr('functional', 'postalcode')
+class GetRegionFromPostalcodeBoundsTest(TestCase):
+    """ Bounds checks for get_regions_for_postcalcode """
+
+    def setUp(self):
+        Region.objects.all().delete()
+        
+        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost')
+        self.interval = Interval(begin='1000ab',
+                                 end='1001sd',
+                                 region=self.region)
+        self.interval.save()
+    
+    def tearDown(self):
+        Region.objects.all().delete()
+           
+    def testLeftBoundIsInclusive(self):
+        """ Left bound inclusive """
+        regions = get_regions_for_postcalcode('1000ab')
+        logging.info("Bound test regions: %s " % regions)
+        assert 1 == len(regions)
+
+    def testLeftBoundIsInclusiveUppercase(self):
+        """ Left bound inclusive, uppercase """
+        regions = get_regions_for_postcalcode('1000AB')
+        logging.info("Bound test regions: %s " % regions)
+        assert 1 == len(regions)
+
+    def testRightBoundIsInclusive(self):
+        """ Right bound inclusive """
+        regions = get_regions_for_postcalcode('1001sd')
+        logging.info("Bound test regions: %s " % regions)
+        assert 1 == len(regions)
+
+    def testRightBoundIsInclusiveUppercase(self):
+        """ Right bound inclusive, uppercase """
+        regions = get_regions_for_postcalcode('1001SD')
+        logging.info("Bound test regions: %s " % regions)
+        assert 1 == len(regions)
