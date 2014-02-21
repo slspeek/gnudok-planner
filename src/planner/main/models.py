@@ -15,6 +15,10 @@ pc_re = re.compile('^\d{4}[A-Z]{2}$')
 sofi_re = re.compile('^\d{9}$')
 numeric_re = re.compile('^\d+$')
 
+KIND_DELIVERY = 1
+KIND_PICKUP = 2
+KIND_CHOICES = ((KIND_DELIVERY, _("Delivery")),
+                (KIND_PICKUP, _("Pick up")),)
 
 class NLPhoneNumberField(forms.CharField):
     """
@@ -164,10 +168,6 @@ class Appointment(models.Model):
     calendar = models.ForeignKey(Calendar, verbose_name=_('calendar'))
     customer = models.ForeignKey(Customer, verbose_name=_('customer'))
     employee = models.ForeignKey(User, verbose_name=_('employee'))
-    KIND_DELIVERY = 1
-    KIND_PICKUP = 2
-    KIND_CHOICES = ((KIND_DELIVERY, _("Delivery")),
-                    (KIND_PICKUP, _("Pick up")),)
     kind = models.IntegerField(_('kind'), choices=KIND_CHOICES, default=2)
     NORMAL = 1
     CANCELLED = 2

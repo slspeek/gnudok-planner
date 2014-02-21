@@ -6,7 +6,7 @@ import datetime
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Car, Customer
+from .models import Appointment, Calendar, Car, Customer, KIND_PICKUP
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region_name, get_total_weight, get_limit
 
@@ -111,7 +111,7 @@ def weekview(request, car_id=0, offset=0, date_iso=""):
     calendars = queryset.filter(date__range=[begin_date, end_date]).all()
     for cal in calendars:
         app_list = cal.active_appointments().all()
-        free_count = get_limit(Appointment.KIND_PICKUP) - get_total_weight(app_list, Appointment.KIND_PICKUP)
+        free_count = get_limit(KIND_PICKUP) - get_total_weight(app_list, KIND_PICKUP)
         cal.free = free_count
         cal.region_name = get_region_name(cal)
         cal.appointments = cal.active_appointments().all()

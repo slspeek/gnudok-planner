@@ -5,7 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-from .models import Calendar, Appointment
+from .models import Calendar, KIND_PICKUP
 from .models import TimeSlot, Car, Rule
 
 # Very important, change made at june 26 2013
@@ -15,7 +15,7 @@ DELIVERY_PER_HALF_DAY = 2
 
 
 def get_limit(kind): 
-    if kind == Appointment.KIND_PICKUP: 
+    if kind == KIND_PICKUP: 
         return APPOINTMENTS_PER_HALF_DAY
     else:
         return DELIVERY_PER_HALF_DAY
