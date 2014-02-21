@@ -42,8 +42,8 @@ def get_total_weight(appointment_list, kind):
     return weight
 
 
-def get_free_count(date, rule, kind):
-    """ Given a date, timeslot and region return the number of free slots """
+def _get_free_count(date, rule, kind):
+    """ Given a date, rule and kind return the number of free slots """
     query = Calendar.objects.filter(date=date)
     query = query.filter(timeslot=rule.timeslot)
     query = query.filter(car=rule.car)
@@ -97,7 +97,7 @@ def get_free_entries(fromDate, daysAhead, regions, min_weight, kind, car_id):
         date = fromDate + datetime.timedelta(days=offset)
         rules = get_rules(date, regions, car_id)
         for rule in rules:
-            free_count = get_free_count(date, rule, kind)
+            free_count = _get_free_count(date, rule, kind)
             if free_count >= min_weight:
                 result.append(_entry(date, rule))
     return result
@@ -116,11 +116,11 @@ def get_free_entries_with_extra_calendar(fromDate,
 def _entry(date, rule):
     timeslot_id = rule.timeslot.pk
     car_id = rule.car.pk
-    calendar = get_or_create_calendar(timeslot_id, car_id, date)
+    calendar = _get_or_create_calendar(timeslot_id, car_id, date)
     return (calendar.pk, str(calendar))
 
 
-def get_or_create_calendar(timeslot_id, car_id, date):
+def _get_or_create_calendar(timeslot_id, car_id, date):
     """ Returns exiting calendar object for this triplet or creates one
     if non-existent"""
     by_date = Calendar.objects.filter(date=date)

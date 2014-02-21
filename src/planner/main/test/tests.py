@@ -4,7 +4,7 @@ Test module
 from __future__ import absolute_import
 from .__init__ import *
 from planner.main.models import Region, TimeSlot, Calendar, Appointment, Customer, Rule, Car
-from planner.main.schedule import _get_rules, get_or_create_calendar
+from planner.main.schedule import _get_rules, _get_or_create_calendar
 from planner.main.views import get_date_from_iso
 import datetime
 from django.contrib.auth.models import User
@@ -83,7 +83,7 @@ class GetOrCreateCalendar(TestCase):
         self.calendar = CalendarFactory(date=self.date, car=self.car, timeslot=self.timeslot)
 
     def test_one_filled(self):
-        result = get_or_create_calendar(self.timeslot.pk, self.car.pk, self.date)
+        result = _get_or_create_calendar(self.timeslot.pk, self.car.pk, self.date)
         self.assertEqual(1, len(Calendar.objects.all()))
         assert result == self.calendar
         

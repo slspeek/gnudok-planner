@@ -129,6 +129,7 @@ class Rule(models.Model):
     car = models.ForeignKey(Car, verbose_name=_('car'))
     timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
     region = models.ForeignKey(Region, verbose_name=_('region'))
+    kind = models.IntegerField(_('kind'), choices=KIND_CHOICES, default=2)
     active = models.BooleanField(default=True, verbose_name=_('active'))
 
     def __unicode__(self):
