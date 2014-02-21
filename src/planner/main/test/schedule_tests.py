@@ -5,7 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-from planner.main.schedule import _get_rules, _get_free_count, get_free_entries, get_limit
+from planner.main.schedule import _get_rules, _get_free_count, get_free_entries, get_limit_for_rule
 from django.test.testcases import TestCase
 from planner.main.test.tests import RuleFactory, CarFactory, TimeSlotFactory, AppointmentFactory
 from nose.plugins.attrib import attr
@@ -48,14 +48,14 @@ class TestNoAppointmentsOnCalendar(TestCase):
         """ No delivery slot taken """
         date = datetime.date(2012, 10, 29)
         result = _get_free_count(date, self.rule, KIND_DELIVERY)
-        expected = get_limit(KIND_DELIVERY)
+        expected = get_limit_for_rule(KIND_DELIVERY, self.rule)
         self.assertEqual(expected, result, "Expected %s free places" % expected)
     
     def test__get_free_count_for_pickup(self):
         """ No pickup slot taken """
         date = datetime.date(2012, 10, 29)
         result = _get_free_count(date, self.rule, KIND_PICKUP)
-        expected = get_limit(KIND_PICKUP)
+        expected = get_limit_for_rule(KIND_PICKUP, self.rule)
         self.assertEqual(expected, result, "Expected %s free places" % expected)
         
     
@@ -77,13 +77,13 @@ class TestAppointmentCalendarWithOneDeliveryPresent(TestCase):
     def test__get_free_count_for_delivery(self):
         """ One delivery slot taken """
         result = _get_free_count(self.date, self.rule, KIND_DELIVERY)
-        open_delivery_places = get_limit(KIND_DELIVERY) - 1
+        open_delivery_places = get_limit_for_rule(KIND_DELIVERY, self.rule) - 1
         self.assertEqual(open_delivery_places, result, "Expected %s free places left" % open_delivery_places)
 
     def test__get_free_count_for_pickup(self):
         """ No pickup slot taken """
         result = _get_free_count(self.date, self.rule, KIND_PICKUP)
-        open_pickup_places = get_limit(KIND_PICKUP)
+        open_pickup_places = get_limit_for_rule(KIND_PICKUP, self.rule)
         self.assertEqual(open_pickup_places, result, "Expected %s free places left" % open_pickup_places)
 
 @attr('functional', 'cancelled')
@@ -106,7 +106,7 @@ class TestCancelledAppointmentsDoNotCount(TestCase):
     def test_get_free_count(self):
         """ Cancelled appointments should not take up space """
         result = _get_free_count(self.date, self.rule, KIND_PICKUP)
-        expected = get_limit(KIND_PICKUP)
+        expected = get_limit_for_rule(KIND_PICKUP, self.rule)
         self.assertEqual(expected, result, "Expected %s free places left, cancelled should not count" % expected)
 
 

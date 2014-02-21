@@ -133,8 +133,8 @@ class Rule(models.Model):
     active = models.BooleanField(default=True, verbose_name=_('active'))
 
     def __unicode__(self):
-        return "(%s, %s, %s)" % \
-            (self.car, self.timeslot, self.region)
+        return "(%s, %s, %s, %s)" % \
+            (self.car, self.get_kind_display(),self.timeslot, self.region)
 
 
 class Calendar(models.Model):

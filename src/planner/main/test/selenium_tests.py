@@ -7,8 +7,8 @@ import datetime
 from .__init__ import CustomerFactory, AppointmentFactory
 
 from nose.plugins.attrib import attr
-from .__init__ import ADA_LOVELACE, createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment
-from planner.main.models import Customer, Calendar, Appointment
+from .__init__ import ADA_LOVELACE, createTestUsers, createRegion, createRegionEast, createTestPostcodes, adaMakesAppointment, adaMakesBigAppointment, RegionFactory, TimeSlotFactory, CarFactory, RuleFactory, IntervalFactory
+from planner.main.models import Customer, Calendar, Appointment, KIND_DELIVERY
 from planner.main.viewers_views import calendar_search_view
 from planner.testutil.tests import DjangoSeleniumTest
 
@@ -20,6 +20,50 @@ DO_24JAN = "24 Jan : Donderdag : 9:00 - 12:30 - Auto Zeeburg"
 ZUID_OOST = "Zuid-Oost: Zuid-Oost"
 
 
+@attr('selenium', 'delivery') 
+class DeliveryTest(DjangoSeleniumTest):
+
+    def setUp(self):
+        super(DeliveryTest, self).setUp()
+        self.region = RegionFactory(name='Zuid-Oost', description='Zuid-Oost')
+        self.timeslot = TimeSlotFactory(day_of_week=5, begin=9.0, end=12.5)
+        self.car = CarFactory(name='Auto Zeeburg')
+        self.rule = RuleFactory(timeslot=self.timeslot,
+                                car=self.car,
+                                kind=KIND_DELIVERY,
+                                region=self.region)
+        self.interval = IntervalFactory(begin='1100aa',
+                                        end='1102zz',
+                                        region=self.region)
+        createTestPostcodes()
+        createTestUsers(self)
+    
+        
+    def test_make_delivery(self):
+        """ Make delivery one appointment."""
+        self.assertEquals(0, len(Appointment.objects.all()))
+        self.login('steven', 'jansteven')
+        self.go_to_view('AppointmentEditExtra', args=['create', 'create', 20130101, ])
+
+        self.set_text_field('id_postcode', '1102AB')
+        self.set_text_field('id_name', ADA_LOVELACE)
+        self.set_text_field('id_number', "144")
+        self.set_text_field('id_additions', "sous")
+        self.set_text_field('id_phone', '020-7123456')
+        self.set_text_field('id_stuff', "Bed, boeken en servies")
+        self.set_text_field('id_notes', "Lift aanwezig")
+        self.set_select_field('id_kind', 'Bezorg')
+        self.sleep()
+        self.sleep()
+        self.set_select_field('id_free_space', VRIJDAG_04JAN)
+        self.clickPrimairyButton()
+        # Appointment has been saved
+        self.sleep()
+        self.assertBodyContains(ADA_LOVELACE)
+        self.assertBodyContains("Bed, boeken en servies")
+        self.assertBodyContains("4 januari")
+        self.assertEquals(1, len(Appointment.objects.all()))
+    
 @attr('selenium', 'search') 
 class SearchTest(DjangoSeleniumTest):
 

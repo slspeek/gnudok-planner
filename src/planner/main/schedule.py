@@ -14,6 +14,15 @@ APPOINTMENTS_PER_HALF_DAY = 4
 DELIVERY_PER_HALF_DAY = 2
 
 
+def get_limit_for_rule(kind, rule): 
+    if kind == rule.kind: 
+        if kind == KIND_PICKUP:
+            return APPOINTMENTS_PER_HALF_DAY
+        else:
+            return DELIVERY_PER_HALF_DAY
+    else:
+        return 0
+
 def get_limit(kind): 
     if kind == KIND_PICKUP: 
         return APPOINTMENTS_PER_HALF_DAY
@@ -49,12 +58,12 @@ def _get_free_count(date, rule, kind):
     query = query.filter(car=rule.car)
     calendar_entries = query.all()
     if not calendar_entries:
-        return get_limit(kind)
+        return get_limit_for_rule(kind, rule)
     else:
         entry = calendar_entries[0]
         appointment_list = entry.active_appointments().all()
         total_weight = get_total_weight(appointment_list, kind)
-        left = get_limit(kind) - total_weight
+        left = get_limit_for_rule(kind, rule) - total_weight
         return left
 
 
