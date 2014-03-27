@@ -37,7 +37,7 @@ class TimeSlotAdmin(admin.ModelAdmin):
     list_filter = ('day_of_week',)
 
 class RuleAdmin(admin.ModelAdmin):
-    list_filter = ('timeslot','car',)
+    list_filter = ('timeslot','car','active')
 
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(TimeSlot, TimeSlotAdmin)
