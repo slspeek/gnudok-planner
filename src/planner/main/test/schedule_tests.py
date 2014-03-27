@@ -110,6 +110,26 @@ class TestCancelledAppointmentsDoNotCount(TestCase):
         self.assertEqual(expected, result, "Expected %s free places left, cancelled should not count" % expected)
 
 
+@attr('functional', 'inactiverule')
+class TestGetFreeEntriesWithInactiveRule(TestCase):
+
+    def setUp(self):
+        TestCase.setUp(self)
+        self.rule = RuleFactory()
+        self.rule.active = False
+        self.rule.save()
+        self.date = datetime.date(2012, 10, 29)
+        self.appointment = AppointmentFactory.create(calendar__car=self.rule.car,
+                                                     calendar__timeslot=self.rule.timeslot)
+
+    def test_get_free_entries(self):
+        result = get_free_entries(self.date, 21, [self.rule.region], 1, 2, None)
+        self.assertEqual(0, len(result))
+
+    def test_get_free_entries_two_weeks(self):
+        result = get_free_entries(self.date, 14, [self.rule.region], 1, 2, None)
+        self.assertEqual(0, len(result))
+
 @attr('functional', 'getfreeentries')
 class TestGetFreeEntries(TestCase):
 

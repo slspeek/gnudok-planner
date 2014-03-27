@@ -72,9 +72,11 @@ def _get_rules(date, region, car_id):
     week_day = date.weekday() + 1
     if region:
         rules = Rule.objects.filter(region=region,
+                                    active=True,
                                     timeslot__day_of_week=week_day)
     else:
-        rules = Rule.objects.filter(timeslot__day_of_week=week_day)
+        rules = Rule.objects.filter(active=True,
+                                    timeslot__day_of_week=week_day)
         if car_id:
             rules = rules.filter(car__pk=car_id)
     return rules
