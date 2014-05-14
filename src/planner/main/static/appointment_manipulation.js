@@ -2,6 +2,8 @@
 
 "use strict";
 
+var showPostCodeDotNlWindow = false;
+
 var callout_available_dates = function() {
 	$('#date-search').show();	
 };
@@ -80,7 +82,12 @@ $(function() {
             $('#id_town').val(data.town);
             $('#id_address').val(data.address);
             $('#id_postcode').val(postcode.toUpperCase());
-        }
+        } else {
+						if (!showPostCodeDotNlWindow) {
+							showPostCodeDotNlWindow = true;
+							window.open("http://postcode.nl/zoek/"+ postcode);
+						}
+				}
 			}).error( 
 			function(error) {
 				call_returned_postcode();

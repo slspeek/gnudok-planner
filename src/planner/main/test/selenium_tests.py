@@ -378,7 +378,7 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.driver.find_element_by_id("id_unrestricted").click()
         self.sleep()
         self.sleep()
-        self.set_text_field('id_postcode', '1000AA')
+        self.set_text_field('id_postcode', '1102AB')
         self.set_text_field('id_number', "42")
         self.set_text_field('id_address', "Town street")
         self.set_text_field('id_town', "London")
