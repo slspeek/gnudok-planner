@@ -25,3 +25,4 @@ cover/*
 .project
 .pydevproject
 .pydevproject.bak
+node_modules
