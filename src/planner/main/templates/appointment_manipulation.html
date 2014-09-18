@@ -37,14 +37,14 @@
 	}
 	
 	};
-	var clear_data = function(error) {
+	var clearData = function(error) {
 		var unresticted = $('#id_unrestricted').prop('checked');
 		call_returned_available_dates();
 		if (unresticted === false) {
 			$('#id_free_space').empty();
 		}
 	};
-	var get_updates = function() {
+	var getUpdates = function() {
 		var postcodeToSend;
 		var postcode = get_normalized_postcode();
 		var unrestricted = $('#id_unrestricted').prop('checked');
@@ -61,10 +61,10 @@
 		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
 		if (postcode.length === 6) {
 			callout_available_dates();
-			$.getJSON(url, set_data).error(clear_data);
+			$.getJSON(url, set_data).error(clearData);
 		}
 	};
-	var get_updates_unrestricted = function() {
+	var getUpdates_unrestricted = function() {
 		var postcodeToSend;
         var postcode = get_normalized_postcode();
         var unrestricted = $('#id_unrestricted').prop('checked');
@@ -81,7 +81,7 @@
                 if (unrestricted === true) {
                 		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
                         callout_available_dates();
-                        $.getJSON(url, set_data).error(clear_data);
+                        $.getJSON(url, set_data).error(clearData);
                 }
         };
 

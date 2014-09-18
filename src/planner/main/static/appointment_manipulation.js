@@ -1,6 +1,6 @@
-/* global  $:false, window:false,  clear_data:false, get_updates:false, get_updates_unrestricted:false */
+/* global  $:false, window:false,  clearData:false, getUpdates:false, getUpdates_unrestricted:false */
 
-"use strict";
+'use strict';
 
 var showPostCodeDotNlWindow = false;
 
@@ -41,19 +41,19 @@ var set_customer_data = function(data) {
 
 var get_car_id = function() {
 	var id = $('#id_car').val();
-	if (id === "") {
-		id = "-1";
+	if (id === '') {
+		id = '-1';
 	}
 	return id;
 };
 
 var reset_customer_id = function() {
 	$('#id_found_customer_id').val('');
-  window.customer_answers.push("RESET");
+  window.customer_answers.push('RESET');
 };
 
 
-var find_customer = function() {
+var findCustomer = function() {
 	var postcode = get_normalized_postcode();
 	var number = $('#id_number')[0].value;
 	var addition = $('#id_additions')[0].value;
@@ -72,7 +72,7 @@ var get_normalized_postcode = function() {
 $(function() {
 	$('#car_choice').hide();
   window.customer_answers = [];
-	$("#id_postcode").keyup(function(e) {
+	$('#id_postcode').keyup(function() {
 		var postcode = get_normalized_postcode();
 		if (postcode.length === 6) {
 			callout_postcode();
@@ -85,7 +85,7 @@ $(function() {
         } else {
 						if (!showPostCodeDotNlWindow) {
 							showPostCodeDotNlWindow = true;
-							window.open("http://postcode.nl/zoek/"+ postcode);
+							window.open('http://postcode.nl/zoek/'+ postcode);
 						}
 				}
 			}).error( 
@@ -94,49 +94,49 @@ $(function() {
 			});
 		}
 	});
-	var get_updates_conditional = function() {
+	var getUpdatesConditional = function() {
 		var unresticted = $('#id_unrestricted').prop('checked');
 		if (unresticted === false) {
-			clear_data();
-			get_updates();
+			clearData();
+			getUpdates();
 		} else {
-			get_updates_unrestricted();			
+			getUpdates_unrestricted();			
 		}
 	};
-	$('#id_unrestricted').change(function(e) {
-		get_updates_conditional();
+	$('#id_unrestricted').change(function() {
+		getUpdatesConditional();
 	});
-	$('#id_kind').change(function(e) {
+	$('#id_kind').change(function() {
 		var kind = $('#id_kind')[0].value;
-		if (kind === "1") {
+		if (kind === '1') {
 			$('#id_unrestricted').prop('checked', true);
 			$('#car_choice').show();
 		} else {
 			$('#id_car').val('');
 			$('#car_choice').hide();
 		}
-		get_updates_conditional();
+		getUpdatesConditional();
 	});
-	$('#id_car').change(function(e) {
-		get_updates_conditional();
+	$('#id_car').change(function() {
+		getUpdatesConditional();
 	});
-	$("#id_postcode").keyup(function(e) {
-		get_updates();
+	$('#id_postcode').keyup(function() {
+		getUpdates();
 	});
-	$("#id_weight").change(function(e) {
-		get_updates();
+	$('#id_weight').change(function() {
+		getUpdates();
 	});
-	$("#id_number").keyup(function(e) {
-		find_customer();
+	$('#id_number').keyup(function() {
+		findCustomer();
 	});
-	$("#id_additions").keyup(function(e) {
-		find_customer();
+	$('#id_additions').keyup(function() {
+		findCustomer();
 	});
-	$("#id_postcode").keyup(function(e) {
-		find_customer();
+	$('#id_postcode').keyup(function() {
+		findCustomer();
 	});
-	get_updates();
-	$("#id_postcode").focus();
+	getUpdates();
+	$('#id_postcode').focus();
 	$('#id_stuff').css('width', '90%');
 	$('#id_notes').css('width', '90%');
 });
