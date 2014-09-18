@@ -130,6 +130,7 @@ module.exports = function (grunt) {
       all: [
         'Gruntfile.js',
         'src/planner/main/static/appointment_manipulation.js',
+        'src/planner/main/templates/appointment_manipulation.html',
       ]
     },
 

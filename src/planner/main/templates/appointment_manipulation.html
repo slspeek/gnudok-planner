@@ -9,82 +9,8 @@
 
 <script>
 	"use strict";
-	
-	var on_click = function(calendar_id) {
-		return function(e) {
-			if(e.ctrlKey) {
-				 window.open('/main/list/appointments/' + calendar_id);
-			 }
-		};
-			 
-	}
-	var set_data = function(data) {
-	call_returned_available_dates();
-	$('#region_label').text(data.region);
-	$('#id_free_space').empty();
-	for (var i = 0, len = data.dates.length; i < len; i++) {
-	var date = data.dates[i];
-	var calendar_id = date[0];
-	var option;
-	if ({{ calendar_id }} == calendar_id) {
-		option = '<option id="' + calendar_id + '" selected="selected" value="' + calendar_id + '">' +  date[1] + '</option>';
-	} else {
-		option = '<option id="' + calendar_id + '" value="' + calendar_id + '">' +  date[1] + '</option>';
-	}
-	$('#id_free_space').append(option);
-	$('#' + calendar_id).click(on_click(calendar_id));
-	
-	}
-	
-	};
-	var clearData = function(error) {
-		var unresticted = $('#id_unrestricted').prop('checked');
-		call_returned_available_dates();
-		if (unresticted === false) {
-			$('#id_free_space').empty();
-		}
-	};
-	var getUpdates = function() {
-		var postcodeToSend;
-		var postcode = get_normalized_postcode();
-		var unrestricted = $('#id_unrestricted').prop('checked');
-		var car_id = "-1";
-		if (unrestricted) {
-			postcodeToSend = "-1";
-			car_id = get_car_id();
-		} else {
-			postcodeToSend = postcode;
-		}
-			
-		var weight = $('#id_weight')[0].value;
-		var kind = $('#id_kind')[0].value;
-		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
-		if (postcode.length === 6) {
-			callout_available_dates();
-			$.getJSON(url, set_data).error(clearData);
-		}
-	};
-	var getUpdates_unrestricted = function() {
-		var postcodeToSend;
-        var postcode = get_normalized_postcode();
-        var unrestricted = $('#id_unrestricted').prop('checked');
-        var car_id = "-1";
-        if (unrestricted) {
-			postcodeToSend = "-1";
-			car_id = get_car_id();
-		} else {
-			postcodeToSend = postcode;
-		}
-		var weight = $('#id_weight')[0].value;
-		var kind = $('#id_kind')[0].value;
-		        var url;
-                if (unrestricted === true) {
-                		var url = '/main/get_candidate_dates/{{ date_iso }}/' + weight + '/' + postcodeToSend + '/' + car_id + '/' + kind + '/{{ calendar_id }}';
-                        callout_available_dates();
-                        $.getJSON(url, set_data).error(clearData);
-                }
-        };
-
+  var globalCalendarId = "{{ calendar_id }}";
+  var globalDateIso = "{{ date_iso }}";
 </script>
 {% endblock %}
 {% block content %}
