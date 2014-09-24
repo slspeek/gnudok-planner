@@ -35,7 +35,11 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
+        files: [
+        'Gruntfile.js',
+        'src/planner/main/static/appointment_manipulation.js',
+        'src/planner/main/templates/appointment_manipulation.html',
+      ],
         tasks: ['jshint'],
         options: {
           livereload: true

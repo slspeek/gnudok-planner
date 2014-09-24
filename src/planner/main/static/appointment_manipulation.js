@@ -1,4 +1,4 @@
-/* global  globalCalendarId:false, globalDateIso:false, $:false, window:false,  clearData:false, getUpdates:false, getUpdates_unrestricted:false */
+/* global  globalCalendarId:false, globalDateIso:false, $:false, window:false */
 
 'use strict';
 
@@ -17,15 +17,111 @@ var calloutPostcode = function() {
 var callReturnedAvailableDates = function() {
   $('#date-search').hide();	
 };
-var call_returned_known_customers = function() {
+var callReturnedKnownCustomers = function() {
   $('#customer-search').hide();	
 };
-var call_returned_postcode = function() {
+var callReturnedPostcode = function() {
   $('#postcode-search').hide();	
 };
 
+var onClick = function(calendarId) {
+  return function(e) {
+    if(e.ctrlKey) {
+      window.open('/main/list/appointments/' + calendarId);
+    }
+  };
+
+};
+
+var getNormalizedPostcode = function() {
+  var postcode = $('#id_postcode')[0].value;
+  return postcode.replace(/ /g, '').toUpperCase();
+};
+
+var clearData = function() {
+  var unresticted = $('#id_unrestricted').prop('checked');
+  callReturnedAvailableDates();
+  if (unresticted === false) {
+    $('#id_free_space').empty();
+  }
+};
+
+var getCarId = function() {
+  var id = $('#id_car').val();
+  if (id === '') {
+    id = '-1';
+  }
+  return id;
+};
+var setData = function(data) {
+  callReturnedAvailableDates();
+  $('#region_label').text(data.region);
+  $('#id_free_space').empty();
+  for (var i = 0, len = data.dates.length; i < len; i++) {
+    var date = data.dates[i];
+    var calendarId = date[0];
+    var option;
+    if (globalCalendarId === calendarId) {
+      option = '<option id="' + calendarId + '" selected="selected" value="' + calendarId + '">' +  date[1] + '</option>';
+    } else {
+      option = '<option id="' + calendarId + '" value="' + calendarId + '">' +  date[1] + '</option>';
+    }
+    $('#id_free_space').append(option);
+    $('#' + calendarId).click(onClick(calendarId));
+
+  }
+
+};
+
+var getUpdatesUnrestricted = function() {
+  var postcodeToSend;
+  var postcode = getNormalizedPostcode();
+  var unrestricted = $('#id_unrestricted').prop('checked');
+  var carId = '-1';
+  if (unrestricted) {
+    postcodeToSend = '-1';
+    carId = getCarId();
+  } else {
+    postcodeToSend = postcode;
+  }
+  var weight = $('#id_weight')[0].value;
+  var kind = $('#id_kind')[0].value;
+  var url;
+  if (unrestricted === true) {
+    url = '/main/get_candidate_dates/' + globalDateIso +'/' + weight + '/' + postcodeToSend + '/' + carId + '/' + kind + '/' + globalCalendarId;
+    calloutAvailableDates();
+    $.getJSON(url, setData).error(clearData);
+  }
+};
+
+var getUpdates = function() {
+  var postcodeToSend;
+  var postcode = getNormalizedPostcode();
+  var unrestricted = $('#id_unrestricted').prop('checked');
+  var carId = '-1';
+  if (unrestricted) {
+    postcodeToSend = '-1';
+    carId = getCarId();
+  } else {
+    postcodeToSend = postcode;
+  }
+
+  var weight = $('#id_weight')[0].value;
+  var kind = $('#id_kind')[0].value;
+  var url = '/main/get_candidate_dates/' + globalDateIso +'/' + weight + '/' + postcodeToSend + '/' + carId + '/' + kind + '/' + globalCalendarId;
+  if (postcode.length === 6) {
+    calloutAvailableDates();
+    $.getJSON(url, setData).error(clearData);
+  }
+};
+
+var resetCustomerId = function() {
+  $('#id_found_customer_id').val('');
+  window.customerAnswers.push('RESET');
+};
+
 var setCustomerData = function(data) {
-  call_returned_known_customers();
+  callReturnedKnownCustomers();
   if (data.found === true) {
     $('#id_town').val(data.town);
     $('#id_address').val(data.address);
@@ -33,51 +129,33 @@ var setCustomerData = function(data) {
     $('#id_name').val(data.name);
     $('#id_email').val(data.email);
     $('#id_found_customer_id').val(data.id);
-    window.customer_answers.push(data.id);
+    window.customerAnswers.push(data.id);
   } else {
-    reset_customer_id();
+    resetCustomerId();
   } 
 };
 
-var get_carId = function() {
-  var id = $('#id_car').val();
-  if (id === '') {
-    id = '-1';
-  }
-  return id;
-};
-
-var reset_customer_id = function() {
-  $('#id_found_customer_id').val('');
-  window.customer_answers.push('RESET');
-};
-
-
 var findCustomer = function() {
-  var postcode = get_normalized_postcode();
+  var postcode = getNormalizedPostcode();
   var number = $('#id_number')[0].value;
   var addition = $('#id_additions')[0].value;
 
   if (postcode.length === 6) {
     calloutKnownCustomers();
-    $.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, setCustomerData).error(reset_customer_id);
+    $.getJSON('/main/get_customer/' + postcode + '/' + number + '/' + addition, setCustomerData).error(resetCustomerId);
   }
 };
 
-var get_normalized_postcode = function() {
-  var postcode = $('#id_postcode')[0].value;
-  return postcode.replace(/ /g, '').toUpperCase();
 
-};
 $(function() {
   $('#car_choice').hide();
-  window.customer_answers = [];
+  window.customerAnswers = [];
   $('#id_postcode').keyup(function() {
-    var postcode = get_normalized_postcode();
+    var postcode = getNormalizedPostcode();
     if (postcode.length === 6) {
       calloutPostcode();
       $.getJSON('/pc/get/' + postcode, function(data) {
-        call_returned_postcode();
+        callReturnedPostcode();
         if (data.found === true) {
           $('#id_town').val(data.town);
           $('#id_address').val(data.address);
@@ -89,8 +167,8 @@ $(function() {
           }
         }
       }).error( 
-        function(error) {
-          call_returned_postcode();
+        function() {
+          callReturnedPostcode();
         });
     }
   });
@@ -100,7 +178,7 @@ $(function() {
       clearData();
       getUpdates();
     } else {
-      getUpdates_unrestricted();			
+      getUpdatesUnrestricted();			
     }
   };
   $('#id_unrestricted').change(function() {
@@ -141,33 +219,6 @@ $(function() {
   $('#id_notes').css('width', '90%');
 });
 
-var on_click = function(calendarId) {
-  return function(e) {
-    if(e.ctrlKey) {
-      window.open('/main/list/appointments/' + calendarId);
-    }
-  };
-
-}
-var set_data = function(data) {
-  callReturnedAvailableDates();
-  $('#region_label').text(data.region);
-  $('#id_free_space').empty();
-  for (var i = 0, len = data.dates.length; i < len; i++) {
-    var date = data.dates[i];
-    var calendarId = date[0];
-    var option;
-    if (globalCalendarId == calendarId) {
-      option = '<option id="' + calendarId + '" selected="selected" value="' + calendarId + '">' +  date[1] + '</option>';
-    } else {
-      option = '<option id="' + calendarId + '" value="' + calendarId + '">' +  date[1] + '</option>';
-    }
-    $('#id_free_space').append(option);
-    $('#' + calendarId).click(on_click(calendarId));
-
-  }
-
-};
 var clearData = function() {
   var unresticted = $('#id_unrestricted').prop('checked');
   callReturnedAvailableDates();
@@ -175,44 +226,5 @@ var clearData = function() {
     $('#id_free_space').empty();
   }
 };
-var getUpdates = function() {
-  var postcodeToSend;
-  var postcode = get_normalized_postcode();
-  var unrestricted = $('#id_unrestricted').prop('checked');
-  var carId = "-1";
-  if (unrestricted) {
-    postcodeToSend = "-1";
-    carId = get_carId();
-  } else {
-    postcodeToSend = postcode;
-  }
 
-  var weight = $('#id_weight')[0].value;
-  var kind = $('#id_kind')[0].value;
-  var url = '/main/get_candidate_dates/' + globalDateIso +'/' + weight + '/' + postcodeToSend + '/' + carId + '/' + kind + '/' + globalCalendarId;
-  if (postcode.length === 6) {
-    calloutAvailableDates();
-    $.getJSON(url, set_data).error(clearData);
-  }
-};
-var getUpdates_unrestricted = function() {
-  var postcodeToSend;
-  var postcode = get_normalized_postcode();
-  var unrestricted = $('#id_unrestricted').prop('checked');
-  var carId = '-1';
-  if (unrestricted) {
-    postcodeToSend = '-1';
-    carId = get_carId();
-  } else {
-    postcodeToSend = postcode;
-  }
-  var weight = $('#id_weight')[0].value;
-  var kind = $('#id_kind')[0].value;
-  var url;
-  if (unrestricted === true) {
-    var url = '/main/get_candidate_dates/' + globalDateIso +'/' + weight + '/' + postcodeToSend + '/' + carId + '/' + kind + '/' + globalCalendarId;
-    calloutAvailableDates();
-    $.getJSON(url, set_data).error(clearData);
-  }
-};
 
