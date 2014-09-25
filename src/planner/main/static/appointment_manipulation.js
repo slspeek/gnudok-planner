@@ -219,12 +219,3 @@ $(function() {
   $('#id_notes').css('width', '90%');
 });
 
-var clearData = function() {
-  var unresticted = $('#id_unrestricted').prop('checked');
-  callReturnedAvailableDates();
-  if (unresticted === false) {
-    $('#id_free_space').empty();
-  }
-};
-
-

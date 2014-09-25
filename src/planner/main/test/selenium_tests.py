@@ -324,14 +324,14 @@ class AppointmentEditExtra(DjangoSeleniumTest):
         self.set_text_field('id_number', "42")
         #self.set_text_field('id_additions', "")
         self.sleep()
-        logging.error(self.driver.execute_script("return customer_answers"));
+        logging.error(self.driver.execute_script("return customerAnswers"));
         emailEl = self.driver.find_element_by_xpath("//*[@id='id_email']")
         self.assertEquals(emailEl.get_attribute('value'), 'wk@example.com')
         found_customer_el = self.driver.find_element_by_xpath("//*[@id='id_found_customer_id']")
         #self.assertEquals(found_customer_el.get_attribute('value'), str(self.customer_id_ada).decode('unicode-escape'))
         self.set_text_field('id_number', "43")
         self.sleep()
-        logging.error(self.driver.execute_script("return customer_answers"));
+        logging.error(self.driver.execute_script("return customerAnswers"));
         self.assertEquals(found_customer_el.get_attribute('value'), u'')
 
         self.set_text_field('id_stuff', "Oude wiskunde boeken")
