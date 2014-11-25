@@ -1,7 +1,6 @@
-from __future__ import absolute_import
 import datetime
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import CharField
 from django.core.validators import EMPTY_VALUES
@@ -9,6 +8,7 @@ from django.forms import ValidationError
 import re
 from django import forms
 from .__init__ import float_to_time
+from django.contrib.contenttypes.models import ContentType
 
 
 pc_re = re.compile('^\d{4}[A-Z]{2}$')
@@ -32,7 +32,6 @@ class NLPhoneNumberField(forms.CharField):
         super(NLPhoneNumberField, self).clean(value)
         if value in EMPTY_VALUES:
             return u''
-
         phone_nr = re.sub('[\-\s\(\)]', '', value)
 
         if len(phone_nr) == 10 and numeric_re.search(phone_nr):
@@ -85,8 +84,9 @@ class Customer(models.Model):
 
     class Meta:
         unique_together = (("postcode", "number", "additions"),)
-
-
+        permissions = (("viewers", "Viewers"),
+            ("callcenter", "Callcenter"),)
+  
 class TimeSlot(models.Model):
     CHOICES = ((1, _("Monday")),
                (2, _("Tuesday")),

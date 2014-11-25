@@ -2,12 +2,13 @@
 import factory
 from planner.main.models import Car, TimeSlot, Region, Rule, Customer, Appointment, Calendar
 import datetime
-from django_factory_boy.auth import UserF, GroupF
+from django_factory_boy.auth import UserF
 from planner.nlpostalcode.tests import PostcodeBuilder
 from planner.area.test import IntervalFactory
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 
 ADA_LOVELACE=u'Adå Lŏvelace'
+
 
 def createTestPostcodes():
     builder = PostcodeBuilder()
@@ -49,14 +50,13 @@ def createRootUser(self):
     
 def createTestUsers(self):
     #User.objects.all().delete()
-    self.group_callcenter = GroupF(name='Callcenter')
-    self.group_viewers = GroupF(name='Viewers')
-    
+    CALLCENTER_PERMISSION=Permission.objects.get(codename='callcenter')
+    VIEWERS_PERMISSION=Permission.objects.get(codename='viewers')
     self.user_steven = UserF(id=1000, username='steven', password=PASSWORD)
-    self.user_alien = UserF(id=2000, username='alien',  password=PASSWORD)
-    self.user_steven.groups = [self.group_callcenter, self.group_viewers]
+    self.user_alien = UserF(id=2000, username='alien',  password=PASSWORD, first_name='Alien')
+    self.user_steven.user_permissions.add(VIEWERS_PERMISSION,CALLCENTER_PERMISSION)
     self.user_steven.save()
-    self.user_alien.groups = [self.group_viewers]
+    self.user_alien.user_permissions.add(VIEWERS_PERMISSION)
     self.user_alien.save()
 
 def createAda(self):

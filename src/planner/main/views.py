@@ -1,6 +1,6 @@
 # Create your views here.
 from __future__ import absolute_import
-from .__init__ import group_required, get_date_from_iso, tomorrow
+from .__init__ import get_date_from_iso, tomorrow
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
@@ -15,6 +15,7 @@ from planner.area.views import get_regions_for_postcalcode
 from planner.main.schedule import get_total_weight
 from django.forms.util import ErrorList
 from planner.main.schedule import APPOINTMENTS_PER_HALF_DAY
+from django.contrib.auth.decorators import permission_required
 
 STANDARD_DAYS_AHEAD = 28
 
@@ -37,8 +38,7 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
     else:
         return False
 
-
-@group_required('Callcenter')
+@permission_required('main.callcenter')
 def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     """ creates or edits an appointment and customer """
     free_space_errors = []
@@ -117,7 +117,7 @@ def get_region_description(regions):
     else:
         return _("Unknown")
 
-@group_required('Callcenter')
+@permission_required('main.callcenter')
 def get_candidate_dates(
                         request,
                         date_iso,
@@ -174,7 +174,7 @@ def get_candidate_dates(
         
         
         
-@group_required('Callcenter')
+@permission_required('main.callcenter')
 def get_available_dates(request,
                         postalcode,
                         weight,
@@ -206,7 +206,7 @@ def get_available_dates(request,
     return HttpResponse(json, mimetype='application/json')
 
 
-@group_required('Callcenter')
+@permission_required('main.callcenter')
 def get_customer(request, postalcode, number, addition):
     """ Returns a json object to fill the calendar choices component """
     customer_list = Customer.objects.filter(postcode__iexact=postalcode.capitalize(),
@@ -232,7 +232,7 @@ def logout_view(request):
     return redirect('Overview', '')
 
 
-@group_required('Callcenter')
+@permission_required('main.callcenter')
 def cancel_appointment(request, appointment_id):
     appointment = Appointment.objects.get(pk=int(appointment_id))
     if not request.method == 'POST':

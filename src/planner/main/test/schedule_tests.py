@@ -12,6 +12,10 @@ from nose.plugins.attrib import attr
 from planner.main.test import RegionFactory
 from planner.main.models import KIND_DELIVERY, KIND_PICKUP
 
+
+PASSWORD = 'pbkdf2_sha256$10000$Hk9LhgRtiFgH$x' \
+           'BWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4='
+
 @attr('functional', 'get_rules')
 class GetRules(TestCase):
     

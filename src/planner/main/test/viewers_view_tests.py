@@ -266,7 +266,7 @@ class AppointmentsByEmployee(WebTest):
         redirect = login_form.submit()
         choose_an_employee = redirect.follow()
         form = choose_an_employee.form
-        print choose_an_employee, form.fields.values()
+        print form['employee'], dir(form['employee']), form['employee'].options
         form['employee'] = u'1000'
         details = form.submit().follow()
         assert ADA_LOVELACE in details

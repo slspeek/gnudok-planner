@@ -1,6 +1,6 @@
 """ Read-only views """
 from __future__ import absolute_import
-from .__init__ import today, tomorrow, get_date_from_iso, group_required, to_iso
+from .__init__ import today, tomorrow, get_date_from_iso, to_iso
 from django.contrib.auth.models import User
 import datetime
 from django.shortcuts import render_to_response, redirect
@@ -9,9 +9,9 @@ from django.template.context import RequestContext
 from .models import Appointment, Calendar, Car, Customer, KIND_PICKUP
 from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
 from .schedule import get_region_name, get_total_weight, get_limit
+from django.contrib.auth.decorators import permission_required
 
-
-@group_required('Viewers')
+@permission_required('main.viewers')
 def wrong_postcode(request):
     all_customers = Customer.objects.order_by('postcode').all()
     customers = filter(lambda x: not x.postcode.isupper(), all_customers)
@@ -19,7 +19,7 @@ def wrong_postcode(request):
                               {"customers": customers,
                                 })
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def appointment_detail(request, pk):
     appointment = Appointment.objects.get(pk=int(pk))
     region_name = get_region_name(appointment.calendar)
@@ -28,7 +28,7 @@ def appointment_detail(request, pk):
                                "region_name": region_name, })
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def choose_an_employee(request):
     if request.POST:
         form = EmployeeChooseForm(request.POST)
@@ -43,7 +43,7 @@ def choose_an_employee(request):
                               context_instance=RequestContext(request))
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def appointments_by_date(request, date_iso):
     if not date_iso:
         date_iso = datetime.date.today().strftime('%Y%m%d')
@@ -57,7 +57,7 @@ def appointments_by_date(request, date_iso):
                                })
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def appointments_made_by(request, employee_id):
     by_one_employee = Appointment.actives.filter(employee__pk=employee_id)
     appointment_list = by_one_employee.order_by('calendar__date')
@@ -69,7 +69,7 @@ def appointments_made_by(request, employee_id):
                                })
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')                              
 def overview(request, date_iso):
     if not date_iso:
         date_iso = tomorrow()
@@ -101,7 +101,7 @@ def get_date_interval(date_iso, offset):
     return (begin_date, end_date)
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def weekview(request, car_id=0, offset=0, date_iso=""):
     if not date_iso:
         date_iso = tomorrow()
@@ -126,7 +126,7 @@ def weekview(request, car_id=0, offset=0, date_iso=""):
                                "car": car})
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def display_date_form(request):
     if not request.POST:
         tommorrow = datetime.date.today() + datetime.timedelta(days=1)
@@ -142,7 +142,7 @@ def display_date_form(request):
                               context_instance=RequestContext(request))
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def choose_calendar(request, date_string):
     date = get_date_from_iso(date_string)
     cals = Calendar.objects.filter(date=date)
@@ -152,7 +152,7 @@ def choose_calendar(request, date_string):
                               context_instance=RequestContext(request))
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def render_appointment_list(request, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
     title = calendar.date.strftime('%d %b') + ':' + str(calendar.car) + str(calendar.timeslot.begin)
@@ -210,7 +210,7 @@ def search(search_form, date_iso=''):
     return results
 
 
-@group_required('Viewers')
+@permission_required('main.viewers')
 def calendar_search_view(request, date_iso=""):
     if not date_iso:
         date_iso = today()

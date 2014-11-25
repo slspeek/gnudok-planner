@@ -3,7 +3,7 @@ Test module
 '''
 from __future__ import absolute_import
 from .__init__ import *
-from planner.main.models import Region, TimeSlot, Calendar, Appointment, Customer, Rule, Car
+from planner.main.models import Calendar, Appointment, Customer
 from planner.main.schedule import _get_rules, _get_or_create_calendar
 from planner.main.views import get_date_from_iso
 import datetime

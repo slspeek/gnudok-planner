@@ -53,8 +53,7 @@ class EmployeeModelChoiceField(forms.ModelChoiceField):
 
 
 class EmployeeChooseForm(Form):
-    queryset = User.objects.filter(groups__name='Callcenter')\
-        .filter(is_active=True)\
+    queryset = User.objects.filter(is_active=True)\
         .order_by('first_name')
     employee = EmployeeModelChoiceField(label=_('employee'), queryset=queryset)
     
