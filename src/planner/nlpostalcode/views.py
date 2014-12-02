@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 from .models import Street
 from django.http import HttpResponse
-from django.utils import simplejson
+import json
 
 def get_streets(fourpp, chars):
     return Street.objects.filter(postcode__fourpp=fourpp).filter(chars=chars).all()
@@ -19,8 +19,8 @@ def get_info_on_postalcode(request, postalcode):
         data = {'found': True, 'address': address, 'town': town}
     else:
         data = {'found': False }
-    json = simplejson.dumps(data)
-    return HttpResponse(json, mimetype='application/json')
+    j = json.dumps(data)
+    return HttpResponse(j, mimetype='application/json')
 
 def update(fourpp, chars, street_name):
     pass
