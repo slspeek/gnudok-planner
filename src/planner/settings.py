@@ -18,9 +18,6 @@ DATABASES = {
         'PASSWORD': 'planner',
         'HOST': '',
         'PORT': '',
-        'OPTIONS': {
-            'autocommit': True,
-        },
     },
     'nlpostcode':  {
         'ENGINE': 'django.db.backends.mysql',
@@ -136,7 +133,6 @@ INSTALLED_APPS = (
     'planner.main',
     'planner.nlpostalcode',
     'planner.area',
-    'south',
     'django_nose',
 )
 
@@ -148,4 +144,3 @@ PROJECT_APPS = (
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-SOUTH_TESTS_MIGRATE = False

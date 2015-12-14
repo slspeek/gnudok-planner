@@ -2,7 +2,7 @@
 import factory
 from planner.main.models import Car, TimeSlot, Region, Rule, Customer, Appointment, Calendar
 import datetime
-from django_factory_boy.auth import UserF
+from django_factory_boy.auth import UserFactory
 from planner.nlpostalcode.tests import PostcodeBuilder
 from planner.area.test import IntervalFactory
 from django.contrib.auth.models import User, Permission
@@ -52,8 +52,8 @@ def createTestUsers(self):
     #User.objects.all().delete()
     CALLCENTER_PERMISSION=Permission.objects.get(codename='callcenter')
     VIEWERS_PERMISSION=Permission.objects.get(codename='viewers')
-    self.user_steven = UserF(id=1000, username='steven', password=PASSWORD)
-    self.user_alien = UserF(id=2000, username='alien',  password=PASSWORD, first_name='Alien')
+    self.user_steven = UserFactory(id=1000, username='steven', password=PASSWORD)
+    self.user_alien = UserFactory(id=2000, username='alien',  password=PASSWORD, first_name='Alien')
     self.user_steven.user_permissions.add(VIEWERS_PERMISSION,CALLCENTER_PERMISSION)
     self.user_steven.save()
     self.user_alien.user_permissions.add(VIEWERS_PERMISSION)
@@ -117,36 +117,41 @@ def adaCancelsAppointment(self):
                                           notes='Lift aanwezig')
 
 
-class CarFactory(factory.Factory):
-    FACTORY_FOR = Car
+class CarFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Car
 
     name = "Open source tractor"
 
 
-class TimeSlotFactory(factory.Factory):
-    FACTORY_FOR = TimeSlot
+class TimeSlotFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = TimeSlot
 
     day_of_week = 1
     begin = 13
     end = 17
 
 
-class RegionFactory(factory.Factory):
-    FACTORY_FOR = Region
+class RegionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Region
 
     name = "Groot Oost"
 
 
-class RuleFactory(factory.Factory):
-    FACTORY_FOR = Rule
+class RuleFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Rule
 
     car = factory.SubFactory(CarFactory)
     region = factory.SubFactory(RegionFactory)
     timeslot = factory.SubFactory(TimeSlotFactory)
 
 
-class CustomerFactory(factory.Factory):
-    FACTORY_FOR = Customer
+class CustomerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Customer
 
     name = "Willem Knaap"
     address = "Grachtengordel 1"
@@ -156,8 +161,9 @@ class CustomerFactory(factory.Factory):
     email = "wk@example.com"
 
 
-class CalendarFactory(factory.Factory):
-    FACTORY_FOR = Calendar
+class CalendarFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Calendar
 
     date = datetime.date(2012, 10, 29)
     timeslot = factory.SubFactory(TimeSlotFactory)
@@ -165,12 +171,13 @@ class CalendarFactory(factory.Factory):
     #region = factory.SubFactory(RegionFactory)
 
 
-class AppointmentFactory(factory.Factory):
-    FACTORY_FOR = Appointment
+class AppointmentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Appointment
 
     calendar = factory.SubFactory(CalendarFactory)
     customer = factory.SubFactory(CustomerFactory)
-    employee = factory.SubFactory(UserF)
+    employee = factory.SubFactory(UserFactory)
     stuff = "Gold, Platina and lots of Silver"
     notes = "Bring boxes"
     created = datetime.datetime.now()

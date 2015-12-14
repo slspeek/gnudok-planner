@@ -58,9 +58,6 @@ class PhoneNumberField(CharField):
         defaults.update(kwargs)
         return super(PhoneNumberField, self).formfield(**defaults)
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^planner.main\.models\.PhoneNumberField"])
-
 
 class Customer(models.Model):
     """ Representa a customer """
@@ -157,8 +154,8 @@ class Calendar(models.Model):
 class ActiveManager(models.Manager):
     use_for_related_fields = True
 
-    def get_query_set(self):
-        query_set = super(ActiveManager, self).get_query_set()
+    def get_queryset(self):
+        query_set = super(ActiveManager, self).get_queryset()
         return query_set.filter(status=self.model.NORMAL)
 
 

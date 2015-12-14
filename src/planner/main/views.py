@@ -9,7 +9,7 @@ from .forms import CustomerForm, AppointmentForm, HiddenForm, CarForm
 from .schedule import get_free_entries, get_free_entries_with_extra_calendar
 from django.contrib.auth.views import logout
 import logging
-from django.utils import simplejson
+import json
 from django.http import HttpResponse
 from planner.area.views import get_regions_for_postcalcode
 from planner.main.schedule import get_total_weight
@@ -168,7 +168,7 @@ def get_candidate_dates(
                                            calendar)
         
     data = {'region': region_code, 'dates': available_dates}
-    json = simplejson.dumps(data)
+    json = dumps(data)
     return HttpResponse(json, mimetype='application/json')
         
         
@@ -202,7 +202,7 @@ def get_available_dates(request,
                                                                int(weight), 2, None,
                                                                calendar)
     data = {'region': region_code, 'dates': available_dates}
-    json = simplejson.dumps(data)
+    json = dumps(data)
     return HttpResponse(json, mimetype='application/json')
 
 
@@ -222,7 +222,7 @@ def get_customer(request, postalcode, number, addition):
                 'email': customer.email}
     else:
         data = {'found': False }
-    json = simplejson.dumps(data)
+    json = dumps(data)
     logging.error("Customer JSON: %s for %s %s %s" % (json, postalcode, number, addition))
     return HttpResponse(json, mimetype='application/json')
 

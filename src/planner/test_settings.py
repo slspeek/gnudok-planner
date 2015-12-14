@@ -133,7 +133,6 @@ INSTALLED_APPS = (
     'planner.main',
     'planner.nlpostalcode',
     'planner.area',
-    'south',
     'django_nose',
 )
 
@@ -145,4 +144,4 @@ PROJECT_APPS = (
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-SOUTH_TESTS_MIGRATE = False
+
