@@ -2,6 +2,7 @@
 import factory
 from planner.main.models import Car, TimeSlot, Region, Rule, Customer, Appointment, Calendar
 import datetime
+from django.contrib.auth.models import User
 from django_factory_boy.auth import UserFactory
 from planner.nlpostalcode.tests import PostcodeBuilder
 from planner.area.test import IntervalFactory
@@ -41,9 +42,6 @@ def createRegionEast(self):
                                     end='1102zz',
                                     region=self.region)
 
-PASSWORD = 'pbkdf2_sha256$10000$Hk9LhgRtiFgH$x' \
-           'BWE61JIVu8qVCtqGnwYJ2iLPaPCp1UHipcA01zgPN4='
-
 def createRootUser(self): 
     self.root_user = User.objects.create_superuser('root', 'root@gnu.org', 'root')
     self.root_user.save()
@@ -52,8 +50,8 @@ def createTestUsers(self):
     #User.objects.all().delete()
     CALLCENTER_PERMISSION=Permission.objects.get(codename='callcenter')
     VIEWERS_PERMISSION=Permission.objects.get(codename='viewers')
-    self.user_steven = UserFactory(id=1000, username='steven', password=PASSWORD)
-    self.user_alien = UserFactory(id=2000, username='alien',  password=PASSWORD, first_name='Alien')
+    self.user_steven = User.objects.create_user('steven', 'steven@gnu.org', 'jansteven')
+    self.user_alien = User.objects.create_user('alien',  'alien@gnu.org', 'jansteven')
     self.user_steven.user_permissions.add(VIEWERS_PERMISSION,CALLCENTER_PERMISSION)
     self.user_steven.save()
     self.user_alien.user_permissions.add(VIEWERS_PERMISSION)

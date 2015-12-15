@@ -14,15 +14,17 @@ import datetime
 import factory
 
     
-class SourceFactory(factory.Factory):
-    FACTORY_FOR = Source
+class SourceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Source
     id = factory.Sequence(lambda n: n)
     name = source = factory.Sequence(lambda n: "username%s" % n)
     created = updated = datetime.datetime.now()
 
 
-class CountryFactory(factory.Factory):
-    FACTORY_FOR = Country
+class CountryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Country
     
     id = factory.Sequence(lambda n: n)
     created = updated = datetime.datetime.now()
@@ -30,8 +32,9 @@ class CountryFactory(factory.Factory):
     source = factory.SubFactory(SourceFactory)
     
 
-class ProvinceFactory(factory.Factory):
-    FACTORY_FOR = Province
+class ProvinceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Province
     
     id = factory.Sequence(lambda n: n)
     name = factory.Sequence(lambda n: "Provincie:%s" % n)
@@ -40,8 +43,9 @@ class ProvinceFactory(factory.Factory):
     source = factory.SubFactory(SourceFactory)
     
 
-class CityFactory(factory.Factory):
-    FACTORY_FOR = City
+class CityFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = City
     
     id = factory.Sequence(lambda n: n)
     created = updated = datetime.datetime.now()
@@ -49,8 +53,9 @@ class CityFactory(factory.Factory):
     source = factory.SubFactory(SourceFactory)
 
 
-class CitynameFactory(factory.Factory):
-    FACTORY_FOR = Cityname
+class CitynameFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Cityname
     
     id = factory.Sequence(lambda n: n)
     name = factory.Sequence(lambda n: "Amsterdam:%s" % n)
@@ -59,8 +64,9 @@ class CitynameFactory(factory.Factory):
     source = factory.SubFactory(SourceFactory)
 
 
-class PostcodeFactory(factory.Factory):
-    FACTORY_FOR = Postcode
+class PostcodeFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Postcode
     
     id = factory.Sequence(lambda n: n)
     fourpp = 1056
@@ -68,8 +74,9 @@ class PostcodeFactory(factory.Factory):
     city = factory.SubFactory(CityFactory)
     source = factory.SubFactory(SourceFactory)
 
-class StreetFactory(factory.Factory):
-    FACTORY_FOR = Street
+class StreetFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Street
 
     id = factory.Sequence(lambda n: n)
     even = factory.Sequence(lambda n: 2 * n)

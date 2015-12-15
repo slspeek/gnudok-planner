@@ -169,7 +169,7 @@ def get_candidate_dates(
         
     data = {'region': region_code, 'dates': available_dates}
     json = dumps(data)
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(json, content_type='application/json')
         
         
         
@@ -203,7 +203,7 @@ def get_available_dates(request,
                                                                calendar)
     data = {'region': region_code, 'dates': available_dates}
     json = dumps(data)
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(json, content_type='application/json')
 
 
 @permission_required('main.callcenter')
@@ -224,7 +224,7 @@ def get_customer(request, postalcode, number, addition):
         data = {'found': False }
     json = dumps(data)
     logging.error("Customer JSON: %s for %s %s %s" % (json, postalcode, number, addition))
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(json, content_type='application/json')
 
 
 def logout_view(request):

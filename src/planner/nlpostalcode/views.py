@@ -20,7 +20,7 @@ def get_info_on_postalcode(request, postalcode):
     else:
         data = {'found': False }
     j = json.dumps(data)
-    return HttpResponse(j, mimetype='application/json')
+    return HttpResponse(j, content_type='application/json')
 
 def update(fourpp, chars, street_name):
     pass
