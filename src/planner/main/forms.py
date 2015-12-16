@@ -40,7 +40,7 @@ class AppointmentForm(ModelForm):
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-
+        fields = '__all__'
 
 class HiddenForm(forms.Form):
     found_customer_id = forms.IntegerField(widget=forms.HiddenInput(),
