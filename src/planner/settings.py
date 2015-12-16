@@ -18,7 +18,8 @@ DATABASES = {
         'PASSWORD': 'planner',
         'HOST': '',
         'PORT': '',
-    },
+    }
+    ,
     'nlpostcode':  {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nlpostcode',

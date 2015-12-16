@@ -1,4 +1,5 @@
 import datetime
+import django
 from django.db import models
 from django.contrib.auth.models import User, Group, Permission
 from django.utils.translation import ugettext_lazy as _
@@ -181,7 +182,7 @@ class Appointment(models.Model):
     stuff = models.TextField(_('stuff'))
     notes = models.TextField(_('notes'), blank=True)
     created = models.DateTimeField(_("created"),
-                                   default=lambda: datetime.datetime.now())
+                                   default=django.utils.timezone.now)
 
     def __unicode__(self):
         return "%s, %s, %s" % (self.get_kind_display(), self.customer.name, self.stuff)

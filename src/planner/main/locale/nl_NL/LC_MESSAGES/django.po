@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-21 14:13+0100\n"
+"POT-Creation-Date: 2015-12-16 14:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:17 models.py:68
+#: forms.py:17 models.py:65
 msgid "postalcode"
 msgstr "postcode"
 
-#: forms.py:18 models.py:71 models.py:114 models.py:122
+#: forms.py:18 models.py:68 models.py:112 models.py:120
 msgid "name"
 msgstr "naam"
 
@@ -32,15 +32,15 @@ msgstr "telefoon"
 msgid "street"
 msgstr "straatnaam"
 
-#: forms.py:21 models.py:73
+#: forms.py:21 models.py:70
 msgid "town"
 msgstr "plaats"
 
-#: forms.py:22 models.py:141
+#: forms.py:22 models.py:139
 msgid "date"
 msgstr "datum"
 
-#: forms.py:25 models.py:184
+#: forms.py:25 models.py:182
 msgid "stuff"
 msgstr "spullen"
 
@@ -53,24 +53,24 @@ msgstr "zoek ook in het verleden"
 msgid "include cancelled"
 msgstr "zoek ook in geannuleerde afspraken"
 
-#: forms.py:59 models.py:171
+#: forms.py:58 models.py:169
 msgid "employee"
 msgstr "werknemer"
 
-#: forms.py:67 templates/choose_calendar.html:10
+#: forms.py:66 templates/choose_calendar.html:10
 #: templates/main/appointment_detail.html:17
 msgid "Car"
 msgstr "Auto"
 
-#: models.py:20
+#: models.py:21
 msgid "Delivery"
 msgstr "Bezorg"
 
-#: models.py:21 templates/appointment_list.html:15
+#: models.py:22 templates/appointment_list.html:15
 msgid "Pick up"
 msgstr "Ophaal"
 
-#: models.py:28
+#: models.py:29
 msgid "Enter a valid phone number"
 msgstr "Voer een 10-cijferig telefoonnummer in"
 
@@ -78,161 +78,113 @@ msgstr "Voer een 10-cijferig telefoonnummer in"
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: models.py:69
+#: models.py:66
 msgid "number"
 msgstr "huisnummer"
 
-#: models.py:70
+#: models.py:67
 msgid "additions"
 msgstr "toevoeging"
 
-#: models.py:72
+#: models.py:69
 msgid "address"
 msgstr "adres"
 
-#: models.py:75
+#: models.py:72
 msgid "email"
 msgstr "email"
 
-#: models.py:91
+#: models.py:89
 msgid "Monday"
 msgstr "Maandag"
 
-#: models.py:92
+#: models.py:90
 msgid "Tuesday"
 msgstr "Dinsdag"
 
-#: models.py:93
+#: models.py:91
 msgid "Wednesday"
 msgstr "Woensdag"
 
-#: models.py:94
+#: models.py:92
 msgid "Thursday"
 msgstr "Donderdag"
 
-#: models.py:95
+#: models.py:93
 msgid "Friday"
 msgstr "Vrijdag"
 
-#: models.py:96
+#: models.py:94
 msgid "Saturday"
 msgstr "Zaterdag"
 
-#: models.py:115
+#: models.py:113
 msgid "description"
 msgstr "beschrijving"
 
-#: models.py:129 models.py:142
+#: models.py:127 models.py:140
 msgid "car"
 msgstr "auto"
 
-#: models.py:130 models.py:143
+#: models.py:128 models.py:141
 msgid "timeslot"
 msgstr "tijdslot"
 
-#: models.py:131
+#: models.py:129
 msgid "region"
 msgstr "regio"
 
-#: models.py:132 models.py:172
+#: models.py:130 models.py:170
 msgid "kind"
 msgstr "type"
 
-#: models.py:133
+#: models.py:131
 msgid "active"
 msgstr "actief"
 
-#: models.py:169
+#: models.py:167
 msgid "calendar"
 msgstr "kalender"
 
-#: models.py:170
+#: models.py:168
 msgid "customer"
 msgstr "klant"
 
-#: models.py:175 models.py:179
+#: models.py:173 models.py:177
 msgid "Normal"
 msgstr "Normaal"
 
-#: models.py:176
+#: models.py:174
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: models.py:177
+#: models.py:175
 msgid "status"
 msgstr "status"
 
-#: models.py:180
+#: models.py:178
 msgid "Double"
 msgstr "Dubbel"
 
-#: models.py:181
+#: models.py:179
 msgid "Tripel"
 msgstr "Driedubbel"
 
-#: models.py:182
+#: models.py:180
 msgid "Entire half-day"
 msgstr "Een dagdeel"
 
-#: models.py:183
+#: models.py:181
 msgid "weight"
 msgstr "grootte"
 
-#: models.py:185
+#: models.py:183
 msgid "notes"
 msgstr "Extra"
 
-#: models.py:186
+#: models.py:184
 msgid "created"
 msgstr "gemaakt"
-
-#: viewers_views.py:42
-msgid "Choose an employee"
-msgstr "Kies een werknemer"
-
-#: viewers_views.py:88 templates/base.html:45
-msgid "Overview"
-msgstr "Overzicht"
-
-#: viewers_views.py:140
-msgid "Pick a date"
-msgstr "Kies een datum"
-
-#: viewers_views.py:150
-msgid "Choose a region and timeslot"
-msgstr "Kies een lijst"
-
-#: viewers_views.py:233
-msgid "Customer search"
-msgstr "Afspraak zoeken"
-
-#: views.py:52
-msgid "New appointment"
-msgstr "Nieuwe afspraak"
-
-#: views.py:55
-msgid "Follow up appointment"
-msgstr "Vervolg afspraak"
-
-#: views.py:58
-msgid "Edit or move appointment"
-msgstr "Afspraak verplaatsen of aanpassen"
-
-#: views.py:98
-msgid "No more space left"
-msgstr "Geen ruimte meer over"
-
-#: views.py:100
-msgid "Please select a date"
-msgstr "Kies alstublieft een datum"
-
-#: views.py:118
-msgid "Unknown"
-msgstr "Onbekend"
-
-#: views.py:145 views.py:189 templates/appointment_manipulation.html:114
-msgid "Unrestricted"
-msgstr "Ongelimiteerd"
 
 #: templates/appointment_cancel.html:6
 msgid "Do you want to cancel appointment"
@@ -321,20 +273,23 @@ msgstr "Grootte"
 msgid "View"
 msgstr "Inzien"
 
-#: templates/appointment_manipulation.html:117
+#: templates/appointment_manipulation.html:40 views.py:145 views.py:189
+msgid "Unrestricted"
+msgstr "Ongelimiteerd"
+
+#: templates/appointment_manipulation.html:43
 msgid "Available dates:"
 msgstr "Beschikbare data:"
 
-#: templates/appointment_manipulation.html:117
+#: templates/appointment_manipulation.html:43
 msgid "unknown"
 msgstr "Onbekend"
 
-#: templates/appointment_manipulation.html:123
+#: templates/appointment_manipulation.html:49
 msgid "Control click an item to see details"
 msgstr "Control click op een datum om de lijst in een ander tab te openen"
 
-#: templates/appointment_manipulation.html:126
-#: templates/edit_appointment.html:89
+#: templates/appointment_manipulation.html:52
 msgid "Save"
 msgstr "Opslaan"
 
@@ -383,6 +338,10 @@ msgstr "Nieuw"
 msgid "Find"
 msgstr "Zoeken"
 
+#: templates/base.html:45 viewers_views.py:88
+msgid "Overview"
+msgstr "Overzicht"
+
 #: templates/base.html:49
 msgid "Display collect list"
 msgstr "Ophaal lijst per dag"
@@ -416,9 +375,9 @@ msgid "Looking for known customers ..."
 msgstr "Bezig met zoeken van eerdere klanten ..."
 
 #: templates/base.html:84
-msgid "Copyleft 2012-2013 written by Steven Speek and Jan Terheggen for GNUDok"
+msgid "Copyleft 2012-2015 written by Steven Speek and Jan Terheggen for GNUDok"
 msgstr ""
-"Copyleft 2012-2013 geschreven door Steven Speek en Jan Terheggen voor GNUDok"
+"Copyleft 2012-2015 geschreven door Steven Speek en Jan Terheggen voor GNUDok"
 
 #: templates/calendar_search_view.html:28
 msgid "Search"
@@ -473,10 +432,6 @@ msgstr "Verder"
 msgid "Go"
 msgstr "OK"
 
-#: templates/edit_appointment.html:71
-msgid "Alternative dates"
-msgstr "Andere data"
-
 #: templates/main/appointment_detail.html:6
 msgid "Viewing saved appointment"
 msgstr "Gemaakte afspraak"
@@ -509,6 +464,49 @@ msgstr ""
 #: templates/registration/login.html:32
 msgid "Login"
 msgstr "Aanmelden"
+
+#: viewers_views.py:42
+msgid "Choose an employee"
+msgstr "Kies een werknemer"
+
+#: viewers_views.py:140
+msgid "Pick a date"
+msgstr "Kies een datum"
+
+#: viewers_views.py:150
+msgid "Choose a region and timeslot"
+msgstr "Kies een lijst"
+
+#: viewers_views.py:233
+msgid "Customer search"
+msgstr "Afspraak zoeken"
+
+#: views.py:52
+msgid "New appointment"
+msgstr "Nieuwe afspraak"
+
+#: views.py:55
+msgid "Follow up appointment"
+msgstr "Vervolg afspraak"
+
+#: views.py:58
+msgid "Edit or move appointment"
+msgstr "Afspraak verplaatsen of aanpassen"
+
+#: views.py:98
+msgid "No more space left"
+msgstr "Geen ruimte meer over"
+
+#: views.py:100
+msgid "Please select a date"
+msgstr "Kies alstublieft een datum"
+
+#: views.py:118
+msgid "Unknown"
+msgstr "Onbekend"
+
+#~ msgid "Alternative dates"
+#~ msgstr "Andere data"
 
 #~ msgid "Find customer"
 #~ msgstr "Afspraak zoeken"
