@@ -5,8 +5,7 @@ Created on 29 nov. 2012
 '''
 from __future__ import absolute_import
 import datetime
-from .models import Calendar, KIND_PICKUP
-from .models import TimeSlot, Car, Rule
+from planner.main.models import Calendar, KIND_PICKUP, TimeSlot, Car, Rule
 
 # Very important, change made at june 26 2013
 APPOINTMENTS_PER_HALF_DAY = 4
@@ -14,8 +13,8 @@ APPOINTMENTS_PER_HALF_DAY = 4
 DELIVERY_PER_HALF_DAY = 2
 
 
-def get_limit_for_rule(kind, rule): 
-    if kind == rule.kind: 
+def get_limit_for_rule(kind, rule):
+    if kind == rule.kind:
         if kind == KIND_PICKUP:
             return APPOINTMENTS_PER_HALF_DAY
         else:
@@ -23,15 +22,15 @@ def get_limit_for_rule(kind, rule):
     else:
         return 0
 
-def get_limit(kind): 
-    if kind == KIND_PICKUP: 
+def get_limit(kind):
+    if kind == KIND_PICKUP:
         return APPOINTMENTS_PER_HALF_DAY
     else:
         return DELIVERY_PER_HALF_DAY
-        
+
 
 def get_region_name(calendar):
-    """ Return the region for given calendar object, just for the heading """ 
+    """ Return the region for given calendar object, just for the heading """
     name = ""
     car = calendar.car
     timeslot = calendar.timeslot
@@ -83,7 +82,7 @@ def _get_rules(date, region, car_id):
 
 def get_rules(date, regions, car_id):
     result = []
-    if regions == None:
+    if regions is None:
         rules = _get_rules(date, None, car_id)
         result.extend(rules)
     else:
@@ -101,7 +100,7 @@ def _add_extra_calendar(entries, calendar):
     if not found:
         entries = [(calendar.pk, str(calendar))] + entries
     return entries
- 
+
 def get_free_entries(fromDate, daysAhead, regions, min_weight, kind, car_id):
     result = []
     for offset in range(0, daysAhead):

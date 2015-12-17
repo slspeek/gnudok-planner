@@ -1,26 +1,26 @@
 """ Read-only views """
 from __future__ import absolute_import
-from .__init__ import today, tomorrow, get_date_from_iso, to_iso
-from django.contrib.auth.models import User
 import datetime
+from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Car, Customer, KIND_PICKUP
-from .forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
-from .schedule import get_region_name, get_total_weight, get_limit
 from django.contrib.auth.decorators import permission_required
+from planner.main.models import Appointment, Calendar, Car, Customer, KIND_PICKUP
+from planner.main import today, tomorrow, get_date_from_iso, to_iso
+from planner.main.forms import CalendarSearchForm, DatePickForm, EmployeeChooseForm
+from planner.main.schedule import get_region_name, get_total_weight, get_limit
 
 @permission_required('main.viewers')
-def wrong_postcode(request):
+def wrong_postcode(_):
     all_customers = Customer.objects.order_by('postcode').all()
-    customers = filter(lambda x: not x.postcode.isupper(), all_customers)
+    customers = [x for  x in all_customers if not x.postcode.isupper()]
     return render_to_response("main/wrong_postcode.html",
                               {"customers": customers,
-                                })
+                              })
 
 @permission_required('main.viewers')
-def appointment_detail(request, pk):
+def appointment_detail(_, pk):
     appointment = Appointment.objects.get(pk=int(pk))
     region_name = get_region_name(appointment.calendar)
     return render_to_response("main/appointment_detail.html",
@@ -39,12 +39,12 @@ def choose_an_employee(request):
         form = EmployeeChooseForm()
     return render_to_response('choose_an_employee.html',
                               {"form": form,
-                              "title": _("Choose an employee")},
+                               "title": _("Choose an employee")},
                               context_instance=RequestContext(request))
 
 
 @permission_required('main.viewers')
-def appointments_by_date(request, date_iso):
+def appointments_by_date(_, date_iso):
     if not date_iso:
         date_iso = datetime.date.today().strftime('%Y%m%d')
     date = get_date_from_iso(date_iso)
@@ -54,11 +54,11 @@ def appointments_by_date(request, date_iso):
     return render_to_response("appointments_today.html",
                               {"date": date,
                                "appointment_list": appointment_list,
-                               })
+                              })
 
 
 @permission_required('main.viewers')
-def appointments_made_by(request, employee_id):
+def appointments_made_by(_, employee_id):
     by_one_employee = Appointment.actives.filter(employee__pk=employee_id)
     appointment_list = by_one_employee.order_by('calendar__date')
 
@@ -66,11 +66,12 @@ def appointments_made_by(request, employee_id):
     return render_to_response("appointments_made_by.html",
                               {"employee": employee,
                                "appointment_list": appointment_list,
-                               })
+                              })
 
 
-@permission_required('main.viewers')                              
+@permission_required('main.viewers')
 def overview(request, date_iso):
+    # pylint: disable=w0613
     if not date_iso:
         date_iso = tomorrow()
     range_list0, range_list1, range_list2 = [], [], []
@@ -91,7 +92,7 @@ def overview(request, date_iso):
                                "range0": range_list0,
                                "range1": range_list1,
                                "range2": range_list2,
-                               })
+                              })
 
 
 def get_date_interval(date_iso, offset):
@@ -102,7 +103,7 @@ def get_date_interval(date_iso, offset):
 
 
 @permission_required('main.viewers')
-def weekview(request, car_id=0, offset=0, date_iso=""):
+def weekview(_, car_id=0, offset=0, date_iso=""):
     if not date_iso:
         date_iso = tomorrow()
     offset = int(offset)
@@ -153,10 +154,10 @@ def choose_calendar(request, date_string):
 
 
 @permission_required('main.viewers')
-def render_appointment_list(request, calendar_id):
+def render_appointment_list(_, calendar_id):
     calendar = Calendar.objects.get(pk=int(calendar_id))
     title = calendar.date.strftime('%d %b') + ':' + str(calendar.car) + str(calendar.timeslot.begin)
-    
+
     return render_to_response('appointment_list.html',
                               {"title": title,
                                'car': calendar.car,
@@ -164,7 +165,7 @@ def render_appointment_list(request, calendar_id):
                                'region_name': get_region_name(calendar),
                                'timeslot': calendar.timeslot,
                                'app_list': calendar.active_appointments().all()
-                               })
+                              })
 
 def normalize_postalcode(postalcode):
     result = postalcode.replace(' ', '')

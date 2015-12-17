@@ -1,13 +1,13 @@
 import datetime
 
 def tomorrow():
-    today = datetime.date.today()
+    t = datetime.date.today()
     one_day = datetime.timedelta(days=1)
-    return (today + one_day).strftime('%Y%m%d')
+    return (t + one_day).strftime('%Y%m%d')
 
 def today():
-    today = datetime.date.today()
-    return today.strftime('%Y%m%d')
+    t = datetime.date.today()
+    return t.strftime('%Y%m%d')
 
 
 def get_date_from_iso(iso_date):

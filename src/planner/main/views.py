@@ -1,21 +1,21 @@
 # Create your views here.
 from __future__ import absolute_import
-from .__init__ import get_date_from_iso, tomorrow
+import json
+import logging
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from .models import Appointment, Calendar, Customer, Car
-from .forms import CustomerForm, AppointmentForm, HiddenForm, CarForm
-from .schedule import get_free_entries, get_free_entries_with_extra_calendar
-from django.contrib.auth.views import logout
-import logging
-import json
 from django.http import HttpResponse
+from django.contrib.auth.views import logout
+from django.forms.util import ErrorList
+from django.contrib.auth.decorators import permission_required
+from planner.main.schedule import get_free_entries, get_free_entries_with_extra_calendar
+from planner.main.models import Appointment, Calendar, Customer, Car
+from planner.main.forms import CustomerForm, AppointmentForm, HiddenForm, CarForm
+from planner.main import get_date_from_iso, tomorrow
 from planner.area.views import get_regions_for_postcalcode
 from planner.main.schedule import get_total_weight
-from django.forms.util import ErrorList
 from planner.main.schedule import APPOINTMENTS_PER_HALF_DAY
-from django.contrib.auth.decorators import permission_required
 
 STANDARD_DAYS_AHEAD = 28
 
@@ -27,12 +27,12 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
         existing_apps = calendar.active_appointments()
         kind = appointment_form.cleaned_data['kind']
         old_weight = 0
-        if not appointment_id == 'create':
+        if appointment_id != 'create':
             app = Appointment.actives.get(pk=int(appointment_id))
             old_weight = app.weight
-        
+
         weight = get_total_weight(existing_apps, kind) - old_weight
-        
+
         aw = int(appointment_form.cleaned_data['weight'])
         return weight + aw <= APPOINTMENTS_PER_HALF_DAY
     else:
@@ -44,7 +44,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
     free_space_errors = []
     if not date_iso:
         date_iso = tomorrow()
-    
+
     if appointment_id == 'create':
         appointment = Appointment()
         calendar_id = "-1"
@@ -69,35 +69,35 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
             customer_id = hidden_form.cleaned_data['found_customer_id']
             if customer_id:
                 appointment.customer = Customer.objects.get(pk=customer_id)
-                logging.error("Customer known: %s" % appointment.customer)
+                logging.error("Customer known: %s", appointment.customer)
             else:
                 logging.error("Customer unknown")
         else:
             raise NameError("Hiddenform should never be invalid")
         appointment_form = AppointmentForm(request.POST,
-                                              instance=appointment)
+                                           instance=appointment)
         customer_form = CustomerForm(request.POST,
                                      instance=appointment.customer)
         carForm = CarForm(request.POST)
         free_space = request.POST.get('free_space', '')
         if free_space:
-          app_valid = appointment_form.is_valid()
-          if app_valid:
-              if space_available(free_space, appointment_form, appointment_id):
-                  if customer_form.is_valid():
-                      calendar_id = int(free_space)
-                      appointment.calendar = Calendar.objects.get(pk=calendar_id)
-                      appointment.employee = request.user
-                      logging.error(appointment.calendar)
-                      customer = customer_form.save()
-                      appointment.customer = customer
-                      appointment = appointment_form.save()
-                      return redirect('AppointmentView', appointment.id)
-              else:
-                appointment_form._errors['weight'] = \
-                      ErrorList([_("No more space left")])
+            app_valid = appointment_form.is_valid()
+            if app_valid:
+                if space_available(free_space, appointment_form, appointment_id):
+                    if customer_form.is_valid():
+                        calendar_id = int(free_space)
+                        appointment.calendar = Calendar.objects.get(pk=calendar_id)
+                        appointment.employee = request.user
+                        logging.error(appointment.calendar)
+                        customer = customer_form.save()
+                        appointment.customer = customer
+                        appointment = appointment_form.save()
+                        return redirect('AppointmentView', appointment.id)
+                else:
+                    appointment_form._errors['weight'] = \
+                        ErrorList([_("No more space left")])
         else:
-          free_space_errors = [_('Please select a date')]
+            free_space_errors = [_('Please select a date')]
 
     return render_to_response('appointment_manipulation.html',
                               {"appointmentForm": appointment_form,
@@ -108,32 +108,30 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                                "calendar_id": calendar_id,
                                "carForm": carForm,
                                "free_space_errors": free_space_errors
-                               },
+                              },
                               context_instance=RequestContext(request))
 
 def get_region_description(regions):
     if regions:
-        return str(map (lambda x: str(x.name), regions))
+        return str(map(lambda x: str(x.name), regions))
     else:
         return _("Unknown")
 
 @permission_required('main.callcenter')
-def get_candidate_dates(
-                        request,
+def get_candidate_dates(request,
                         date_iso,
                         weight,
                         postalcode,
                         car_id,
                         kind,
-                        calendar_id                   
-                        ):
+                        calendar_id):
     date = get_date_from_iso(date_iso)
     weight = int(weight)
     kind = int(kind)
     car_id = int(car_id)
-    
-    
-    if not postalcode == "-1":
+
+
+    if postalcode != "-1":
         # normal pick-up case
         regions = get_regions_for_postcalcode(postalcode)
         region_code = get_region_description(regions)
@@ -141,13 +139,13 @@ def get_candidate_dates(
         regions = None
         if car_id == -1:
             car_id = None
-            
+
             region_code = _("Unrestricted")
         else:
             car = Car.objects.get(pk=car_id)
             region_code = " %s" % car.name
-        
-        
+
+
     if calendar_id == "-1":
         #new case
         available_dates = get_free_entries(date,
@@ -155,35 +153,36 @@ def get_candidate_dates(
                                            regions,
                                            weight,
                                            kind,
-                                           car_id) 
+                                           car_id)
     else:
         #edit case
         calendar = Calendar.objects.get(pk=int(calendar_id))
-        available_dates = get_free_entries_with_extra_calendar(date,
-                                           STANDARD_DAYS_AHEAD,
-                                           regions,
-                                           weight,
-                                           kind,
-                                           car_id,
-                                           calendar)
-        
+        available_dates = get_free_entries_with_extra_calendar(
+            date,
+            STANDARD_DAYS_AHEAD,
+            regions,
+            weight,
+            kind,
+            car_id,
+            calendar)
+
     data = {'region': region_code, 'dates': available_dates}
     jsn = json.dumps(data)
     return HttpResponse(jsn, content_type='application/json')
-        
-        
-        
-        
+
+
+
+
 @permission_required('main.callcenter')
 def get_available_dates(request,
                         postalcode,
                         weight,
                         date_iso,
                         calendar_id,
-                        unrestricted=False,
-                        car_id=-1):
+                        unrestricted=False):
+
     """ Returns a json object to fill the calendar choices component """
-    logging.error("%s %s" % (postalcode, weight))
+    logging.error("%s %s", postalcode, weight)
     if unrestricted:
         regions = None
         region_code = _("Unrestricted")
@@ -207,10 +206,10 @@ def get_available_dates(request,
 
 
 @permission_required('main.callcenter')
-def get_customer(request, postalcode, number, addition):
+def get_customer(_, postalcode, number, addition):
     """ Returns a json object to fill the calendar choices component """
     customer_list = Customer.objects.filter(postcode__iexact=postalcode.capitalize(),
-                                    number=number, additions=addition).all()
+                                            number=number, additions=addition).all()
     if customer_list:
         customer = customer_list[0]
         data = {'name': customer.name,
@@ -221,7 +220,7 @@ def get_customer(request, postalcode, number, addition):
                 'id': customer.id,
                 'email': customer.email}
     else:
-        data = {'found': False }
+        data = {'found': False}
     jsn = json.dumps(data)
     # logging.error("Customer JSON: %s for %s %s %s" % (jsn, postalcode, number, addition))
     return HttpResponse(jsn, content_type='application/json')
@@ -235,11 +234,11 @@ def logout_view(request):
 @permission_required('main.callcenter')
 def cancel_appointment(request, appointment_id):
     appointment = Appointment.objects.get(pk=int(appointment_id))
-    if not request.method == 'POST':
+    if request.method != 'POST':
         return render_to_response('appointment_cancel.html',
                                   {'object': appointment},
                                   context_instance=RequestContext(request)
-                                  )
+                                 )
     else:
         appointment.status = 2
         appointment.save()

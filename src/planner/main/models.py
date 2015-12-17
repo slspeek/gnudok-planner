@@ -1,20 +1,18 @@
-import datetime
+import re
 import django
 from django.db import models
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import CharField
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
-import re
 from django import forms
-from .__init__ import float_to_time
-from django.contrib.contenttypes.models import ContentType
+from planner.main import float_to_time
 
 
-pc_re = re.compile('^\d{4}[A-Z]{2}$')
-sofi_re = re.compile('^\d{9}$')
-numeric_re = re.compile('^\d+$')
+pc_re = re.compile(r'^\d{4}[A-Z]{2}$')
+sofi_re = re.compile(r'^\d{9}$')
+numeric_re = re.compile(r'^\d+$')
 
 KIND_DELIVERY = 1
 KIND_PICKUP = 2
@@ -33,7 +31,7 @@ class NLPhoneNumberField(forms.CharField):
         super(NLPhoneNumberField, self).clean(value)
         if value in EMPTY_VALUES:
             return u''
-        phone_nr = re.sub('[\-\s\(\)]', '', value)
+        phone_nr = re.sub(r'[\-\s\(\)]', '', value)
 
         if len(phone_nr) == 10 and numeric_re.search(phone_nr):
             return value
@@ -80,11 +78,11 @@ class Customer(models.Model):
         else:
             return '%s %s' % (self.address, self.number)
 
-    class Meta:
+    class Meta(object):
         unique_together = (("postcode", "number", "additions"),)
         permissions = (("viewers", "Viewers"),
-            ("callcenter", "Callcenter"),)
-  
+                       ("callcenter", "Callcenter"),)
+
 class TimeSlot(models.Model):
     CHOICES = ((1, _("Monday")),
                (2, _("Tuesday")),
@@ -104,8 +102,8 @@ class TimeSlot(models.Model):
 
     def __unicode__(self):
         return "%s :  %s - %s" % (self.get_day_of_week_display(),
-                                   float_to_time(self.begin),
-                                   float_to_time(self.end))
+                                  float_to_time(self.begin),
+                                  float_to_time(self.end))
 
 
 class Region(models.Model):
@@ -132,7 +130,7 @@ class Rule(models.Model):
 
     def __unicode__(self):
         return "(%s, %s, %s, %s)" % \
-            (self.car, self.get_kind_display(),self.timeslot, self.region)
+            (self.car, self.get_kind_display(), self.timeslot, self.region)
 
 
 class Calendar(models.Model):
@@ -144,10 +142,10 @@ class Calendar(models.Model):
         return Appointment.actives.filter(calendar=self)
 
     def __unicode__(self):
-        return ("%s: %s - %s" %\
-            (self.date.strftime('%d %b '), self.timeslot, self.car))
+        return "%s: %s - %s" %\
+            (self.date.strftime('%d %b '), self.timeslot, self.car)
 
-    class Meta:
+    class Meta(object):
         unique_together = (("date", "car", "timeslot"),)
         ordering = ['date', 'timeslot__begin']
 
@@ -187,5 +185,5 @@ class Appointment(models.Model):
     def __unicode__(self):
         return "%s, %s, %s" % (self.get_kind_display(), self.customer.name, self.stuff)
 
-    class Meta:
+    class Meta(object):
         ordering = ['kind', 'customer__postcode']

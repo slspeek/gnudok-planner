@@ -4,13 +4,13 @@ Created on 15 nov. 2012
 @author: steven
 '''
 from __future__ import absolute_import
-from django import forms
 from bootstrap_toolkit.widgets import BootstrapDateInput
+from django import forms
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
-from .models import Appointment, Customer, Car
 from django.forms.forms import Form
 from django.utils.translation import ugettext_lazy as _
+from planner.main.models import Appointment, Customer, Car
 
 
 class CalendarSearchForm(forms.Form):
@@ -32,13 +32,13 @@ class DatePickForm(forms.Form):
 
 
 class AppointmentForm(ModelForm):
-    class Meta:
+    class Meta(object):
         model = Appointment
         fields = ("kind", "weight", "stuff", "notes")
 
 
 class CustomerForm(ModelForm):
-    class Meta:
+    class Meta(object):
         model = Customer
         fields = '__all__'
 
@@ -56,7 +56,7 @@ class EmployeeChooseForm(Form):
     queryset = User.objects.filter(is_active=True)\
         .order_by('first_name')
     employee = EmployeeModelChoiceField(label=_('employee'), queryset=queryset)
-    
+
 class CarModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return obj.name
