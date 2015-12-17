@@ -1,12 +1,12 @@
+
 '''
 Admin configuration
 '''
 from __future__ import absolute_import
-from .models import Customer, TimeSlot, \
+from planner.main.models import Customer, TimeSlot,\
     Appointment, Calendar, Region, Car, Rule
 from planner.area.models import Interval
 from django.contrib import admin
-
 
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('name', 'postcode', 'address', 'town',)
@@ -37,7 +37,7 @@ class TimeSlotAdmin(admin.ModelAdmin):
     list_filter = ('day_of_week',)
 
 class RuleAdmin(admin.ModelAdmin):
-    list_filter = ('timeslot','car','active')
+    list_filter = ('timeslot', 'car', 'active')
 
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(TimeSlot, TimeSlotAdmin)

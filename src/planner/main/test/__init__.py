@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
+import datetime
+from django_factory_boy.auth import UserFactory
+from django.contrib.auth.models import User, Permission
 import factory
 from planner.main.models import Car, TimeSlot, Region, Rule, Customer, Appointment, Calendar
-import datetime
-from django.contrib.auth.models import User
-from django_factory_boy.auth import UserFactory
 from planner.nlpostalcode.tests import PostcodeBuilder
 from planner.area.test import IntervalFactory
-from django.contrib.auth.models import User, Permission
 
-ADA_LOVELACE=u'Adå Lŏvelace'
+ADA_LOVELACE = u'Adå Lŏvelace'
 
 
 def createTestPostcodes():
@@ -42,28 +41,24 @@ def createRegionEast(self):
                                     end='1102zz',
                                     region=self.region)
 
-def createRootUser(self): 
+def createRootUser(self):
     self.root_user = User.objects.create_superuser('root', 'root@gnu.org', 'root')
     self.root_user.save()
-    
+
 def createTestUsers(self):
-    #User.objects.all().delete()
-    CALLCENTER_PERMISSION=Permission.objects.get(codename='callcenter')
-    VIEWERS_PERMISSION=Permission.objects.get(codename='viewers')
+    CALLCENTER_PERMISSION = Permission.objects.get(codename='callcenter')
+    VIEWERS_PERMISSION = Permission.objects.get(codename='viewers')
     self.user_steven = User.objects.create_user('steven', 'steven@gnu.org', 'jansteven', id=1000)
-    self.user_alien = User.objects.create_user('alien',  'alien@gnu.org', 'jansteven', id=2000)
-    self.user_steven.user_permissions.add(VIEWERS_PERMISSION,CALLCENTER_PERMISSION)
+    self.user_alien = User.objects.create_user('alien', 'alien@gnu.org', 'jansteven', id=2000)
+    self.user_steven.user_permissions.add(VIEWERS_PERMISSION, CALLCENTER_PERMISSION)
     self.user_steven.save()
     self.user_alien.user_permissions.add(VIEWERS_PERMISSION)
     self.user_alien.save()
 
 def createAda(self):
-    self.customer = CustomerFactory(name=ADA_LOVELACE,
-                           postcode='1102AB',
-                           number=42,
-                           address='Bijlmerdreef',
-                           town='Amsterdam',
-                           phone='06-12345678')
+    self.customer = CustomerFactory(
+        name=ADA_LOVELACE, postcode='1102AB', number=42, address='Bijlmerdreef',
+        town='Amsterdam', phone='06-12345678')
     return self.customer
 
 def adaMakesAppointment(self):
@@ -116,14 +111,14 @@ def adaCancelsAppointment(self):
 
 
 class CarFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = Car
 
     name = "Open source tractor"
 
 
 class TimeSlotFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = TimeSlot
 
     day_of_week = 1
@@ -132,14 +127,14 @@ class TimeSlotFactory(factory.django.DjangoModelFactory):
 
 
 class RegionFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = Region
 
     name = "Groot Oost"
 
 
 class RuleFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = Rule
 
     car = factory.SubFactory(CarFactory)
@@ -148,7 +143,7 @@ class RuleFactory(factory.django.DjangoModelFactory):
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = Customer
 
     name = "Willem Knaap"
@@ -160,7 +155,7 @@ class CustomerFactory(factory.django.DjangoModelFactory):
 
 
 class CalendarFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = Calendar
 
     date = datetime.date(2012, 10, 29)
@@ -170,7 +165,7 @@ class CalendarFactory(factory.django.DjangoModelFactory):
 
 
 class AppointmentFactory(factory.django.DjangoModelFactory):
-    class Meta:
+    class Meta(object):
         model = Appointment
 
     calendar = factory.SubFactory(CalendarFactory)
