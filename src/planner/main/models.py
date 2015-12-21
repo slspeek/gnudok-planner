@@ -139,6 +139,7 @@ class Calendar(models.Model):
     timeslot = models.ForeignKey(TimeSlot, verbose_name=_('timeslot'))
 
     def active_appointments(self):
+        # pylint: disable=E1101
         return Appointment.actives.filter(calendar=self)
 
     def __unicode__(self):
@@ -154,6 +155,7 @@ class ActiveManager(models.Manager):
     use_for_related_fields = True
 
     def get_queryset(self):
+        # pylint: disable=E1101
         query_set = super(ActiveManager, self).get_queryset()
         return query_set.filter(status=self.model.NORMAL)
 

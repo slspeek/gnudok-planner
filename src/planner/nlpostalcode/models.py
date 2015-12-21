@@ -71,7 +71,7 @@ class City(models.Model):
 
     def get_official_name(self):
         names = self.cityname_set.all()
-        official_citynames = filter(lambda x: (x.official == 1), names)
+        official_citynames = [x for x in names if x.official == 1]
         if official_citynames:
             return official_citynames[0].name
         if names:

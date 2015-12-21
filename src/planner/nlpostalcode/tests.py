@@ -120,6 +120,7 @@ class PostcodeBuilder(object):
         return postcode
 
     def create_street(self, postcode, name, two_letters):
+        # pylint: disable=R0201
         street = StreetFactory(postcode=postcode, chars=two_letters, street=name)
         return street
 
@@ -141,6 +142,7 @@ class UpdateTest(TestCase):
 
 
     def test_get_streets(self):
+        # pylint: disable=R0201
         street = get_streets(1057, 've')
         assert len(street.all()) == 1
         s = street[0]

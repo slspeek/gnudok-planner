@@ -7,7 +7,6 @@ from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.http import HttpResponse
 from django.contrib.auth.views import logout
-from django.forms.util import ErrorList
 from django.contrib.auth.decorators import permission_required
 from planner.main.schedule import get_free_entries, get_free_entries_with_extra_calendar
 from planner.main.models import Appointment, Calendar, Customer, Car
@@ -96,9 +95,7 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                         appointment = appointment_form.save()
                         return redirect('AppointmentView', appointment.id)
                 else:
-                    appointment_form._errors['weight'] = \
--                        ErrorList([_("No more space left")])
-                    #appointment_form.add_error('weight', _("No more space left"))
+                    appointment_form.add_error('weight', _("No more space left"))
         else:
             free_space_errors = [_('Please select a date')]
 
@@ -116,19 +113,19 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
 
 def get_region_description(regions):
     if regions:
-        return str(map(lambda x: str(x.name), regions))
+        return str([str(x.name) for x in regions])
     else:
         return _("Unknown")
 
 @permission_required('main.callcenter')
-def get_candidate_dates(_,
+def get_candidate_dates(request,
                         date_iso,
                         weight,
                         postalcode,
                         car_id,
                         kind,
                         calendar_id):
-    # pylint: disable=R0913
+    # pylint: disable=R0913,W0613
     date = get_date_from_iso(date_iso)
     weight = int(weight)
     kind = int(kind)
@@ -184,7 +181,7 @@ def get_available_dates(request,
                         date_iso,
                         calendar_id,
                         unrestricted=False):
-    # pylint: disable=R0913
+    # pylint: disable=R0913,W0613
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s", postalcode, weight)
     if unrestricted:
