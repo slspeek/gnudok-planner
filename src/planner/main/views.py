@@ -20,6 +20,7 @@ from planner.main.schedule import APPOINTMENTS_PER_HALF_DAY
 STANDARD_DAYS_AHEAD = 28
 
 def space_available(calendar_id_string, appointment_form, appointment_id):
+    # pylint: disable=E1101
     """ Assumes appointment_form's  is_valid was called and returned True"""
     if calendar_id_string:
         calendar_id = int(calendar_id_string)
@@ -40,6 +41,7 @@ def space_available(calendar_id_string, appointment_form, appointment_id):
 
 @permission_required('main.callcenter')
 def appointment_manipulation(request, appointment_id, customer_id, date_iso):
+    # pylint: disable=E1101, R0912, R0915, R0204
     """ creates or edits an appointment and customer """
     free_space_errors = []
     if not date_iso:
@@ -95,7 +97,8 @@ def appointment_manipulation(request, appointment_id, customer_id, date_iso):
                         return redirect('AppointmentView', appointment.id)
                 else:
                     appointment_form._errors['weight'] = \
-                        ErrorList([_("No more space left")])
+-                        ErrorList([_("No more space left")])
+                    #appointment_form.add_error('weight', _("No more space left"))
         else:
             free_space_errors = [_('Please select a date')]
 
@@ -118,13 +121,14 @@ def get_region_description(regions):
         return _("Unknown")
 
 @permission_required('main.callcenter')
-def get_candidate_dates(request,
+def get_candidate_dates(_,
                         date_iso,
                         weight,
                         postalcode,
                         car_id,
                         kind,
                         calendar_id):
+    # pylint: disable=R0913
     date = get_date_from_iso(date_iso)
     weight = int(weight)
     kind = int(kind)
@@ -180,7 +184,7 @@ def get_available_dates(request,
                         date_iso,
                         calendar_id,
                         unrestricted=False):
-
+    # pylint: disable=R0913
     """ Returns a json object to fill the calendar choices component """
     logging.error("%s %s", postalcode, weight)
     if unrestricted:
@@ -233,6 +237,7 @@ def logout_view(request):
 
 @permission_required('main.callcenter')
 def cancel_appointment(request, appointment_id):
+    # pylint: disable=E1101
     appointment = Appointment.objects.get(pk=int(appointment_id))
     if request.method != 'POST':
         return render_to_response('appointment_cancel.html',

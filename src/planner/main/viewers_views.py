@@ -21,6 +21,7 @@ def wrong_postcode(_):
 
 @permission_required('main.viewers')
 def appointment_detail(_, pk):
+    # pylint: disable=E1101
     appointment = Appointment.objects.get(pk=int(pk))
     region_name = get_region_name(appointment.calendar)
     return render_to_response("main/appointment_detail.html",
@@ -45,6 +46,7 @@ def choose_an_employee(request):
 
 @permission_required('main.viewers')
 def appointments_by_date(_, date_iso):
+    # pylint: disable=E1101
     if not date_iso:
         date_iso = datetime.date.today().strftime('%Y%m%d')
     date = get_date_from_iso(date_iso)
@@ -59,6 +61,7 @@ def appointments_by_date(_, date_iso):
 
 @permission_required('main.viewers')
 def appointments_made_by(_, employee_id):
+    # pylint: disable=E1101
     by_one_employee = Appointment.actives.filter(employee__pk=employee_id)
     appointment_list = by_one_employee.order_by('calendar__date')
 
@@ -172,6 +175,7 @@ def normalize_postalcode(postalcode):
     return result.strip()
 
 def search(search_form, date_iso=''):
+    # pylint: disable=E1101,R0916,R0204
     if not date_iso:
         date_iso = today()
     include_past = search_form.cleaned_data['include_past']
@@ -213,6 +217,7 @@ def search(search_form, date_iso=''):
 
 @permission_required('main.viewers')
 def calendar_search_view(request, date_iso=""):
+    # pylint: disable=R0204
     if not date_iso:
         date_iso = today()
     results = []
