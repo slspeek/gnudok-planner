@@ -18,8 +18,7 @@ DATABASES = {
         'PASSWORD': 'planner',
         'HOST': '',
         'PORT': '',
-    }
-    ,
+    },
     'nlpostcode':  {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nlpostcode',
@@ -33,6 +32,10 @@ DATABASES = {
 DATABASE_ROUTERS = ['planner.nlpostcode_router.NlpostcodeRouter',
                     'planner.main_router.MainRouter']
 
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -129,6 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django_extensions',
     'django_jenkins',
     'bootstrap_toolkit',
     'planner.main',
@@ -144,4 +148,3 @@ PROJECT_APPS = (
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
