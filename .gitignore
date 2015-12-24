@@ -1,4 +1,6 @@
 *~
+planner.dot
+planner.svg
 *.pyc
 bin/
 develop-eggs/
@@ -6,6 +8,7 @@ eggs/
 parts/
 .installed.cfg
 src/planner.egg-info/
+src/planner/static/*
 
 
 
